@@ -2347,57 +2347,34 @@ body.has-announcement {
 .projects-grid {
     --projects-gap: clamp(1.6rem, 2vw, 3.2rem);
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: var(--projects-gap);
     margin-top: 3.6rem;
     padding: 0;
     list-style: none
 }
 
-/* staggered columns: every card spans two rows and the right column starts one row lower,
-   so right-hand cards sit half a card down while the reading order stays 1, 2, 3... */
+/* two large cards on top, three smaller cards below: a 6-column grid, 3 + 3 then 2 + 2 + 2 */
 .projects-grid .project-card {
-    grid-row-end: span 2
+    grid-column: span 2
 }
 
-.projects-grid .project-card:nth-child(odd) {
-    grid-column: 1
+.projects-grid .project-card:nth-child(-n+2) {
+    grid-column: span 3
 }
 
-.projects-grid .project-card:nth-child(even) {
-    grid-column: 2
+.projects-grid .project-card:nth-child(n+3) .project-card-body {
+    padding: 1.4rem 1.6rem 1.6rem
 }
 
-.projects-grid .project-card:nth-child(1) {
-    grid-row-start: 1
+.projects-grid .project-card:nth-child(n+3) .project-card-title {
+    font-size: 1.8rem
 }
 
-.projects-grid .project-card:nth-child(2) {
-    grid-row-start: 2
-}
-
-.projects-grid .project-card:nth-child(3) {
-    grid-row-start: 3
-}
-
-.projects-grid .project-card:nth-child(4) {
-    grid-row-start: 4
-}
-
-.projects-grid .project-card:nth-child(5) {
-    grid-row-start: 5
-}
-
-.projects-grid .project-card:nth-child(6) {
-    grid-row-start: 6
-}
-
-.projects-grid .project-card:nth-child(7) {
-    grid-row-start: 7
-}
-
-.projects-grid .project-card:nth-child(8) {
-    grid-row-start: 8
+/* narrow small cards: "View project" drops under the title instead of squeezing it */
+.projects-grid .project-card:nth-child(n+3) .project-card-head {
+    flex-wrap: wrap;
+    gap: .4rem 1.2rem
 }
 
 .project-card {
@@ -2782,7 +2759,7 @@ body.has-announcement {
         grid-template-columns: minmax(0, 1fr)
     }
 
-    /* same specificity as the staggered nth-child placement, and later, so the single column wins */
+    /* same specificity as the nth-child spans above, and later, so the single column wins */
     .projects-grid .project-card:nth-child(n) {
         grid-column: auto;
         grid-row: auto
