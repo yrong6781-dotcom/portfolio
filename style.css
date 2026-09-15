@@ -2611,7 +2611,7 @@ body.has-announcement {
     gap: 3.6rem;
     min-height: 100vh;
     padding: 12rem 0 8rem;
-    background: radial-gradient(ellipse 55% 45% at 50% 60%, color-mix(in srgb, var(--about-green) 9%, transparent), transparent 70%)
+    background: radial-gradient(ellipse 55% 45% at 50% 60%, color-mix(in srgb, var(--color-light-purple) 10%, transparent), transparent 70%)
 }
 
 .reel-head {
@@ -2623,13 +2623,17 @@ body.has-announcement {
     text-align: center
 }
 
+/* title, pill, badge and player accents share the hero name gradient (light blue -> light purple) */
 .reel-pill {
     padding: .6rem 1.6rem;
-    border: 1px solid color-mix(in srgb, var(--about-green) 35%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-light-purple) 45%, transparent);
     border-radius: 999px;
     font-size: 1.2rem;
     letter-spacing: .24em;
-    color: color-mix(in srgb, var(--about-green) 85%, var(--color-white))
+    background-image: linear-gradient(90deg, var(--color-light-blue), var(--color-light-purple));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent
 }
 
 .reel-title {
@@ -2637,7 +2641,12 @@ body.has-announcement {
     font-size: clamp(3.2rem, 3.6vw, 4.8rem);
     font-weight: 700;
     line-height: 1.15;
-    color: var(--about-green)
+    background-image: linear-gradient(-45deg, var(--color-light-blue), var(--color-light-purple), var(--color-light-blue), var(--color-light-purple));
+    background-size: 400% 400%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: 3s infinite gradient
 }
 
 .reel-title span {
@@ -2645,7 +2654,7 @@ body.has-announcement {
     margin-top: .8rem;
     font-size: .5em;
     font-weight: 600;
-    color: var(--color-white)
+    -webkit-text-fill-color: var(--color-white)
 }
 
 .reel-lead {
@@ -2654,11 +2663,6 @@ body.has-announcement {
     line-height: 1.8;
     color: var(--color-ddd-color);
     opacity: .7
-}
-
-.light-mode .reel-title,
-.light-mode .reel-pill {
-    color: var(--color-white)
 }
 
 .reel-player {
@@ -2670,7 +2674,7 @@ body.has-announcement {
     border: 1px solid rgba(255, 255, 255, .08);
     border-radius: 2.4rem;
     background-color: #000;
-    box-shadow: 0 30px 80px rgba(0, 0, 0, .45), 0 0 80px color-mix(in srgb, var(--about-green) 8%, transparent)
+    box-shadow: 0 30px 80px rgba(0, 0, 0, .45), 0 0 80px color-mix(in srgb, var(--color-light-purple) 14%, transparent)
 }
 
 .reel-video {
@@ -2691,10 +2695,10 @@ body.has-announcement {
     gap: .6rem;
     padding: .6rem 1.4rem;
     border-radius: 999px;
-    background-color: var(--about-green);
+    background-image: linear-gradient(90deg, var(--color-light-blue), var(--color-light-purple));
     font-size: 1.3rem;
     font-weight: 600;
-    color: #111;
+    color: #fff;
     pointer-events: none
 }
 
@@ -2723,9 +2727,9 @@ body.has-announcement {
     place-items: center;
     width: clamp(64px, 8vw, 96px);
     aspect-ratio: 1;
-    border: 2px solid var(--about-green);
+    border: 2px solid transparent;
     border-radius: 50%;
-    background-color: rgba(17, 17, 27, .55);
+    background: linear-gradient(rgba(17, 17, 27, .6), rgba(17, 17, 27, .6)) padding-box, linear-gradient(135deg, var(--color-light-blue), var(--color-light-purple)) border-box;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     transition: transform .3s
@@ -2734,7 +2738,7 @@ body.has-announcement {
 .reel-big-play svg {
     width: 36%;
     margin-left: 8%;
-    fill: var(--about-green)
+    fill: #fff
 }
 
 .reel-big-play:hover span,
@@ -2839,7 +2843,7 @@ body.has-announcement {
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background-image: linear-gradient(90deg, #eaf8cf, var(--about-green));
+    background-image: linear-gradient(90deg, var(--color-light-blue), var(--color-light-purple));
     transform: scaleX(0);
     transform-origin: left
 }
@@ -3065,11 +3069,17 @@ body.has-announcement {
 }
 
 .exp-title {
+    width: fit-content;
     margin: 1.2rem 0 1.6rem;
     font-size: clamp(3.6rem, 4vw, 5.6rem);
     font-weight: 700;
     line-height: 1.1;
-    color: var(--color-white)
+    background-image: linear-gradient(-45deg, var(--color-light-blue), var(--color-light-purple), var(--color-light-blue), var(--color-light-purple));
+    background-size: 400% 400%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: 3s infinite gradient
 }
 
 .exp-lead {
@@ -3124,7 +3134,7 @@ body.has-announcement {
     content: "";
     position: absolute;
     inset: 0;
-    background-image: linear-gradient(to bottom, #6b6bff, var(--static-heading-gradient-pink));
+    background-image: linear-gradient(to bottom, var(--color-light-blue), var(--color-light-purple));
     transform: scaleY(var(--fill, 0));
     transform-origin: top
 }
@@ -3189,8 +3199,8 @@ body.has-announcement {
 }
 
 .is-reached .exp-dot {
-    background-color: #6b6bff;
-    box-shadow: 0 0 12px rgba(107, 107, 255, .7)
+    background-image: linear-gradient(135deg, var(--color-light-blue), var(--color-light-purple));
+    box-shadow: 0 0 12px rgba(207, 89, 230, .6)
 }
 
 /* motion, armed by experience.js: staggered blur-rise entrance, then items dim until the scroll reaches them */
@@ -3268,5 +3278,12 @@ body.has-announcement {
 
     .exp-role {
         font-size: 2.1rem
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reel-title,
+    .exp-title {
+        animation: none
     }
 }
