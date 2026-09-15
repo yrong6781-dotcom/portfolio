@@ -2172,63 +2172,19 @@ body.has-announcement {
     width: min(1240px, 90%)
 }
 
-.about-heading {
-    position: relative;
-    width: 100%;
-    height: 17rem;
-    padding-left: 4rem;
-    font-weight: 700;
-    line-height: 1
-}
-
-.about-heading-shadow {
-    display: block;
-    font-size: 15rem;
-    white-space: nowrap;
-    color: var(--color-white);
-    opacity: .16;
-    user-select: none
-}
-
-.about-heading-main {
-    position: absolute;
-    left: 3rem;
-    bottom: 0;
-    margin: 0;
-    font-size: 9rem;
-    font-weight: 700;
-    white-space: nowrap;
-    color: var(--color-white)
-}
-
-.about-heading-main::before {
-    content: "";
-    position: absolute;
-    left: -2.4rem;
-    top: -.6rem;
-    width: 4.8rem;
-    height: 4.8rem;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255, 255, 255, .9) 0, rgba(255, 255, 255, .25) 30%, transparent 70%);
-    pointer-events: none
-}
-
-.light-mode .about-heading-main::before {
-    display: none
-}
-
+/* about me: intro text on the left, photo card on the right */
 .about-layout {
     display: flex;
-    align-items: flex-start;
-    gap: 5rem;
+    align-items: center;
+    gap: 8rem;
     width: 100%;
-    margin-top: 5rem
+    margin-top: 4.8rem
 }
 
 .about-card {
     position: relative;
     flex: 0 0 32rem;
-    margin: 1rem 0 8rem 3rem
+    margin: 2rem 3rem 6rem 0
 }
 
 .about-card-back {
@@ -2326,116 +2282,31 @@ body.has-announcement {
     min-width: 0
 }
 
-.about-block {
-    margin-bottom: 3.6rem
-}
-
-.about-block-title {
-    position: relative;
-    margin: 0;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid color-mix(in srgb, var(--color-white) 28%, transparent);
-    font-size: 2.8rem;
-    font-weight: 700;
-    color: var(--color-white)
-}
-
-.about-block-title::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -2px;
-    width: 16rem;
-    height: 3px;
-    background-color: var(--about-green)
-}
-
-.about-block:nth-of-type(even) .about-block-title::after {
-    background-color: var(--about-purple)
-}
-
-.about-grid,
-.about-rows,
-.about-awards {
-    margin: 1.8rem 0 0;
-    padding: 0;
-    list-style: none;
-    font-size: 1.8rem;
-    line-height: 1.6;
+.about-intro {
+    margin: 0 0 2.4rem;
+    font-size: clamp(1.8rem, 1.6vw, 2.2rem);
+    line-height: 1.8;
     color: var(--color-ddd-color)
 }
 
-.about-grid,
-.about-rows li,
-.about-awards {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(27rem, 1.2fr);
-    gap: 1.2rem 2.4rem
-}
-
-.about-grid div {
-    display: flex
-}
-
-.about-grid dt {
-    flex-shrink: 0
-}
-
-.about-grid dt {
-    font-weight: 600;
-    color: var(--color-white)
-}
-
-.about-grid dd {
-    margin: 0
-}
-
-.about-grid-wide {
-    grid-column: span 2
-}
-
-.about-grid-right {
-    grid-column: 3
-}
-
-.about-rows li {
-    row-gap: .2rem;
-    padding: .6rem 0
-}
-
-.about-project {
-    grid-column: 1 / -1;
-    font-size: 1.5rem;
-    color: var(--color-ddd-color);
-    opacity: .6
-}
-
-.about-company {
-    font-weight: 500;
-    color: var(--color-white)
+.about-intro-name {
+    font-weight: 700;
+    background-image: linear-gradient(90deg, var(--color-light-blue), var(--color-light-purple));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent
 }
 
 @media screen and (max-width:1300px) {
     .about-section-container .about-section {
         width: 88%
     }
+}
 
-    .about-heading {
-        height: 13rem;
-        padding-left: 0
-    }
-
-    .about-heading-shadow {
-        font-size: 11rem
-    }
-
-    .about-heading-main {
-        left: 1rem;
-        font-size: 7rem
-    }
-
+/* about me: stack the photo card above the text only on narrow screens */
+@media screen and (max-width:900px) {
     .about-layout {
-        flex-direction: column;
+        flex-direction: column-reverse;
         align-items: center;
         gap: 4rem
     }
@@ -2452,52 +2323,10 @@ body.has-announcement {
 }
 
 @media screen and (max-width:500px) {
-    .about-heading {
-        height: 10rem
-    }
-
-    .about-heading-shadow {
-        font-size: 8.6rem
-    }
-
-    .about-heading-main {
-        font-size: 5.6rem
-    }
-
     .about-card-tags li {
         padding: .4rem .6rem
     }
-
-    .about-grid,
-    .about-awards {
-        grid-template-columns: 1fr
-    }
-
-    .about-grid-wide,
-    .about-grid-right {
-        grid-column: auto
-    }
-
-    .about-rows li {
-        grid-template-columns: 1fr auto;
-        gap: 0 1.6rem
-    }
-
-    .about-company {
-        grid-column: 1 / -1
-    }
 }
-
-.about-mail {
-    color: inherit;
-    text-decoration: none;
-    white-space: nowrap
-}
-
-.about-mail:hover {
-    text-decoration: underline
-}
-
 /* projects: two-column card grid that scrolls with the page */
 #projects.projects-section-container {
     display: block;
