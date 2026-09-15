@@ -2927,13 +2927,38 @@ body.has-announcement {
     color: var(--color-white)
 }
 
-.exp-desc {
+.exp-duties {
     grid-column: 2 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: .8rem;
     margin: 1.4rem 0 0;
-    font-size: 1.6rem;
-    line-height: 1.7;
-    color: var(--color-ddd-color);
-    opacity: .7
+    padding: 0;
+    list-style: none;
+    font-size: 1.55rem;
+    line-height: 1.75;
+    color: color-mix(in srgb, var(--color-ddd-color) 72%, transparent)
+}
+
+.exp-duties li {
+    position: relative;
+    padding-left: 1.4rem
+}
+
+.exp-duties li::before {
+    content: "";
+    position: absolute;
+    top: .8em;
+    left: 0;
+    width: .4rem;
+    height: .4rem;
+    border-radius: 50%;
+    background-color: currentColor
+}
+
+.exp-duties strong {
+    font-weight: 600;
+    color: var(--color-white)
 }
 
 .is-reached .exp-dot {
