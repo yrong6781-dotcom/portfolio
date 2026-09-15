@@ -2289,6 +2289,11 @@ body.has-announcement {
     color: var(--color-ddd-color)
 }
 
+.about-intro strong {
+    font-weight: 600;
+    color: var(--color-white)
+}
+
 .about-intro-name {
     font-weight: 700;
     background-image: linear-gradient(90deg, var(--color-light-blue), var(--color-light-purple));
@@ -2349,11 +2354,50 @@ body.has-announcement {
     list-style: none
 }
 
-/* odd card count: the last card keeps the column width and sits centered */
-.projects-grid .project-card:last-child:nth-child(odd) {
-    grid-column: 1 / -1;
-    justify-self: center;
-    width: calc((100% - var(--projects-gap)) / 2)
+/* staggered columns: every card spans two rows and the right column starts one row lower,
+   so right-hand cards sit half a card down while the reading order stays 1, 2, 3... */
+.projects-grid .project-card {
+    grid-row-end: span 2
+}
+
+.projects-grid .project-card:nth-child(odd) {
+    grid-column: 1
+}
+
+.projects-grid .project-card:nth-child(even) {
+    grid-column: 2
+}
+
+.projects-grid .project-card:nth-child(1) {
+    grid-row-start: 1
+}
+
+.projects-grid .project-card:nth-child(2) {
+    grid-row-start: 2
+}
+
+.projects-grid .project-card:nth-child(3) {
+    grid-row-start: 3
+}
+
+.projects-grid .project-card:nth-child(4) {
+    grid-row-start: 4
+}
+
+.projects-grid .project-card:nth-child(5) {
+    grid-row-start: 5
+}
+
+.projects-grid .project-card:nth-child(6) {
+    grid-row-start: 6
+}
+
+.projects-grid .project-card:nth-child(7) {
+    grid-row-start: 7
+}
+
+.projects-grid .project-card:nth-child(8) {
+    grid-row-start: 8
 }
 
 .project-card {
@@ -2738,8 +2782,10 @@ body.has-announcement {
         grid-template-columns: minmax(0, 1fr)
     }
 
-    .projects-grid .project-card:last-child:nth-child(odd) {
-        width: 100%
+    /* same specificity as the staggered nth-child placement, and later, so the single column wins */
+    .projects-grid .project-card:nth-child(n) {
+        grid-column: auto;
+        grid-row: auto
     }
 
     .reel {
@@ -3099,10 +3145,10 @@ body.has-announcement {
     filter: none
 }
 
-/* timeline item: slides in from the right and unblurs, its dot pops in and its line draws down */
+/* timeline item: fades up and unblurs, its dot pops in and its line draws down */
 .exp-armed .exp-item {
     opacity: 0;
-    transform: translateX(60px);
+    transform: translateY(60px);
     filter: blur(8px);
     transition: opacity .8s ease, transform 1s cubic-bezier(.16, .84, .3, 1), filter .8s ease
 }

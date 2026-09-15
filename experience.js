@@ -1,6 +1,6 @@
 // Work experience:
 // - each part enters as it scrolls into view: the intro lines rise and unblur one after another, every
-//   timeline item slides in from the right while its dot pops and its line draws down
+//   timeline item fades up one at a time as the scroll reaches it, while its dot pops and its line draws down
 // - while scrolling, each item's line fills from top to bottom as it passes a marker at 60% of the
 //   viewport height; items the marker has reached light up, the ones below stay dimmed
 // - reduced motion: everything is shown at once, fully filled
@@ -36,7 +36,8 @@
         }, 1500);
       });
     },
-    { rootMargin: "0px 0px -12% 0px" }
+    // an item enters only once it is a quarter of the way up the viewport, so each scroll reveals one
+    { rootMargin: "0px 0px -25% 0px" }
   );
   enter.observe(section.querySelector(".exp-intro"));
   items.forEach(function (item) {
