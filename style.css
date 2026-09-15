@@ -2620,6 +2620,11 @@ body.has-announcement {
     text-underline-offset: 4px
 }
 
+/* pinned: the sticky screen already centers the content, so skip the extra top padding */
+#projects.projects-section-container:has(.projects-scroller.is-pinned) {
+    padding-top: 0
+}
+
 .projects-scroller.is-pinned .projects-sticky {
     position: sticky;
     top: 0;
