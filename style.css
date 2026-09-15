@@ -2805,3 +2805,216 @@ body.has-announcement {
         transition: none
     }
 }
+
+/* work experience: sticky intro on the left, scroll-driven timeline on the right (experience.js) */
+.experience-section-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 150px 0 120px
+}
+
+.exp-layout {
+    width: min(120rem, 80%);
+    display: grid;
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.3fr);
+    gap: 6rem
+}
+
+.exp-intro {
+    position: sticky;
+    top: 30vh;
+    align-self: start
+}
+
+.exp-label {
+    margin: 0;
+    font-family: fira code;
+    font-size: 1.8rem;
+    background-image: linear-gradient(90deg, var(--static-heading-gradient-blue), var(--static-heading-gradient-pink));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent
+}
+
+.exp-title {
+    margin: 1.2rem 0 1.6rem;
+    font-size: clamp(3.6rem, 4vw, 5.6rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--color-white)
+}
+
+.exp-lead {
+    margin: 0;
+    max-width: 42rem;
+    font-size: 1.7rem;
+    line-height: 1.7;
+    color: var(--color-ddd-color);
+    opacity: .75
+}
+
+.exp-timeline {
+    margin: 0;
+    padding: 0;
+    list-style: none
+}
+
+.exp-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 2.4rem minmax(0, 1fr) auto;
+    column-gap: 1.6rem;
+    min-height: clamp(20rem, 30vh, 30rem);
+    padding-bottom: 4rem
+}
+
+.exp-dot {
+    grid-row: 1;
+    grid-column: 1;
+    justify-self: center;
+    width: 1rem;
+    height: 1rem;
+    margin-top: 1rem;
+    border-radius: .2rem;
+    background-color: color-mix(in srgb, var(--color-white) 25%, transparent);
+    transition: background-color .4s, box-shadow .4s
+}
+
+.exp-line {
+    position: absolute;
+    top: 3.4rem;
+    bottom: .8rem;
+    left: 1.2rem;
+    width: 2px;
+    overflow: hidden;
+    border-radius: 2px;
+    background-color: color-mix(in srgb, var(--color-white) 12%, transparent);
+    transform: translateX(-50%)
+}
+
+.exp-line::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(to bottom, #6b6bff, var(--static-heading-gradient-pink));
+    transform: scaleY(var(--fill, 0));
+    transform-origin: top
+}
+
+.exp-role {
+    grid-column: 2;
+    margin: 0;
+    font-size: 2.4rem;
+    font-weight: 600;
+    color: var(--color-white)
+}
+
+.exp-date {
+    grid-row: 1;
+    grid-column: 3;
+    margin-top: .6rem;
+    font-size: 1.5rem;
+    white-space: nowrap;
+    color: var(--color-white)
+}
+
+.exp-company {
+    grid-column: 2 / -1;
+    margin: .6rem 0 0;
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--color-white)
+}
+
+.exp-desc {
+    grid-column: 2 / -1;
+    margin: 1.4rem 0 0;
+    font-size: 1.6rem;
+    line-height: 1.7;
+    color: var(--color-ddd-color);
+    opacity: .7
+}
+
+.is-reached .exp-dot {
+    background-color: #6b6bff;
+    box-shadow: 0 0 12px rgba(107, 107, 255, .7)
+}
+
+/* motion, armed by experience.js: staggered blur-rise entrance, then items dim until the scroll reaches them */
+.exp-armed .exp-intro,
+.exp-armed .exp-item {
+    opacity: 0;
+    transform: translateY(40px);
+    filter: blur(8px);
+    transition: opacity .8s ease, transform 1s cubic-bezier(.16, .84, .3, 1), filter .8s ease
+}
+
+.exp-armed.is-in .exp-intro,
+.exp-armed.is-in .exp-item {
+    opacity: 1;
+    transform: none;
+    filter: none
+}
+
+.exp-armed .exp-item:nth-child(1) {
+    transition-delay: .15s
+}
+
+.exp-armed .exp-item:nth-child(2) {
+    transition-delay: .3s
+}
+
+.exp-armed .exp-item:nth-child(3) {
+    transition-delay: .45s
+}
+
+.exp-armed .exp-card {
+    opacity: .35;
+    transition: opacity .5s ease
+}
+
+.exp-armed .is-reached .exp-card {
+    opacity: 1
+}
+
+@media screen and (max-width:1300px) {
+    .exp-layout {
+        width: 88%;
+        gap: 4rem
+    }
+
+    /* five nav tabs: tighten the gap so </Home> does not slide under the avatar before the hamburger kicks in */
+    .navbar-tabs-ul {
+        gap: clamp(3.2rem, 4vw, 8rem)
+    }
+}
+
+@media screen and (max-width:900px) {
+    .experience-section-container {
+        padding: 100px 0 80px
+    }
+
+    .exp-layout {
+        grid-template-columns: minmax(0, 1fr)
+    }
+
+    .exp-intro {
+        position: static
+    }
+
+    .exp-card {
+        grid-template-columns: 2.4rem minmax(0, 1fr);
+        min-height: 0
+    }
+
+    .exp-date {
+        grid-row: auto;
+        grid-column: 2;
+        margin-top: .4rem
+    }
+
+    .exp-role {
+        font-size: 2.1rem
+    }
+}

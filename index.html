@@ -15,7 +15,7 @@
   <!-- aos cdn -->
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   <!-- stylesheet -->
-  <link rel="stylesheet" href="style.css?v=22" />
+  <link rel="stylesheet" href="style.css?v=24" />
   <link rel="prefetch" href="src/projects/bodycode/01.jpg?v=2" as="image" />
   <link rel="prefetch" href="src/projects/bodycode-admin/01.jpg?v=2" as="image" />
   <link rel="prefetch" href="src/projects/grow/01.jpg" as="image" />
@@ -80,6 +80,12 @@
               &#60;/Projects&#62;
             </a>
           </li>
+
+          <li class="experience" class="navbar-tabs-li" data-aos="fade-down" data-aos-delay="900">
+            <a href="#experience" aria-label="experience menu button">
+              &#60;/Experience&#62;
+            </a>
+          </li>
         </ul>
       </div>
       <!-- navbar tabs ends -->
@@ -120,6 +126,11 @@
         <li id="projects-mobile-tab" class="mobile-navbar-tabs-li projects" onclick="hidemenubyli()">
           <a href="#projects" tabindex="0" aria-label="projects menu button">
             &#60;/Projects&#62;
+          </a>
+        </li>
+        <li id="experience-mobile-tab" class="mobile-navbar-tabs-li experience" onclick="hidemenubyli()">
+          <a href="#experience" tabindex="0" aria-label="experience menu button">
+            &#60;/Experience&#62;
           </a>
         </li>
       </ul>
@@ -445,6 +456,48 @@
         </div>
       </div>
     </section>
+    <section class="experience-section-container" id="experience">
+      <div class="exp-layout">
+        <div class="exp-intro">
+          <p class="exp-label">&#60;/Experience&#62;</p>
+          <h2 class="exp-title">Work Experience</h2>
+          <p class="exp-lead">2 年 UI 设计 + 1 年 UX 经验，从视觉界面一路做到用户研究与体验设计。</p>
+        </div>
+        <ol class="exp-timeline">
+          <li class="exp-item">
+            <div class="exp-card">
+              <span class="exp-dot" aria-hidden="true"></span>
+              <span class="exp-line" aria-hidden="true"></span>
+              <h3 class="exp-role">UX/UI 实习</h3>
+              <span class="exp-date">2026.04 – 2026.08</span>
+              <p class="exp-company">赤子城科技</p>
+              <p class="exp-desc">代表项目：SUGO 中东语音社交 App</p>
+            </div>
+          </li>
+          <li class="exp-item">
+            <div class="exp-card">
+              <span class="exp-dot" aria-hidden="true"></span>
+              <span class="exp-line" aria-hidden="true"></span>
+              <h3 class="exp-role">UX 设计</h3>
+              <span class="exp-date">2024.08 – 2025.07</span>
+              <p class="exp-company">抖起来教育科技公司</p>
+              <p class="exp-desc">代表项目：呱呱研选择校小程序</p>
+            </div>
+          </li>
+          <li class="exp-item">
+            <div class="exp-card">
+              <span class="exp-dot" aria-hidden="true"></span>
+              <span class="exp-line" aria-hidden="true"></span>
+              <h3 class="exp-role">UI 设计</h3>
+              <span class="exp-date">2022.07 – 2024.07</span>
+              <p class="exp-company">杭州浮岛科技有限公司</p>
+              <p class="exp-desc">代表项目：Grow 健康追踪 App</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+    <!-- experience section ends -->
   </main>
   <!-- main ends here -->
 
@@ -511,6 +564,7 @@
 
   <script src="main.js"></script>
   <script src="projects-scroll.js?v=3"></script>
+  <script src="experience.js?v=1"></script>
 
   <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
   <script>
