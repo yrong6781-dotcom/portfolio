@@ -2528,18 +2528,39 @@ body.has-announcement {
 }
 
 .project-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     overflow: hidden;
     border: 1px solid var(--tech-stack-box-border-color);
     border-radius: 14px;
     background-image: linear-gradient(to bottom right, var(--tech-stack-box-first-color), var(--tech-stack-box-second-color));
-    transition: border-color .3s, transform .4s
+    cursor: pointer;
+    transition: border-color .3s, transform .4s ease, filter .45s ease, box-shadow .4s ease
 }
 
-.project-card:hover {
-    border-color: color-mix(in srgb, var(--color-white) 30%, transparent);
-    transform: translateY(-4px)
+/* hovered / focused card lifts and glows; the other cards dim */
+.projects-grid .project-card:hover,
+.projects-grid .project-card:focus-within {
+    border-color: color-mix(in srgb, var(--color-light-purple) 55%, transparent);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .35), 0 0 40px color-mix(in srgb, var(--color-light-purple) 18%, transparent);
+    transform: translateY(-6px)
+}
+
+@media (hover: hover) {
+    .projects-grid:has(.project-card:hover) .project-card:not(:hover),
+    .projects-grid:has(.project-card:focus-within) .project-card:not(:focus-within) {
+        filter: brightness(.5) saturate(.75)
+    }
+}
+
+/* the whole card opens the project: the link's hit area is stretched over the card */
+.project-card-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit
 }
 
 .project-card-media {
@@ -2600,6 +2621,26 @@ body.has-announcement {
     opacity: .7;
     text-decoration: underline;
     text-underline-offset: 4px
+}
+
+/* projects entrance, armed by projects-motion.js: heading, cards, reel head and player fade up into view */
+.motion-ready .projects-section-div,
+.motion-ready .project-card,
+.motion-ready .reel-head,
+.motion-ready .reel-player {
+    opacity: 0;
+    transform: translateY(48px);
+    transition: opacity .7s ease, transform .9s cubic-bezier(.16, .84, .3, 1)
+}
+
+.motion-ready .is-in {
+    opacity: 1;
+    transform: none
+}
+
+/* after the entrance, cards get their snappy hover transitions back */
+.motion-ready .project-card.is-settled {
+    transition: border-color .3s, transform .4s ease, filter .45s ease, box-shadow .4s ease
 }
 
 /* Driveletics video reel: its own screen after the cards, custom player controls in reel.js */
@@ -3203,32 +3244,63 @@ body.has-announcement {
     box-shadow: 0 0 12px rgba(207, 89, 230, .6)
 }
 
-/* motion, armed by experience.js: staggered blur-rise entrance, then items dim until the scroll reaches them */
-.exp-armed .exp-intro,
-.exp-armed .exp-item {
+/* motion, armed by experience.js: each part enters as it scrolls into view, then items dim until the scroll reaches them */
+.exp-armed .exp-label,
+.exp-armed .exp-title,
+.exp-armed .exp-lead {
     opacity: 0;
-    transform: translateY(40px);
-    filter: blur(8px);
+    transform: translateY(30px);
+    filter: blur(6px);
     transition: opacity .8s ease, transform 1s cubic-bezier(.16, .84, .3, 1), filter .8s ease
 }
 
-.exp-armed.is-in .exp-intro,
-.exp-armed.is-in .exp-item {
+.exp-armed .exp-title {
+    transition-delay: .12s
+}
+
+.exp-armed .exp-lead {
+    transition-delay: .24s
+}
+
+.exp-armed .exp-intro.is-in .exp-label,
+.exp-armed .exp-intro.is-in .exp-title,
+.exp-armed .exp-intro.is-in .exp-lead {
     opacity: 1;
     transform: none;
     filter: none
 }
 
-.exp-armed .exp-item:nth-child(1) {
-    transition-delay: .15s
+/* timeline item: slides in from the right and unblurs, its dot pops in and its line draws down */
+.exp-armed .exp-item {
+    opacity: 0;
+    transform: translateX(60px);
+    filter: blur(8px);
+    transition: opacity .8s ease, transform 1s cubic-bezier(.16, .84, .3, 1), filter .8s ease
 }
 
-.exp-armed .exp-item:nth-child(2) {
-    transition-delay: .3s
+.exp-armed .exp-item.is-in {
+    opacity: 1;
+    transform: none;
+    filter: none
 }
 
-.exp-armed .exp-item:nth-child(3) {
-    transition-delay: .45s
+.exp-armed .exp-dot {
+    transform: scale(0);
+    transition: transform .5s cubic-bezier(.34, 1.56, .64, 1) .3s, background-color .4s, box-shadow .4s
+}
+
+.exp-armed .is-in .exp-dot {
+    transform: scale(1)
+}
+
+.exp-armed .exp-line {
+    transform: translateX(-50%) scaleY(0);
+    transform-origin: top;
+    transition: transform 1s cubic-bezier(.16, .84, .3, 1) .4s
+}
+
+.exp-armed .is-in .exp-line {
+    transform: translateX(-50%) scaleY(1)
 }
 
 .exp-armed .exp-card {

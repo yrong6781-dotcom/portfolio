@@ -1,5 +1,6 @@
 // Work experience:
-// - the intro and timeline items fade / rise / unblur in, staggered, when the section comes into view
+// - each part enters as it scrolls into view: the intro lines rise and unblur one after another, every
+//   timeline item slides in from the right while its dot pops and its line draws down
 // - while scrolling, each item's line fills from top to bottom as it passes a marker at 60% of the
 //   viewport height; items the marker has reached light up, the ones below stay dimmed
 // - reduced motion: everything is shown at once, fully filled
@@ -20,15 +21,27 @@
 
   section.classList.add("exp-armed");
 
+  // parts entering together (e.g. the first two items) are staggered
   var enter = new IntersectionObserver(
     function (entries) {
-      if (!entries.some(function (e) { return e.isIntersecting; })) return;
-      section.classList.add("is-in");
-      enter.disconnect();
+      var batch = 0;
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var el = entry.target;
+        el.style.transitionDelay = batch++ * 0.15 + "s";
+        el.classList.add("is-in");
+        enter.unobserve(el);
+        setTimeout(function () {
+          el.style.transitionDelay = "";
+        }, 1500);
+      });
     },
-    { rootMargin: "0px 0px -20% 0px" }
+    { rootMargin: "0px 0px -12% 0px" }
   );
-  enter.observe(section.querySelector(".exp-layout"));
+  enter.observe(section.querySelector(".exp-intro"));
+  items.forEach(function (item) {
+    enter.observe(item);
+  });
 
   var ticking = false;
 
