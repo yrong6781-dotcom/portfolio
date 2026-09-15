@@ -1,0 +1,421 @@
+/* project detail pages: a top bar plus full-width images stacked vertically */
+:root {
+  --detail-bg: #11111b;
+  --detail-text: #ddd;
+  --detail-muted: gray;
+  --detail-border: #292929;
+  --detail-blue: #b0f3f1;
+  --detail-pink: #ffcfdf;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  margin: 0;
+  background-color: var(--detail-bg);
+  color: var(--detail-text);
+  font-family: Whitney, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.detail-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 64px;
+  padding: 10px clamp(16px, 4vw, 48px);
+  border-bottom: 1px solid var(--detail-border);
+  background-color: rgba(17, 17, 27, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.detail-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.detail-sound {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--detail-border);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04) url(src/svg/Mute_Icon.svg) center / 50% no-repeat;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.detail-sound[aria-pressed="true"] {
+  background-image: url(src/svg/Speaker_Icon.svg);
+  border-color: rgba(176, 243, 241, 0.5);
+}
+
+.detail-sound:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* custom cursor, same as the home page */
+.cursor-inner,
+.cursor-outer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.cursor-inner {
+  width: 8px;
+  height: 8px;
+  background-color: #6bc5f8;
+}
+
+.cursor-outer {
+  width: 35px;
+  height: 35px;
+  border: 2px solid #fff;
+}
+
+.cursor-inner.hover {
+  width: 25px;
+  height: 25px;
+  transition: 0.2s;
+  mix-blend-mode: difference;
+}
+
+.cursor-outer.hover {
+  width: 50px;
+  height: 50px;
+  transition: 0.2s;
+}
+
+@media (hover: none), (max-width: 998px) {
+  .cursor-inner,
+  .cursor-outer {
+    display: none;
+  }
+}
+.detail-back {
+  flex-shrink: 0;
+  font-family: "Fira Code", monospace;
+  font-size: 16px;
+  text-decoration: none;
+  background-image: linear-gradient(90deg, var(--detail-blue), var(--detail-pink));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: opacity 0.3s;
+}
+
+.detail-back:hover {
+  opacity: 0.7;
+}
+
+.detail-bar-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 0;
+  text-align: right;
+}
+
+.detail-bar-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.detail-bar-meta {
+  font-size: 12px;
+  color: var(--detail-muted);
+}
+
+.detail-pages {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 3vw, 48px);
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: clamp(16px, 3vw, 48px) clamp(12px, 3vw, 48px) 0;
+}
+
+.detail-pages > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: clamp(8px, 1.2vw, 18px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+}
+
+/* entering from a project card: the card cover morphs into the first page (view-transition-name set inline) */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-group(*) {
+  animation-duration: 0.65s;
+  animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* fallback zoom-in when the browser did not morph the cover (direct visit, no view transition support) */
+  .enter-zoom .detail-pages > :first-child {
+    animation: detail-zoom-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .enter-zoom .detail-bar {
+    animation: detail-fade-in 0.6s ease both;
+  }
+
+  /* scroll reveal for the following pages: only armed when project-detail.js runs */
+  .reveal-ready .detail-pages > :not(:first-child) {
+    opacity: 0;
+    transform: translateY(80px) scale(0.95);
+    transition: opacity 0.9s ease, transform 1.1s cubic-bezier(0.16, 0.84, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  .reveal-ready .detail-pages > .is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes detail-zoom-in {
+  from {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes detail-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.detail-empty {
+  margin: 0;
+  padding: 30vh 16px;
+  text-align: center;
+  color: var(--detail-muted);
+}
+
+.detail-end {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  padding: 64px 16px 80px;
+  text-align: center;
+}
+
+.detail-next {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 28px;
+  border-radius: 20px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.detail-next:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.detail-next-label {
+  font-family: "Fira Code", monospace;
+  font-size: 15px;
+  background-image: linear-gradient(90deg, var(--detail-blue), var(--detail-pink));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.detail-next-title {
+  font-size: clamp(20px, 3vw, 30px);
+  font-weight: 700;
+  color: #fff;
+  transition: opacity 0.3s;
+}
+
+.detail-next:hover .detail-next-title {
+  opacity: 0.8;
+}
+
+.detail-try {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px 6px;
+  margin: 0;
+  padding: 16px 24px;
+  border: 1px solid var(--detail-border);
+  border-radius: 999px;
+  font-size: 15px;
+  color: var(--detail-text);
+}
+
+.detail-try-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  max-width: 100%;
+}
+
+.detail-try-link {
+  color: #fff;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--detail-blue);
+  text-underline-offset: 4px;
+  word-break: break-all;
+  transition: opacity 0.3s;
+}
+
+.detail-try-link:hover {
+  opacity: 0.75;
+}
+
+.detail-try-code {
+  color: var(--detail-muted);
+}
+
+@media (max-width: 500px) {
+  .detail-try {
+    border-radius: 16px;
+  }
+}
+
+@media (max-width: 500px) {
+  .detail-back {
+    font-size: 14px;
+  }
+
+  .detail-bar-meta {
+    display: none;
+  }
+}
+
+/* motion design section: live videos laid out in three groups (used on the SUGO page) */
+.motion-page {
+  container-type: inline-size;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 7cqi;
+  border-radius: clamp(8px, 1.2vw, 18px);
+  background:
+    radial-gradient(90% 45% at 50% 78%, rgba(110, 48, 140, 0.55) 0%, rgba(40, 14, 52, 0.35) 45%, transparent 75%),
+    #050307;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+}
+
+.motion-head {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.motion-group {
+  padding: 0 5.2cqi;
+  margin-top: 5cqi;
+}
+
+.motion-group:first-of-type {
+  margin-top: 1cqi;
+}
+
+.motion-label {
+  margin: 0 0 2.6cqi;
+  font-size: clamp(14px, 1.8cqi, 30px);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fff;
+}
+
+.motion-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4cqi 6cqi;
+}
+
+.motion-item {
+  margin: 0;
+  overflow: hidden;
+}
+
+.motion-item video,
+.motion-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.motion-grid--square .motion-item {
+  aspect-ratio: 1;
+}
+
+/* the avatar frame clips sit on black: screen blending drops the black box into the page background */
+.motion-grid--square video,
+.motion-grid--square img {
+  mix-blend-mode: screen;
+}
+
+/* the badge clip is framed loosely (badge fills about a third of it): zoom it to match the avatar frames */
+.motion-item--zoom video {
+  transform: scale(2.2) translate(0.6%, -0.7%);
+}
+
+.motion-grid--phone .motion-item {
+  aspect-ratio: 786 / 1704;
+  border-radius: 2.4cqi;
+  background-color: #000;
+  box-shadow: 0 1.6cqi 4cqi rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+@container (max-width: 520px) {
+  .motion-grid {
+    gap: 4cqi 3.5cqi;
+  }
+
+  .motion-group {
+    padding: 0 4cqi;
+  }
+}

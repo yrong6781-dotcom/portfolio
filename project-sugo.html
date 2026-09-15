@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#11111b" />
+  <title>SUGO App | Rong Yan</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="src/png/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="src/png/favicon-192.png" />
+  <link rel="apple-touch-icon" href="src/png/apple-touch-icon.png" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" />
+  <link rel="stylesheet" href="project-detail.css?v=9" />
+  <script>
+    // zoom the first page in when the browser did not morph it from the project card
+    (function () {
+      var root = document.documentElement;
+      if ("onpagereveal" in window) {
+        window.addEventListener("pagereveal", function (e) {
+          if (!e.viewTransition) {
+            root.classList.add("enter-zoom");
+            return;
+          }
+          // a skipped transition rejects these promises, which is expected
+          e.viewTransition.ready.catch(function () {});
+          e.viewTransition.finished.catch(function () {});
+        }, { once: true });
+      } else {
+        root.classList.add("enter-zoom");
+      }
+    })();
+  </script>
+  <script src="project-detail.js?v=4" defer></script>
+  <script src="site-extras.js?v=4" defer></script>
+</head>
+
+<body>
+  <header class="detail-bar">
+    <a class="detail-back" href="index.html#projects" aria-label="Back to projects">&#8592; &#60;/Projects&#62;</a>
+    <div class="detail-bar-right">
+      <div class="detail-bar-info">
+        <span class="detail-bar-title">SUGO App</span>
+        <span class="detail-bar-meta">动效 · Banner · H5 设计</span>
+      </div>
+      <button class="detail-sound" type="button" aria-pressed="false" aria-label="打开背景音乐"></button>
+    </div>
+  </header>
+
+  <main class="detail-main">
+    <!-- Detail page images, stacked top to bottom -->
+    <div class="detail-pages">
+      <img src="src/projects/sugo/01.jpg" alt="SUGO App 封面" width="1920" height="1217" style="view-transition-name: sugo-cover" />
+      <img src="src/projects/sugo/02.jpg" alt="Banner 设计" width="1920" height="1080" decoding="async" />
+      <img src="src/projects/sugo/03.jpg" alt="H5 设计" width="1920" height="1493" loading="lazy" decoding="async" />
+      <section class="motion-page" aria-label="动效设计">
+        <img class="motion-head" src="src/projects/sugo/motion/motion-head.jpg" alt="动效设计 Animation Effect Design" width="1920" height="230" loading="lazy" decoding="async" />
+
+        <div class="motion-group">
+          <h3 class="motion-label">头像框及徽章动效</h3>
+          <div class="motion-grid motion-grid--square">
+            <figure class="motion-item">
+              <video data-src="src/projects/sugo/motion/avatar-frame-planet.mp4" poster="src/projects/sugo/motion/avatar-frame-planet.jpg" muted loop playsinline preload="none" aria-label="星球头像框动效"></video>
+            </figure>
+            <figure class="motion-item">
+              <video data-src="src/projects/sugo/motion/avatar-frame-wings.mp4" poster="src/projects/sugo/motion/avatar-frame-wings.jpg" muted loop playsinline preload="none" aria-label="金色翅膀头像框动效"></video>
+            </figure>
+            <figure class="motion-item motion-item--zoom">
+              <video data-src="src/projects/sugo/motion/badge.mp4" poster="src/projects/sugo/motion/badge-poster.jpg" muted loop playsinline preload="none" aria-label="VIP 徽章动效"></video>
+            </figure>
+          </div>
+        </div>
+
+        <div class="motion-group">
+          <h3 class="motion-label">弹窗动效</h3>
+          <div class="motion-grid motion-grid--phone">
+            <figure class="motion-item">
+              <video data-src="src/projects/sugo/motion/popup-pk.mp4" poster="src/projects/sugo/motion/popup-pk.jpg" muted loop playsinline preload="none" aria-label="PK 活动弹窗动效"></video>
+            </figure>
+            <figure class="motion-item">
+              <video data-src="src/projects/sugo/motion/popup-recharge.mp4" poster="src/projects/sugo/motion/popup-recharge.jpg" muted loop playsinline preload="none" aria-label="充值弹窗动效"></video>
+            </figure>
+            <figure class="motion-item">
+              <video data-src="src/projects/sugo/motion/popup-checkin.mp4" poster="src/projects/sugo/motion/popup-checkin.jpg" muted loop playsinline preload="none" aria-label="签到弹窗动效"></video>
+            </figure>
+          </div>
+        </div>
+
+        <div class="motion-group">
+          <h3 class="motion-label">界面动效</h3>
+          <div class="motion-grid motion-grid--phone">
+            <figure class="motion-item">
+              <video data-src="src/projects/sugo/motion/ui-match.mp4?v=2" poster="src/projects/sugo/motion/ui-match.jpg?v=2" muted loop playsinline preload="none" aria-label="匹配首页界面动效"></video>
+            </figure>
+            <figure class="motion-item">
+              <video data-src="src/projects/sugo/motion/ui-vip.mp4?v=2" poster="src/projects/sugo/motion/ui-vip.jpg?v=2" muted loop playsinline preload="none" aria-label="VIP 页面界面动效"></video>
+            </figure>
+            <figure class="motion-item">
+              <video data-src="src/projects/sugo/motion/ui-tasks.mp4?v=3" poster="src/projects/sugo/motion/ui-tasks.jpg?v=3" muted loop playsinline preload="none" aria-label="任务中心界面动效"></video>
+            </figure>
+          </div>
+        </div>
+      </section>
+      <img src="src/projects/sugo/05.jpg" alt="界面设计" width="1920" height="2125" loading="lazy" decoding="async" />
+    </div>
+
+    <div class="detail-end">
+      <a class="detail-next" href="project-muse.html" aria-label="Next project: Muse AI">
+        <span class="detail-next-label">Next project &#8594;</span>
+        <span class="detail-next-title">Muse AI</span>
+      </a>
+    </div>
+  </main>
+</body>
+
+</html>

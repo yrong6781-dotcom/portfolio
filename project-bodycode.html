@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#11111b" />
+  <title>Bodycode App | Rong Yan</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="src/png/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="src/png/favicon-192.png" />
+  <link rel="apple-touch-icon" href="src/png/apple-touch-icon.png" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" />
+  <link rel="stylesheet" href="project-detail.css?v=9" />
+  <script>
+    // zoom the first page in when the browser did not morph it from the project card
+    (function () {
+      var root = document.documentElement;
+      if ("onpagereveal" in window) {
+        window.addEventListener("pagereveal", function (e) {
+          if (!e.viewTransition) {
+            root.classList.add("enter-zoom");
+            return;
+          }
+          // a skipped transition rejects these promises, which is expected
+          e.viewTransition.ready.catch(function () {});
+          e.viewTransition.finished.catch(function () {});
+        }, { once: true });
+      } else {
+        root.classList.add("enter-zoom");
+      }
+    })();
+  </script>
+  <script src="project-detail.js?v=4" defer></script>
+  <script src="site-extras.js?v=4" defer></script>
+</head>
+
+<body>
+  <header class="detail-bar">
+    <a class="detail-back" href="index.html#projects" aria-label="Back to projects">&#8592; &#60;/Projects&#62;</a>
+    <div class="detail-bar-right">
+      <div class="detail-bar-info">
+        <span class="detail-bar-title">Bodycode App</span>
+        <span class="detail-bar-meta">UI/UX设计 · C端</span>
+      </div>
+      <button class="detail-sound" type="button" aria-pressed="false" aria-label="打开背景音乐"></button>
+    </div>
+  </header>
+
+  <main class="detail-main">
+    <!-- Detail page images, stacked top to bottom -->
+    <div class="detail-pages">
+      <img src="src/projects/bodycode/01.jpg?v=2" alt="Bodycode App 封面" width="1920" height="1080" style="view-transition-name: bodycode-cover" />
+      <img src="src/projects/bodycode/02.jpg" alt="项目背景" width="1920" height="1132" decoding="async" />
+      <img src="src/projects/bodycode/03.jpg" alt="问题分析" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/bodycode/04.jpg" alt="市场分析" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/bodycode/05.jpg" alt="竞品分析" width="1920" height="1637" loading="lazy" decoding="async" />
+      <img src="src/projects/bodycode/06.jpg" alt="用户调研" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/bodycode/07.jpg" alt="用户分析" width="1920" height="3456" loading="lazy" decoding="async" />
+      <img src="src/projects/bodycode/08.jpg" alt="设计策略与目标推导" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/bodycode/09.jpg" alt="信息架构" width="1920" height="4153" loading="lazy" decoding="async" />
+      <img src="src/projects/bodycode/10.jpg" alt="设计风格" width="1920" height="2108" loading="lazy" decoding="async" />
+      <img src="src/projects/bodycode/11.jpg" alt="Onboarding 页面设计" width="1920" height="1777" loading="lazy" decoding="async" />
+      <img src="src/projects/bodycode/12.jpg" alt="首页设计" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/bodycode/13.jpg" alt="匹配页面设计" width="1920" height="2132" loading="lazy" decoding="async" />
+      <img src="src/projects/bodycode/14.jpg" alt="争议页面设计" width="1920" height="2306" loading="lazy" decoding="async" />
+      <img src="src/projects/bodycode/15.jpg" alt="My Bodycode 页面设计" width="1920" height="2200" loading="lazy" decoding="async" />
+      <img src="src/projects/bodycode/16.jpg" alt="Account 页面设计" width="1920" height="1962" loading="lazy" decoding="async" />
+      <img src="src/projects/bodycode/17.jpg" alt="样机展示" width="1920" height="1962" loading="lazy" decoding="async" />
+    </div>
+
+    <div class="detail-end">
+      <p class="detail-try">
+        <span class="detail-try-label">项目体验链接：</span>
+        <a class="detail-try-link" href="http://101.43.28.44/" target="_blank" rel="noopener noreferrer">http://101.43.28.44/</a>
+        <span class="detail-try-code">（邀请码BC2026）</span>
+      </p>
+      <a class="detail-next" href="project-bodycode-admin.html" aria-label="Next project: BodyCode 后台管理系统">
+        <span class="detail-next-label">Next project &#8594;</span>
+        <span class="detail-next-title">BodyCode 后台管理系统</span>
+      </a>
+    </div>
+  </main>
+</body>
+
+</html>
