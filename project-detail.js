@@ -56,6 +56,44 @@
     }
   }
 
+  // project videos: stay paused until the play button is pressed, then use the native controls;
+  // background music pauses while the video plays and comes back afterwards if it is still switched on
+  document.querySelectorAll(".detail-video").forEach(function (box) {
+    var video = box.querySelector("video");
+    var button = box.querySelector(".detail-video-play");
+    var soundToggle = document.querySelector(".detail-sound");
+    var pausedMusic = [];
+
+    button.addEventListener("click", function () {
+      video.controls = true;
+      var playing = video.play();
+      if (playing && playing.catch) playing.catch(function () {});
+    });
+
+    video.addEventListener("play", function () {
+      box.classList.add("is-started");
+      document.querySelectorAll("audio").forEach(function (audio) {
+        if (!audio.paused) {
+          audio.pause();
+          pausedMusic.push(audio);
+        }
+      });
+    });
+
+    function resumeMusic() {
+      var on = soundToggle && soundToggle.getAttribute("aria-pressed") === "true";
+      pausedMusic.forEach(function (audio) {
+        if (!on) return;
+        var p = audio.play();
+        if (p && p.catch) p.catch(function () {});
+      });
+      pausedMusic = [];
+    }
+
+    video.addEventListener("pause", resumeMusic);
+    video.addEventListener("ended", resumeMusic);
+  });
+
   if (reduceMotion || !hasObserver) return;
 
   var pages = document.querySelectorAll(".detail-pages > :not(:first-child)");
