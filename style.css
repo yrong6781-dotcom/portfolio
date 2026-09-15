@@ -2177,7 +2177,7 @@ body.has-announcement {
     width: 100%;
     height: 17rem;
     padding-left: 4rem;
-    font-family: "ZCOOL QingKe HuangYou", "Anton", sans-serif;
+    font-weight: 700;
     line-height: 1
 }
 
@@ -2196,7 +2196,7 @@ body.has-announcement {
     bottom: 0;
     margin: 0;
     font-size: 9rem;
-    font-weight: 400;
+    font-weight: 700;
     white-space: nowrap;
     color: var(--color-white)
 }
@@ -2289,7 +2289,7 @@ body.has-announcement {
 
 .about-card-en,
 .about-card-name {
-    font-family: "ZCOOL QingKe HuangYou", "Anton", sans-serif;
+    font-weight: 700;
     line-height: 1.1
 }
 
