@@ -2162,8 +2162,8 @@ body.has-announcement {
         line-height: 1.4;
     }
 }
-/* about me: portfolio card layout */
-.about-section-container {
+/* about me: portfolio card layout (accent colors are global: the Driveletics reel uses the green too) */
+:root {
     --about-green: #c5ea86;
     --about-purple: #c46cd0
 }
@@ -2498,66 +2498,48 @@ body.has-announcement {
     text-decoration: underline
 }
 
-/* projects: horizontal card track (swipe by default, pinned scroll on desktop via projects-scroll.js) */
+/* projects: two-column card grid that scrolls with the page */
 #projects.projects-section-container {
     display: block;
-    padding: 120px 0 60px
+    padding: 120px 0 0
 }
 
-.projects-scroller {
-    --projects-inset: 20vw;
-    position: relative
-}
-
-.projects-sticky {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 3.6rem
-}
-
-.projects-sticky .projects-section-div {
+#projects .projects-section-div,
+.projects-grid {
+    width: min(120rem, 80%);
     margin: 0 auto
 }
 
-.projects-viewport {
-    width: 100%;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scroll-snap-type: x mandatory;
-    scroll-padding-inline: var(--projects-inset);
-    scrollbar-width: none;
-    padding-block: 1rem
+.projects-grid {
+    --projects-gap: clamp(1.6rem, 2vw, 3.2rem);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--projects-gap);
+    margin-top: 3.6rem;
+    padding: 0;
+    list-style: none
 }
 
-.projects-viewport::-webkit-scrollbar {
-    display: none
-}
-
-.projects-track {
-    display: flex;
-    gap: clamp(1.2rem, 1.6vw, 2.4rem);
-    width: max-content;
-    margin: 0;
-    padding: 0 var(--projects-inset);
-    list-style: none;
-    will-change: transform
+/* odd card count: the last card keeps the column width and sits centered */
+.projects-grid .project-card:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc((100% - var(--projects-gap)) / 2)
 }
 
 .project-card {
     display: flex;
-    flex: 0 0 clamp(360px, 48vw, 860px);
     flex-direction: column;
     overflow: hidden;
     border: 1px solid var(--tech-stack-box-border-color);
     border-radius: 14px;
     background-image: linear-gradient(to bottom right, var(--tech-stack-box-first-color), var(--tech-stack-box-second-color));
-    scroll-snap-align: start;
-    transition: border-color .3s
+    transition: border-color .3s, transform .4s
 }
 
 .project-card:hover {
-    border-color: color-mix(in srgb, var(--color-white) 30%, transparent)
+    border-color: color-mix(in srgb, var(--color-white) 30%, transparent);
+    transform: translateY(-4px)
 }
 
 .project-card-media {
@@ -2620,58 +2602,303 @@ body.has-announcement {
     text-underline-offset: 4px
 }
 
-/* pinned: the sticky screen already centers the content, so skip the extra top padding */
-#projects.projects-section-container:has(.projects-scroller.is-pinned) {
-    padding-top: 0
+/* Driveletics video reel: its own screen after the cards, custom player controls in reel.js */
+.reel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3.6rem;
+    min-height: 100vh;
+    padding: 12rem 0 8rem;
+    background: radial-gradient(ellipse 55% 45% at 50% 60%, color-mix(in srgb, var(--about-green) 9%, transparent), transparent 70%)
 }
 
-.projects-scroller.is-pinned .projects-sticky {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    overflow: hidden
+.reel-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.6rem;
+    width: min(64rem, 88%);
+    text-align: center
 }
 
-.projects-scroller.is-pinned .projects-viewport {
-    overflow: visible;
-    scroll-snap-type: none
+.reel-pill {
+    padding: .6rem 1.6rem;
+    border: 1px solid color-mix(in srgb, var(--about-green) 35%, transparent);
+    border-radius: 999px;
+    font-size: 1.2rem;
+    letter-spacing: .24em;
+    color: color-mix(in srgb, var(--about-green) 85%, var(--color-white))
 }
 
-@media (hover: hover) {
-    .projects-viewport {
-        cursor: grab
+.reel-title {
+    margin: 0;
+    font-size: clamp(3.2rem, 3.6vw, 4.8rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--about-green)
+}
+
+.reel-title span {
+    display: block;
+    margin-top: .8rem;
+    font-size: .5em;
+    font-weight: 600;
+    color: var(--color-white)
+}
+
+.reel-lead {
+    margin: 0;
+    font-size: 1.6rem;
+    line-height: 1.8;
+    color: var(--color-ddd-color);
+    opacity: .7
+}
+
+.light-mode .reel-title,
+.light-mode .reel-pill {
+    color: var(--color-white)
+}
+
+.reel-player {
+    position: relative;
+    width: min(110rem, 80%);
+    aspect-ratio: 16 / 9;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-radius: 2.4rem;
+    background-color: #000;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, .45), 0 0 80px color-mix(in srgb, var(--about-green) 8%, transparent)
+}
+
+.reel-video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer
+}
+
+.reel-badge {
+    position: absolute;
+    top: 1.6rem;
+    left: 1.6rem;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    gap: .6rem;
+    padding: .6rem 1.4rem;
+    border-radius: 999px;
+    background-color: var(--about-green);
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #111;
+    pointer-events: none
+}
+
+.reel-badge svg {
+    width: 1rem;
+    height: 1rem;
+    fill: currentColor
+}
+
+.reel-big-play {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, .45), rgba(0, 0, 0, .05) 60%);
+    cursor: pointer;
+    transition: opacity .3s
+}
+
+.reel-big-play span {
+    display: grid;
+    place-items: center;
+    width: clamp(64px, 8vw, 96px);
+    aspect-ratio: 1;
+    border: 2px solid var(--about-green);
+    border-radius: 50%;
+    background-color: rgba(17, 17, 27, .55);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: transform .3s
+}
+
+.reel-big-play svg {
+    width: 36%;
+    margin-left: 8%;
+    fill: var(--about-green)
+}
+
+.reel-big-play:hover span,
+.reel-big-play:focus-visible span {
+    transform: scale(1.08)
+}
+
+.reel-player.is-started .reel-big-play {
+    opacity: 0;
+    pointer-events: none
+}
+
+.reel-controls {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+    padding: 3.2rem 2rem 1.6rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, .6), transparent);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .35s
+}
+
+.reel-player.is-started .reel-controls {
+    opacity: 1;
+    pointer-events: auto
+}
+
+.reel-player.is-started.is-idle .reel-controls {
+    opacity: 0;
+    pointer-events: none
+}
+
+.reel-btn {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 3.6rem;
+    height: 3.6rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, .12);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #fff;
+    cursor: pointer;
+    transition: background-color .3s
+}
+
+.reel-btn:hover {
+    background-color: rgba(255, 255, 255, .24)
+}
+
+.reel-btn svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: currentColor
+}
+
+.reel-icon-pause,
+.reel-icon-muted,
+.reel-player.is-playing .reel-icon-play,
+.reel-player.is-muted .reel-icon-sound {
+    display: none
+}
+
+.reel-player.is-playing .reel-icon-pause,
+.reel-player.is-muted .reel-icon-muted {
+    display: block
+}
+
+.reel-progress {
+    position: relative;
+    flex: 1;
+    height: .4rem;
+    border-radius: 999px;
+    background-color: rgba(255, 255, 255, .2);
+    cursor: pointer;
+    touch-action: none;
+    transition: height .2s
+}
+
+/* larger hit area than the thin bar */
+.reel-progress::before {
+    content: "";
+    position: absolute;
+    inset: -1rem 0
+}
+
+.reel-progress:hover,
+.reel-progress:focus-visible {
+    height: .6rem
+}
+
+.reel-progress-fill {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-image: linear-gradient(90deg, #eaf8cf, var(--about-green));
+    transform: scaleX(0);
+    transform-origin: left
+}
+
+.reel-time {
+    flex-shrink: 0;
+    font-size: 1.3rem;
+    font-variant-numeric: tabular-nums;
+    color: rgba(255, 255, 255, .8)
+}
+
+@media screen and (max-width:1300px) {
+    #projects .projects-section-div,
+    .projects-grid,
+    .reel-player {
+        width: 88%
     }
 }
 
-.projects-viewport.is-dragging {
-    cursor: grabbing;
-    scroll-snap-type: none;
-    user-select: none
-}
-
-@media screen and (max-width:1200px) {
-    .projects-scroller {
-        --projects-inset: 10vw
-    }
-}
-
-/* phones: cards stack vertically */
 @media screen and (max-width:768px) {
-    .projects-viewport {
-        overflow: visible;
-        scroll-snap-type: none;
-        cursor: auto
+    .projects-grid {
+        grid-template-columns: minmax(0, 1fr)
     }
 
-    .projects-track {
-        flex-direction: column;
-        width: auto
+    .projects-grid .project-card:last-child:nth-child(odd) {
+        width: 100%
     }
 
-    .project-card {
-        flex-basis: auto
+    .reel {
+        gap: 2.4rem;
+        min-height: 0;
+        padding: 10rem 0 4rem
     }
 
+    .reel-player {
+        width: 92%;
+        border-radius: 1.6rem
+    }
+
+    .reel-badge {
+        top: 1rem;
+        left: 1rem;
+        padding: .4rem 1rem;
+        font-size: 1.1rem
+    }
+
+    .reel-controls {
+        gap: 1rem;
+        padding: 2.4rem 1.2rem 1rem
+    }
+
+    .reel-btn {
+        width: 3rem;
+        height: 3rem
+    }
+
+    .reel-time {
+        font-size: 1.1rem
+    }
 }
 
 /* page transitions to project detail pages: the card cover morphs into the first detail page */

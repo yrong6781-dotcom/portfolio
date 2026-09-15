@@ -19,7 +19,8 @@ index.html               首页
 project-*.html           项目详情页
 style.css                首页样式
 project-detail.css/.js   详情页共用样式与交互（入场动画、滚动显现）
-projects-scroll.js       首页项目卡片横向滚动
+experience.js            首页工作经历时间线动效
+reel.js                  首页 Driveletics 视频播放器
 footer-avatar.js         页脚头像动效（眼睛跟随鼠标）
 site-extras.js           全站：自定义鼠标、背景音乐跨页、复制邮箱/电话
 main.js                  模板原有的通用脚本
