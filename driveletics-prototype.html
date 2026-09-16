@@ -1,54 +1,71 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex, nofollow">
-<title>Driveletics · 司机端可交互原型 — 颜榕</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- keep the portfolio out of search results: only people with the link should find it -->
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#11111b" />
+  <title>Driveletics 可交互原型 | Rong Yan</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="src/png/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="src/png/favicon-192.png" />
+  <link rel="apple-touch-icon" href="src/png/apple-touch-icon.png" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" />
+  <link rel="stylesheet" href="project-detail.css?v=11" />
+  <script src="site-extras.js?v=4" defer></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <style>
 :root{
   --ink:#080C0B; --ink-2:#121918; --mint:#00E3A1; --mint-2:#1FF0B4; --mint-deep:#0B8F6C;
   --mint-wash:#E6FAF3; --lav:#6C5CE7; --lav-wash:#EEEBFD; --amber:#F2A33C; --amber-wash:#FFF6E8;
   --red:#F2564B;
-  --page:#0D1413; --page-2:#0A1110;
+  --page:#11111B; --page-2:#0B0F14;
   --scr:#F3F5F5; --card:#FFFFFF; --t1:#0C1413; --t2:#6C7A78; --t3:#9AA6A4; --line:#E7EBEA;
   --cap:#2FD6A6; --head:#F2FBF8; --head-dim:rgba(234,243,241,.62);
-  --s:.72;
+  --s:1;
   --ff:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Inter",system-ui,sans-serif;
 }
-:root:not([data-theme="dark"]){ --page:#DCE5E3; --page-2:#C9D6D3; --cap:#0B7A5E; --head:#0C1413; --head-dim:rgba(12,20,19,.62); }
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --page:#0D1413; --page-2:#0A1110; --cap:#2FD6A6; --head:#F2FBF8; --head-dim:rgba(234,243,241,.62); } }
-:root[data-theme="dark"]{ --page:#0D1413; --page-2:#0A1110; --cap:#2FD6A6; --head:#F2FBF8; --head-dim:rgba(234,243,241,.62); }
 
 *{box-sizing:border-box}
-body{
-  margin:0; font-family:var(--ff); background:var(--page);
+body.proto-body{
+  margin:0; background:var(--page);
   background-image:
     radial-gradient(120% 80% at 50% -10%, rgba(0,227,161,.16), transparent 60%),
     linear-gradient(180deg, var(--page) 0%, var(--page-2) 100%);
-  min-height:100vh; color:var(--head); -webkit-font-smoothing:antialiased;
+  min-height:100vh; -webkit-font-smoothing:antialiased;
 }
-.wrap{padding-block:34px 56px; padding-left:16px; padding-right:16px; max-width:1900px; margin:0 auto}
-.masthead{display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px; margin:0 auto 26px; max-width:1240px}
-.masthead h1{font-size:19px; letter-spacing:-.01em; margin:0; font-weight:700; color:var(--head)}
-.masthead p{margin:0; font-size:13px; color:var(--head-dim)}
-.backlink{flex:0 0 100%; display:inline-block; width:max-content; margin-bottom:6px; font-size:12.5px; font-weight:600; letter-spacing:.02em; color:var(--head-dim); text-decoration:none; transition:color .15s ease}
-.backlink:hover{color:var(--cap)}
-.hint{margin-left:auto; font-size:11.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--cap); font-weight:700}
-
-.rail{display:flex; gap:26px; justify-content:center; align-items:flex-start; flex-wrap:nowrap; overflow-x:auto; padding-block:8px 4px; scrollbar-width:thin}
-.slot{flex:0 0 auto; width:calc(375px * var(--s)); display:flex; flex-direction:column; align-items:center; gap:14px}
-.slot:nth-child(1){margin-top:62px} .slot:nth-child(2){margin-top:30px}
-.slot:nth-child(3){margin-top:0}  .slot:nth-child(4){margin-top:26px} .slot:nth-child(5){margin-top:56px}
-.stage{width:calc(375px * var(--s)); height:calc(812px * var(--s))}
-.cap{font-size:13px; font-weight:800; letter-spacing:.07em; text-transform:uppercase; color:var(--cap); text-align:center; text-wrap:balance; line-height:1.35}
+.proto{font-family:var(--ff); color:var(--head)}
+.detail-main{padding-top:4px}
+.proto{padding-block:28px 40px; padding-left:16px; padding-right:16px; margin:0 auto; max-width:1180px;
+  display:grid; grid-template-columns:minmax(260px,400px) auto; gap:clamp(28px,5vw,72px);
+  align-items:center; justify-content:center}
+.proto-head{display:flex; flex-direction:column; align-items:flex-start; gap:15px; text-align:left; max-width:42ch}
+.proto-mark{line-height:0}
+.proto h1{margin:0; font-size:clamp(26px,3.4vw,36px); font-weight:800; letter-spacing:-.03em; color:var(--head); line-height:1.1}
+.proto h1 span{display:block; margin-top:9px; font-size:.58em; font-weight:700; letter-spacing:-.01em; color:var(--cap)}
+.proto-lead{margin:0; font-size:14.5px; line-height:1.8; color:var(--head-dim); text-wrap:pretty}
+.chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:4px}
+.chip{font-family:inherit; font-size:12.5px; font-weight:600; letter-spacing:.01em; color:var(--head-dim);
+  background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:999px;
+  padding:8px 15px; cursor:pointer; transition:color .18s ease, background .18s ease, border-color .18s ease, transform .14s ease}
+.chip:hover{color:var(--head); border-color:rgba(0,227,161,.45)}
+.chip:active{transform:scale(.96)}
+.chip.on{color:#04211A; background:var(--mint); border-color:transparent}
+.proto-right{display:flex; flex-direction:column; align-items:center}
+.proto-stage{position:relative}
+.proto-stage::before{content:""; position:absolute; left:50%; top:8%; width:118%; height:84%;
+  transform:translateX(-50%); background:radial-gradient(50% 50% at 50% 50%, rgba(0,227,161,.2), transparent 70%);
+  filter:blur(28px); pointer-events:none}
+.stage{position:relative; width:calc(375px * var(--s)); height:calc(812px * var(--s))}
+.cap{margin:20px 0 0; font-size:12.5px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:var(--cap); text-align:center}
+.proto-foot{margin:6px 0 0; font-size:11.5px; color:var(--head-dim); opacity:.7}
 
 /* ---------- phone chrome ---------- */
 .phone{
   width:375px; height:812px; transform:scale(var(--s)); transform-origin:top left;
   border-radius:54px; padding:11px; background:linear-gradient(160deg,#3a3f44,#15181b 42%,#2b3034);
-  box-shadow:0 34px 70px rgba(0,0,0,.34), 0 2px 0 rgba(255,255,255,.14) inset;
+  box-shadow:0 40px 90px rgba(0,0,0,.55), 0 0 70px rgba(0,227,161,.1), 0 2px 0 rgba(255,255,255,.14) inset;
   position:relative;
 }
 .screen{width:100%; height:100%; border-radius:44px; overflow:hidden; background:var(--scr); position:relative; display:flex; flex-direction:column; color:var(--t1)}
@@ -190,28 +207,46 @@ h2.title{font-size:27px; font-weight:800; letter-spacing:-.025em; margin:0}
 .between{display:flex; align-items:center; justify-content:space-between; gap:10px}
 .chev{color:var(--t3)}
 
-@media (max-width:1560px){ :root{--s:.62} }
-@media (max-width:1180px){
-  :root{--s:.86}
-  .rail{flex-wrap:wrap; overflow:visible; gap:34px 22px}
-  .slot{margin-top:0 !important}
+@media (max-width:900px){
+  .proto{grid-template-columns:1fr; justify-items:center; gap:26px}
+  .proto-head{align-items:center; text-align:center; max-width:56ch}
+  .chips{justify-content:center}
 }
-@media (max-width:460px){ :root{--s:.84} .wrap{padding-left:12px;padding-right:12px} }
+@media (max-width:460px){ :root{--s:.84} }
+@media (max-width:400px){ :root{--s:.76} }
+@media (max-width:360px){ :root{--s:.68} }
 @media (prefers-reduced-motion:reduce){ *{transition:none !important; animation:none !important} }
 </style>
 
 </head>
-<body>
-<div class="wrap">
-  <div class="masthead">
-    <a class="backlink" href="index.html#driveletics">&#8592; 返回作品集</a>
-    <span id="mark" style="display:inline-flex;align-items:center"></span>
-    <h1>Driveletics · 司机端可交互原型</h1>
-    <p>五个页面全部可点击 — 切换底部标签、点 Snooze、勾选恢复策略、展开 Session Schedule</p>
-    <div class="hint">Tap anything</div>
+
+<body class="proto-body">
+  <header class="detail-bar">
+    <a class="detail-back" href="index.html#driveletics" aria-label="Back to Driveletics">&#8592; &#60;/Projects&#62;</a>
+    <div class="detail-bar-right">
+      <div class="detail-bar-info">
+        <span class="detail-bar-title">Driveletics 可交互原型</span>
+        <span class="detail-bar-meta">UI/UX设计 · 司机端 App</span>
+      </div>
+      <button class="detail-sound" type="button" aria-pressed="false" aria-label="打开背景音乐"></button>
+    </div>
+  </header>
+
+  <main class="detail-main">
+<div class="proto">
+  <div class="proto-head">
+    <div class="proto-mark" id="mark"></div>
+    <h1>Driveletics<span>司机端可交互原型</span></h1>
+    <p class="proto-lead">五个页面都可以真的点：切换底部标签栏、点 Snooze 顺延恢复时段、勾选恢复策略赚积分、从 Driving Plan 进入 Session Schedule。</p>
+    <div class="chips" id="chips"></div>
+    <p class="proto-foot">HTML / CSS / JS 手写原型 · 界面数据为演示内容</p>
   </div>
-  <div class="rail" id="rail"></div>
+  <div class="proto-right">
+    <div class="proto-stage"><div class="stage" id="stage"></div></div>
+    <p class="cap" id="caption"></p>
+  </div>
 </div>
+
 <script>
 /* ============ icons ============ */
 const I = {
@@ -541,6 +576,7 @@ class App{
       </div>
     </div></div>`;
     if(this.capEl) this.capEl.textContent = SCREEN_NAME[r];
+    if(window.syncChips) window.syncChips(r);
     this.after();
   }
 
@@ -564,27 +600,42 @@ class App{
   }
 }
 
-/* ---------- mount ---------- */
-const ROUTES=['schedule','plan','home','recovery','rewards'];
-const rail=document.getElementById('rail');
-const apps=ROUTES.map((r,i)=>{
-  const slot=document.createElement('div'); slot.className='slot';
-  const stage=document.createElement('div'); stage.className='stage';
-  const cap=document.createElement('div'); cap.className='cap';
-  slot.append(stage,cap); rail.appendChild(slot);
-  return new App(stage,cap,r,i+1);
+/* ---------- mount: one phone, driven by the tab bar and the chips ---------- */
+const CHIPS=[['schedule','行程明细'],['plan','驾驶计划'],['home','教练首页'],['recovery','恢复窗口'],['rewards','奖励规则']];
+const stage=document.getElementById('stage'), caption=document.getElementById('caption'), chips=document.getElementById('chips');
+chips.innerHTML = CHIPS.map(c=>`<button class="chip" type="button" data-r="${c[0]}">${c[1]}</button>`).join('');
+const syncChips = r => chips.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on', c.dataset.r===r));
+window.syncChips = syncChips;
+
+const app = new App(stage, caption, 'home', 1);
+const apps=[app];
+syncChips('home');
+document.getElementById('mark').innerHTML = mascot('mk',40);
+
+/* scale the phone so the whole device, tab bar included, fits the window */
+const head = document.querySelector('.proto-head');
+const fit = () => {
+  const stacked = window.innerWidth <= 900;
+  const reserve = stacked ? (head ? head.offsetHeight : 200) + 190 : 180;
+  const room = stacked ? window.innerWidth - 32 : window.innerWidth - 470;
+  const s = Math.max(.55, Math.min(1, (window.innerHeight - reserve)/812, room/375));
+  document.documentElement.style.setProperty('--s', s.toFixed(3));
+};
+fit();
+window.addEventListener('resize', fit, {passive:true});
+
+chips.addEventListener('click', e=>{
+  const b=e.target.closest('.chip'); if(!b) return;
+  app.go(b.dataset.r);
 });
 
-document.getElementById('mark').innerHTML = mascot('mk',34);
-
-rail.addEventListener('click',e=>{
+stage.addEventListener('click',e=>{
   const b=e.target.closest('[data-act]'); if(!b) return;
-  const stage=b.closest('.stage'); const app=apps[[...rail.querySelectorAll('.stage')].indexOf(stage)];
   const act=b.dataset.act;
   if(act==='tab') return app.go(b.dataset.r);
   if(act==='go-schedule') return app.go('schedule');
   if(act==='go-plan') return app.go('plan');
-  if(act==='uber') return app.toast('Returning to the Uber driver app…');
+  if(act==='uber') return app.toast('返回 Uber 司机端主应用…');
   if(act==='snooze'){
     if(app.snoozed) return;
     app.snoozed=true; app.pop=true; app.render(); app.toast('Recovery 2 pushed to 10:02 AM · 10 min later'); return;
@@ -619,5 +670,14 @@ setInterval(()=>{
   });
 },1000);
 </script>
+
+    <div class="detail-end">
+      <a class="detail-next" href="index.html#driveletics" aria-label="Back to the Driveletics project video">
+        <span class="detail-next-label">&#8592; Back to project</span>
+        <span class="detail-next-title">Driveletics 项目视频</span>
+      </a>
+    </div>
+  </main>
 </body>
+
 </html>
