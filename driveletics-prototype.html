@@ -40,11 +40,10 @@ body.proto-body{
 .proto{padding-block:28px 40px; padding-left:16px; padding-right:16px; margin:0 auto; max-width:1180px;
   display:grid; grid-template-columns:minmax(260px,400px) auto; gap:clamp(28px,5vw,72px);
   align-items:center; justify-content:center}
-.proto-head{display:flex; flex-direction:column; align-items:flex-start; gap:15px; text-align:left; max-width:42ch}
+.proto-head{display:flex; flex-direction:column; align-items:flex-start; gap:22px; text-align:left; max-width:42ch}
 .proto-mark{line-height:0}
 .proto h1{margin:0; font-size:clamp(26px,3.4vw,36px); font-weight:800; letter-spacing:-.03em; color:var(--head); line-height:1.1}
 .proto h1 span{display:block; margin-top:9px; font-size:.58em; font-weight:700; letter-spacing:-.01em; color:var(--cap)}
-.proto-lead{margin:0; font-size:14.5px; line-height:1.8; color:var(--head-dim); text-wrap:pretty}
 .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:4px}
 .chip{font-family:inherit; font-size:12.5px; font-weight:600; letter-spacing:.01em; color:var(--head-dim);
   background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:999px;
@@ -59,7 +58,6 @@ body.proto-body{
   filter:blur(28px); pointer-events:none}
 .stage{position:relative; width:calc(375px * var(--s)); height:calc(812px * var(--s))}
 .cap{margin:20px 0 0; font-size:12.5px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:var(--cap); text-align:center}
-.proto-foot{margin:6px 0 0; font-size:11.5px; color:var(--head-dim); opacity:.7}
 
 /* ---------- phone chrome ---------- */
 .phone{
@@ -237,9 +235,7 @@ h2.title{font-size:27px; font-weight:800; letter-spacing:-.025em; margin:0}
   <div class="proto-head">
     <div class="proto-mark" id="mark"></div>
     <h1>Driveletics<span>司机端可交互原型</span></h1>
-    <p class="proto-lead">五个页面都可以真的点：切换底部标签栏、点 Snooze 顺延恢复时段、勾选恢复策略赚积分、从 Driving Plan 进入 Session Schedule。</p>
     <div class="chips" id="chips"></div>
-    <p class="proto-foot">HTML / CSS / JS 手写原型 · 界面数据为演示内容</p>
   </div>
   <div class="proto-right">
     <div class="proto-stage"><div class="stage" id="stage"></div></div>
@@ -601,10 +597,11 @@ class App{
 }
 
 /* ---------- mount: one phone, driven by the tab bar and the chips ---------- */
-const CHIPS=[['schedule','行程明细'],['plan','驾驶计划'],['home','教练首页'],['recovery','恢复窗口'],['rewards','奖励规则']];
+const CHIPS=[['home','司机首页'],['plan','驾驶计划'],['recovery','恢复窗口'],['rewards','奖励规则']];
 const stage=document.getElementById('stage'), caption=document.getElementById('caption'), chips=document.getElementById('chips');
 chips.innerHTML = CHIPS.map(c=>`<button class="chip" type="button" data-r="${c[0]}">${c[1]}</button>`).join('');
-const syncChips = r => chips.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on', c.dataset.r===r));
+const syncChips = r => { const k = r==='schedule' ? 'plan' : r;
+  chips.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on', c.dataset.r===k)); };
 window.syncChips = syncChips;
 
 const app = new App(stage, caption, 'home', 1);
