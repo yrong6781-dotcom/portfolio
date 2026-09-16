@@ -2547,6 +2547,39 @@ html .projects-grid .project-card[data-aos].aos-animate:focus-within {
     opacity: .7
 }
 
+.reel-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: .8rem;
+    padding: 1.1rem 2.4rem;
+    border: 1px solid color-mix(in srgb, var(--color-light-purple) 45%, transparent);
+    border-radius: 999px;
+    color: var(--color-white);
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-decoration: none;
+    background-color: color-mix(in srgb, var(--color-light-purple) 8%, transparent);
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease, background-color .25s ease
+}
+
+.reel-cta svg {
+    width: 1.8rem;
+    height: 1.8rem;
+    fill: currentColor;
+    transition: transform .25s ease
+}
+
+.reel-cta:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--color-light-blue) 70%, transparent);
+    background-color: color-mix(in srgb, var(--color-light-purple) 16%, transparent);
+    box-shadow: 0 12px 34px color-mix(in srgb, var(--color-light-purple) 26%, transparent)
+}
+
+.reel-cta:hover svg {
+    transform: translateX(3px)
+}
+
 .reel-player {
     position: relative;
     width: min(110rem, 80%);

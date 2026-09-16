@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Driveletics · 司机端可交互原型 — 颜榕</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+:root{
+  --ink:#080C0B; --ink-2:#121918; --mint:#00E3A1; --mint-2:#1FF0B4; --mint-deep:#0B8F6C;
+  --mint-wash:#E6FAF3; --lav:#6C5CE7; --lav-wash:#EEEBFD; --amber:#F2A33C; --amber-wash:#FFF6E8;
+  --red:#F2564B;
+  --page:#0D1413; --page-2:#0A1110;
+  --scr:#F3F5F5; --card:#FFFFFF; --t1:#0C1413; --t2:#6C7A78; --t3:#9AA6A4; --line:#E7EBEA;
+  --cap:#2FD6A6; --head:#F2FBF8; --head-dim:rgba(234,243,241,.62);
+  --s:.72;
+  --ff:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Inter",system-ui,sans-serif;
+}
+:root:not([data-theme="dark"]){ --page:#DCE5E3; --page-2:#C9D6D3; --cap:#0B7A5E; --head:#0C1413; --head-dim:rgba(12,20,19,.62); }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --page:#0D1413; --page-2:#0A1110; --cap:#2FD6A6; --head:#F2FBF8; --head-dim:rgba(234,243,241,.62); } }
+:root[data-theme="dark"]{ --page:#0D1413; --page-2:#0A1110; --cap:#2FD6A6; --head:#F2FBF8; --head-dim:rgba(234,243,241,.62); }
+
+*{box-sizing:border-box}
+body{
+  margin:0; font-family:var(--ff); background:var(--page);
+  background-image:
+    radial-gradient(120% 80% at 50% -10%, rgba(0,227,161,.16), transparent 60%),
+    linear-gradient(180deg, var(--page) 0%, var(--page-2) 100%);
+  min-height:100vh; color:var(--head); -webkit-font-smoothing:antialiased;
+}
+.wrap{padding-block:34px 56px; padding-left:16px; padding-right:16px; max-width:1900px; margin:0 auto}
+.masthead{display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px; margin:0 auto 26px; max-width:1240px}
+.masthead h1{font-size:19px; letter-spacing:-.01em; margin:0; font-weight:700; color:var(--head)}
+.masthead p{margin:0; font-size:13px; color:var(--head-dim)}
+.backlink{flex:0 0 100%; display:inline-block; width:max-content; margin-bottom:6px; font-size:12.5px; font-weight:600; letter-spacing:.02em; color:var(--head-dim); text-decoration:none; transition:color .15s ease}
+.backlink:hover{color:var(--cap)}
+.hint{margin-left:auto; font-size:11.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--cap); font-weight:700}
+
+.rail{display:flex; gap:26px; justify-content:center; align-items:flex-start; flex-wrap:nowrap; overflow-x:auto; padding-block:8px 4px; scrollbar-width:thin}
+.slot{flex:0 0 auto; width:calc(375px * var(--s)); display:flex; flex-direction:column; align-items:center; gap:14px}
+.slot:nth-child(1){margin-top:62px} .slot:nth-child(2){margin-top:30px}
+.slot:nth-child(3){margin-top:0}  .slot:nth-child(4){margin-top:26px} .slot:nth-child(5){margin-top:56px}
+.stage{width:calc(375px * var(--s)); height:calc(812px * var(--s))}
+.cap{font-size:13px; font-weight:800; letter-spacing:.07em; text-transform:uppercase; color:var(--cap); text-align:center; text-wrap:balance; line-height:1.35}
+
+/* ---------- phone chrome ---------- */
+.phone{
+  width:375px; height:812px; transform:scale(var(--s)); transform-origin:top left;
+  border-radius:54px; padding:11px; background:linear-gradient(160deg,#3a3f44,#15181b 42%,#2b3034);
+  box-shadow:0 34px 70px rgba(0,0,0,.34), 0 2px 0 rgba(255,255,255,.14) inset;
+  position:relative;
+}
+.screen{width:100%; height:100%; border-radius:44px; overflow:hidden; background:var(--scr); position:relative; display:flex; flex-direction:column; color:var(--t1)}
+.island{position:absolute; top:10px; left:50%; transform:translateX(-50%); width:120px; height:33px; border-radius:20px; background:#05070A; z-index:40; display:flex; align-items:center; justify-content:flex-end; padding-right:9px}
+.island i{width:9px;height:9px;border-radius:50%;background:#10201f; box-shadow:0 0 0 1px rgba(255,255,255,.06) inset}
+.statusbar{height:54px; flex:0 0 54px; display:flex; align-items:center; justify-content:space-between; padding:0 26px 0 30px; font-size:15px; font-weight:700; letter-spacing:.01em; position:relative; z-index:30}
+.statusbar .sbr{display:flex; align-items:center; gap:5px}
+.dark .statusbar, .dark .island i{color:#fff}
+
+/* ---------- app surface ---------- */
+.body{flex:1; overflow-y:auto; overflow-x:hidden; padding:0 18px 22px; scrollbar-width:none}
+.body::-webkit-scrollbar{display:none}
+.backrow{display:flex; align-items:center; gap:4px; font-size:14px; font-weight:600; color:var(--t2); background:none; border:0; padding:6px 0 10px; cursor:pointer; font-family:inherit}
+.backrow:hover{color:var(--t1)}
+h2.title{font-size:27px; font-weight:800; letter-spacing:-.025em; margin:0}
+.sub{margin:3px 0 0; font-size:13.5px; color:var(--t2)}
+.sec{font-size:17px; font-weight:800; letter-spacing:-.02em; margin:20px 0 10px}
+.card{background:var(--card); border-radius:16px; padding:14px; box-shadow:0 1px 2px rgba(12,20,19,.05)}
+.lab{font-size:10px; font-weight:800; letter-spacing:.11em; text-transform:uppercase; color:var(--t3)}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* black hero cards */
+.hero{background:linear-gradient(155deg,#151D1B 0%,#070B0A 58%,#0B1412 100%); border-radius:20px; padding:16px 16px 14px; color:#fff; position:relative; overflow:hidden}
+.hero::after{content:""; position:absolute; inset:0; background:radial-gradient(90% 120% at 88% 8%, rgba(0,227,161,.18), transparent 62%); pointer-events:none}
+.hero .lab{color:rgba(255,255,255,.52)}
+
+/* score */
+.scorerow{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:8px}
+.score{font-size:62px; line-height:.94; font-weight:800; color:var(--mint); letter-spacing:-.045em}
+.score-sub{font-size:13px; color:rgba(255,255,255,.72); margin-top:8px; font-weight:500}
+.pill-ok{margin-top:12px; display:flex; align-items:center; gap:7px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.1); border-radius:11px; padding:8px 10px; font-size:11.5px; color:rgba(255,255,255,.8)}
+
+/* tiles */
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:11px}
+.tile{background:var(--card); border-radius:15px; padding:12px 13px}
+.tile .k{font-size:11.5px; color:var(--t2); font-weight:600}
+.tile .v{font-size:21px; font-weight:800; letter-spacing:-.03em; margin-top:5px; display:flex; align-items:center; gap:6px}
+.dot-ok{width:7px;height:7px;border-radius:50%;background:var(--mint-deep); display:inline-block}
+
+.rowcard{display:flex; align-items:center; gap:11px; background:var(--card); border:1px solid var(--line); border-radius:15px; padding:12px 13px}
+.ico{width:34px;height:34px;border-radius:11px; display:grid; place-items:center; flex:0 0 34px; background:var(--mint-wash); color:var(--mint-deep)}
+.btn{font-family:inherit; font-size:12.5px; font-weight:700; border-radius:999px; border:1px solid var(--line); background:var(--scr); color:var(--t1); padding:8px 15px; cursor:pointer; transition:transform .12s ease, background .15s ease}
+.btn:hover{background:#E8ECEB} .btn:active{transform:scale(.95)}
+.btn[disabled]{opacity:.55; cursor:default}
+.btn-mint{background:var(--mint-wash); border-color:transparent; color:var(--mint-deep)}
+.btn-mint:hover{background:#D5F5EA}
+
+/* progress */
+.bar{height:6px; border-radius:99px; background:var(--line); overflow:hidden}
+.bar>i{display:block; height:100%; border-radius:99px; background:linear-gradient(90deg,var(--mint-deep),var(--mint)); transition:width .5s cubic-bezier(.4,0,.2,1)}
+.bar.dark{background:rgba(255,255,255,.14)}
+.bar.thin{height:4px}
+
+/* session list */
+.sess{display:flex; align-items:flex-start; gap:11px; width:100%; text-align:left; font-family:inherit; cursor:pointer; background:var(--card); border:1px solid var(--line); border-radius:15px; padding:12px 13px; transition:border-color .16s ease, background .16s ease, transform .12s ease}
+.sess:hover{border-color:#CFDAD7}
+.sess:active{transform:scale(.985)}
+.sess.on{background:var(--lav-wash); border-color:#D9D2FB}
+.sess.pick{box-shadow:0 0 0 2px var(--mint-deep)}
+.sess .nm{font-size:14.5px; font-weight:700; letter-spacing:-.01em}
+.sess.on .nm{color:var(--lav)}
+.sess .tm{font-size:12px; color:var(--t2); margin-top:2px}
+.sess .mn{font-size:15px; font-weight:800; letter-spacing:-.02em}
+.sess .mnu{font-size:10px; color:var(--t3); text-align:right; margin-top:1px}
+.state{display:flex; align-items:center; gap:5px; font-size:11.5px; color:var(--mint-deep); margin-top:7px; font-weight:600}
+.state.wait{color:var(--t3)}
+.state.run{color:var(--lav)}
+
+/* strategies */
+.strat{display:flex; align-items:center; gap:11px; width:100%; text-align:left; font-family:inherit; background:none; border:0; border-bottom:1px solid var(--line); padding:11px 2px; cursor:pointer}
+.strat:last-child{border-bottom:0}
+.strat .st{font-size:13.5px; font-weight:700}
+.strat .ss{font-size:11.5px; color:var(--t2); margin-top:2px; line-height:1.35}
+.strat.done .st{color:var(--mint-deep)}
+.strat.done .ss{text-decoration:line-through; color:var(--t3)}
+.tag{font-size:10px; font-weight:800; letter-spacing:.06em; color:var(--mint-deep); text-transform:uppercase}
+.badge{font-size:9.5px; font-weight:800; letter-spacing:.09em; text-transform:uppercase; padding:4px 8px; border-radius:7px; background:var(--mint); color:#04211A}
+
+/* chart */
+.legend{display:flex; gap:12px; margin-top:6px; font-size:9.5px; font-weight:700; letter-spacing:.05em; color:var(--t2); text-transform:uppercase}
+.legend span{display:flex; align-items:center; gap:4px}
+.legend i{width:6px;height:6px;border-radius:50%; display:block}
+
+/* rewards */
+.rw{display:flex; align-items:center; justify-content:space-between; padding:11px 2px; border-bottom:1px solid var(--line); gap:10px}
+.rw:last-child{border-bottom:0}
+.rw .rt{font-size:13.5px; font-weight:700}
+.rw .rs{font-size:11.5px; color:var(--t3); margin-top:2px}
+.rw .rp{font-size:13px; font-weight:800; color:var(--mint-deep); background:var(--mint-wash); padding:5px 9px; border-radius:8px}
+
+/* tabbar */
+.tabs{flex:0 0 78px; height:78px; display:flex; align-items:flex-start; justify-content:space-around; padding:9px 8px 0; background:rgba(255,255,255,.93); backdrop-filter:blur(18px); border-top:1px solid var(--line); position:relative}
+.tab{flex:1; background:none; border:0; font-family:inherit; display:flex; flex-direction:column; align-items:center; gap:4px; color:#9BA7A5; cursor:pointer; padding:5px 0; transition:color .15s ease}
+.tab span{font-size:10px; font-weight:600; letter-spacing:.01em}
+.tab.on{color:var(--t1)}
+.tab.on span{font-weight:700}
+.tab:active{transform:scale(.94)}
+.homebar{position:absolute; bottom:8px; left:50%; transform:translateX(-50%); width:134px; height:5px; border-radius:99px; background:#0C1413; opacity:.28}
+
+.toast{position:absolute; left:50%; bottom:96px; transform:translateX(-50%) translateY(8px); background:rgba(8,12,11,.93); color:#fff; font-size:12px; font-weight:600; padding:10px 15px; border-radius:12px; opacity:0; pointer-events:none; transition:opacity .22s ease, transform .22s ease; z-index:50; white-space:nowrap; max-width:86%}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+
+
+/* ---------- mascot + motion ---------- */
+.mascot{display:inline-block; line-height:0; position:relative}
+.mascot svg{overflow:visible; display:block}
+.m-float{transform-box:fill-box; transform-origin:50% 50%; animation:mfloat 4.6s ease-in-out infinite}
+@keyframes mfloat{0%,100%{transform:translateY(1.5%) scale(.985)}50%{transform:translateY(-2.5%) scale(1.035)}}
+.m-eyes{transform-box:fill-box; transform-origin:50% 100%; animation:mblink 5.6s ease-in-out infinite}
+@keyframes mblink{0%,84%,100%{transform:scaleY(1)}89%{transform:scaleY(.38)}93%{transform:scaleY(1.14)}}
+.m-mouth{transform-box:fill-box; transform-origin:50% 0; animation:mmouth 4.6s ease-in-out infinite}
+@keyframes mmouth{0%,100%{transform:scaleY(.94)}50%{transform:scaleY(1.2)}}
+.m-halo{transform-box:fill-box; transform-origin:50% 50%; animation:mhalo 4.6s ease-in-out infinite}
+@keyframes mhalo{0%,100%{opacity:.34; transform:scale(.94)}50%{opacity:.62; transform:scale(1.06)}}
+.m-spin{transform-box:fill-box; transform-origin:50% 50%; animation:mspin 8.5s linear infinite}
+@keyframes mspin{to{transform:rotate(360deg)}}
+.m-gloss{transform-box:fill-box; transform-origin:50% 50%; animation:mgloss 6.2s ease-in-out infinite}
+@keyframes mgloss{0%,100%{opacity:.82; transform:translate(0,0)}50%{opacity:1; transform:translate(2.5%,-2.5%)}}
+.mascot.pop .m-float{animation:mpop .72s cubic-bezier(.34,1.56,.64,1)}
+@keyframes mpop{0%{transform:scale(1)}28%{transform:scale(1.22) rotate(-6deg)}55%{transform:scale(.94) rotate(4deg)}100%{transform:scale(1) rotate(0)}}
+.mascot:hover .m-float{animation:mpop .72s cubic-bezier(.34,1.56,.64,1)}
+
+/* screen motion */
+.body{animation:fadeup .3s cubic-bezier(.32,.72,0,1) both}
+@keyframes fadeup{from{opacity:0; transform:translateY(7px)}to{opacity:1; transform:none}}
+.bar>i{animation:grow .85s cubic-bezier(.4,0,.2,1) both}
+@keyframes grow{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+.ring-arc{animation:ringdraw 1.15s cubic-bezier(.4,0,.2,1) both}
+@keyframes ringdraw{from{stroke-dashoffset:var(--c)}to{stroke-dashoffset:var(--o)}}
+.chart-line{animation:draw 1.3s cubic-bezier(.4,0,.2,1) both}
+@keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+.chart-dot{animation:popin .5s cubic-bezier(.34,1.56,.64,1) both; transform-box:fill-box; transform-origin:50% 50%}
+@keyframes popin{from{transform:scale(0)}to{transform:scale(1)}}
+.strat.done .ico{animation:popin .45s cubic-bezier(.34,1.56,.64,1)}
+.tab.on svg{animation:popin .4s cubic-bezier(.34,1.56,.64,1)}
+
+.screen svg text{font-family:var(--ff)}
+.stack{display:flex; flex-direction:column; gap:11px}
+.between{display:flex; align-items:center; justify-content:space-between; gap:10px}
+.chev{color:var(--t3)}
+
+@media (max-width:1560px){ :root{--s:.62} }
+@media (max-width:1180px){
+  :root{--s:.86}
+  .rail{flex-wrap:wrap; overflow:visible; gap:34px 22px}
+  .slot{margin-top:0 !important}
+}
+@media (max-width:460px){ :root{--s:.84} .wrap{padding-left:12px;padding-right:12px} }
+@media (prefers-reduced-motion:reduce){ *{transition:none !important; animation:none !important} }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <div class="masthead">
+    <a class="backlink" href="index.html#driveletics">&#8592; 返回作品集</a>
+    <span id="mark" style="display:inline-flex;align-items:center"></span>
+    <h1>Driveletics · 司机端可交互原型</h1>
+    <p>五个页面全部可点击 — 切换底部标签、点 Snooze、勾选恢复策略、展开 Session Schedule</p>
+    <div class="hint">Tap anything</div>
+  </div>
+  <div class="rail" id="rail"></div>
+</div>
+<script>
+/* ============ icons ============ */
+const I = {
+  sig:'<svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7.5" width="3" height="3.5" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>',
+  wifi:'<svg width="16" height="11" viewBox="0 0 16 12" fill="currentColor"><path d="M8 11.4 5.7 8.8a3.5 3.5 0 0 1 4.6 0L8 11.4Z"/><path d="M3.9 6.9 2.3 5.1a8.6 8.6 0 0 1 11.4 0l-1.6 1.8a6.2 6.2 0 0 0-8.2 0Z" opacity=".95"/><path d="M8 .6c2.5 0 4.8.9 6.6 2.4l-.7.8A8.9 8.9 0 0 0 8 1.7 8.9 8.9 0 0 0 2.1 3.8l-.7-.8A10.2 10.2 0 0 1 8 .6Z" opacity=".9"/></svg>',
+  bat:'<svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".6" y=".6" width="20" height="10.8" rx="3.2" stroke="currentColor" stroke-opacity=".38"/><rect x="2.3" y="2.3" width="16.6" height="7.4" rx="2" fill="currentColor"/><path d="M22.4 4.2c1 .3 1.6 1 1.6 1.8s-.6 1.5-1.6 1.8V4.2Z" fill="currentColor" fill-opacity=".45"/></svg>',
+  back:'<svg width="9" height="15" viewBox="0 0 9 15" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 1.5 1.8 7.5l5.7 6"/></svg>',
+  chev:'<svg width="8" height="13" viewBox="0 0 8 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.4 1.4 6.4 6.5l-5 5.1"/></svg>',
+  play:'<svg width="13" height="13" viewBox="0 0 14 14" fill="currentColor"><path d="M4 2.6 11.4 7 4 11.4V2.6Z"/></svg>',
+  cup:'<svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.6 6h8.8v4.2a3 3 0 0 1-3 3H5.6a3 3 0 0 1-3-3V6Z"/><path d="M11.4 7.1h1.1a1.7 1.7 0 1 1 0 3.4h-1.1"/><path d="M5.3 2.2v1.6M8.3 1.9v1.9"/></svg>',
+  check:'<svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="5.6"/><path d="m4.7 7.1 1.7 1.7 3-3.4"/></svg>',
+  clock:'<svg width="17" height="17" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="7"/><path d="M9 5.1V9l2.6 1.6"/></svg>',
+  lungs:'<svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1.6v6.2"/><path d="M8 7.8 5.6 6.2C4 5.2 2.2 6.2 2.2 8v3.4c0 1.7 1.4 3 3.1 3 1.5 0 2.7-1.1 2.7-2.6V7.8Z"/><path d="m8 7.8 2.4-1.6c1.6-1 3.4 0 3.4 1.8v3.4c0 1.7-1.4 3-3.1 3-1.5 0-2.7-1.1-2.7-2.6V7.8Z"/></svg>',
+  cof:'<svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2.6 6.4h8.6v4.3a3 3 0 0 1-3 3H5.6a3 3 0 0 1-3-3V6.4Z"/><path d="M11.2 7.5h1.2a1.6 1.6 0 1 1 0 3.2h-1.2"/><path d="M5.4 1.8c-.6.9-.6 1.5 0 2.4M8.2 1.8c-.6.9-.6 1.5 0 2.4"/></svg>',
+  walk:'<svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="9.1" cy="2.7" r="1.3"/><path d="m7 14.3 1.5-3.6-1.8-2 .6-3.2 2.6 1.3 1.9 1.7"/><path d="m6.3 6.4-2 2.2M8.5 10.7l1.9 3.6"/></svg>',
+  apple:'<svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5.2c-.8-.9-2-1.3-3-.8-1.4.7-2 2.8-1.2 4.9.7 1.9 2.1 4 3.3 4 .5 0 .6-.3.9-.3s.4.3.9.3c1.2 0 2.6-2.1 3.3-4 .8-2.1.2-4.2-1.2-4.9-1-.5-2.2-.1-3 .8Z"/><path d="M8 5.2c.1-1.3.9-2.4 2.1-2.8"/></svg>',
+  home:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.6 10.4 12 3.8l8.4 6.6v8.2a1.6 1.6 0 0 1-1.6 1.6H5.2a1.6 1.6 0 0 1-1.6-1.6v-8.2Z"/><path d="M9.4 20.2v-6.4h5.2v6.4"/></svg>',
+  cal:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.4" y="5" width="17.2" height="15.6" rx="3"/><path d="M8 2.8v4M16 2.8v4M3.4 9.9h17.2"/></svg>',
+  heart:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.4S3.6 15.6 3.6 9.9A4.5 4.5 0 0 1 12 7.4a4.5 4.5 0 0 1 8.4 2.5c0 5.7-8.4 10.5-8.4 10.5Z"/></svg>',
+  trophy:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7.4 3.6h9.2v5.2a4.6 4.6 0 0 1-9.2 0V3.6Z"/><path d="M7.4 5.2H4.8a2.6 2.6 0 0 0 2.6 4.6M16.6 5.2h2.6a2.6 2.6 0 0 1-2.6 4.6M9.6 20.4h4.8M12 13.4v7"/></svg>'
+};
+const mascot = (n,size,extra='') => `<div class="mascot ${extra}" data-mascot style="width:${size}px;height:${size}px">
+<svg viewBox="0 0 120 120" width="${size}" height="${size}" aria-hidden="true">
+ <defs>
+  <linearGradient id="rim${n}" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#9BF6E6"/><stop offset=".3" stop-color="#43DCDF"/>
+    <stop offset=".62" stop-color="#4FC6F2"/><stop offset="1" stop-color="#6FA6FF"/></linearGradient>
+  <radialGradient id="face${n}" cx="36%" cy="28%" r="82%">
+    <stop offset="0" stop-color="#FFFFFF"/><stop offset=".34" stop-color="#FCFFFD"/>
+    <stop offset=".7" stop-color="#EEFCFF"/><stop offset="1" stop-color="#BCEAF7"/></radialGradient>
+  <radialGradient id="halo${n}" cx="50%" cy="50%" r="50%">
+    <stop offset=".62" stop-color="#3FE0D4" stop-opacity="0"/><stop offset=".86" stop-color="#3FE0D4" stop-opacity=".55"/>
+    <stop offset="1" stop-color="#3FE0D4" stop-opacity="0"/></radialGradient>
+  <linearGradient id="gl${n}" x1="0" y1="0" x2=".4" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sh${n}" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".5" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="eye${n}" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#63D2F2"/><stop offset="1" stop-color="#159FDC"/></linearGradient>
+ </defs>
+ <g class="m-float">
+   <circle class="m-halo" cx="60" cy="60" r="57" fill="url(#halo${n})"/>
+   <circle cx="60" cy="60" r="52" fill="none" stroke="url(#rim${n})" stroke-width="13.5"/>
+   <circle cx="60" cy="60" r="52" fill="none" stroke="#FFFFFF" stroke-opacity=".5" stroke-width="2.4"/>
+   <circle cx="60" cy="60" r="46.6" fill="none" stroke="#0A4C5C" stroke-opacity=".2" stroke-width="4.6"/>
+   <circle class="m-spin" cx="60" cy="60" r="52" fill="none" stroke="url(#sh${n})" stroke-width="12"
+     stroke-linecap="round" stroke-dasharray="52 275"/>
+   <circle cx="60" cy="60" r="44.5" fill="url(#face${n})"/>
+   <ellipse class="m-gloss" cx="43" cy="31" rx="25" ry="15.5" fill="url(#gl${n})" transform="rotate(-26 43 31)"/>
+   <g class="m-eyes" fill="none" stroke="url(#eye${n})" stroke-width="6.4" stroke-linecap="round">
+     <path d="M39 60.5q6.6-10.4 13.2 0"/><path d="M67.8 60.5q6.6-10.4 13.2 0"/>
+   </g>
+   <path class="m-mouth" d="M49 76q11 13 22 0" fill="none" stroke="url(#eye${n})" stroke-width="7" stroke-linecap="round"/>
+ </g>
+</svg></div>`;
+
+const ring = (n,val,max,label,dark)=>{
+  const R=40, C=2*Math.PI*R, off=C*(1-val/max);
+  return `<svg width="104" height="104" viewBox="0 0 104 104">
+    <defs><linearGradient id="rg${n}" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1FF0B4"/><stop offset="1" stop-color="#00B884"/></linearGradient></defs>
+    <circle cx="52" cy="52" r="${R}" fill="none" stroke="${dark?'rgba(255,255,255,.12)':'#DCE7E4'}" stroke-width="8"/>
+    <circle class="ring-arc" cx="52" cy="52" r="${R}" fill="none" stroke="url(#rg${n})" stroke-width="8" stroke-linecap="round"
+      stroke-dasharray="${C.toFixed(1)}" style="--c:${C.toFixed(1)};--o:${off.toFixed(1)};stroke-dashoffset:${off.toFixed(1)}" transform="rotate(-90 52 52)"/>
+    <text x="52" y="57" text-anchor="middle" font-family="var(--ff)" font-size="16" font-weight="800"
+      letter-spacing=".5" fill="${dark?'#FFFFFF':'#0C1413'}">${label}</text></svg>`;
+};
+
+/* weekly endurance trend chart */
+const TREND=[90,91,92,93,94,96,94], DAYS=['M','T','W','T','F','S','S'];
+const chart = n => {
+  const W=300,H=118,PL=14,PR=14,PT=22,PB=24, lo=87.5, hi=97.5;
+  const x=i=>PL+i*((W-PL-PR)/(TREND.length-1));
+  const y=v=>PT+(hi-v)/(hi-lo)*(H-PT-PB);
+  const pts=TREND.map((v,i)=>[x(i),y(v)]);
+  const line=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+  const area=line+` L${x(6).toFixed(1)} ${H-PB} L${x(0).toFixed(1)} ${H-PB} Z`;
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Weekly endurance trend">
+    <defs><linearGradient id="ar${n}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#00E3A1" stop-opacity=".30"/><stop offset="1" stop-color="#00E3A1" stop-opacity="0"/></linearGradient></defs>
+    ${[0,1,2].map(i=>`<line x1="${PL}" x2="${W-PR}" y1="${(PT+i*(H-PT-PB)/2).toFixed(1)}" y2="${(PT+i*(H-PT-PB)/2).toFixed(1)}" stroke="#E7EBEA" stroke-width="1"/>`).join('')}
+    <path d="${area}" fill="url(#ar${n})"/>
+    <path class="chart-line" pathLength="1" stroke-dasharray="1" d="${line}" fill="none" stroke="#0CB98A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    ${pts.map((p,i)=>`<circle class="chart-dot" style="animation-delay:${(.5+i*.08).toFixed(2)}s" cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${i===5?4:3}" fill="${i===5?'#F2A33C':'#0CB98A'}" stroke="#fff" stroke-width="1.6"/>`).join('')}
+    ${pts.map((p,i)=>`<text x="${p[0].toFixed(1)}" y="${(p[1]-9).toFixed(1)}" text-anchor="middle" font-family="var(--ff)" font-size="8.5" font-weight="700" fill="#6C7A78">${TREND[i]}</text>`).join('')}
+    ${pts.map((p,i)=>`<text x="${p[0].toFixed(1)}" y="${H-7}" text-anchor="middle" font-family="var(--ff)" font-size="9" font-weight="600" fill="#9AA6A4">${DAYS[i]}</text>`).join('')}
+  </svg>`;
+};
+
+/* ============ data ============ */
+const SESSIONS=[
+  {t:'drive',n:'Drive Session 1',a:'8:00 AM',b:'8:52 AM',m:52,s:'done'},
+  {t:'rest', n:'Recovery 1',     a:'8:52 AM',b:'9:04 AM',m:12,s:'done'},
+  {t:'drive',n:'Drive Session 2',a:'9:04 AM',b:'9:52 AM',m:48,s:'run',p:32},
+  {t:'rest', n:'Recovery 2',     a:'9:52 AM',b:'10:07 AM',m:15,s:'next'},
+  {t:'drive',n:'Drive Session 3',a:'10:07 AM',b:'10:52 AM',m:45,s:'wait'},
+  {t:'rest', n:'Recovery 3',     a:'10:52 AM',b:'11:10 AM',m:18,s:'wait'},
+  {t:'drive',n:'Drive Session 4',a:'11:10 AM',b:'12:02 PM',m:52,s:'wait'}
+];
+const STRATS=[
+  {i:'lungs',t:'Deep Breathing',s:'3-5 min breathing to reduce stress hormones',best:true,pts:12},
+  {i:'cof',  t:'Caffeine Boost', s:'Small coffee or tea to enhance alertness',pts:8},
+  {i:'walk', t:'Light Movement', s:'Walk or stretch to improve circulation',pts:10},
+  {i:'apple',t:'Healthy Snack',  s:'Fruit or nuts for energy replenishment',pts:8}
+];
+const REWARDS=[
+  {t:'Smooth Braking Streak',s:'Today 2:20 PM',p:25},
+  {t:'Recovery 1 Completed', s:'Today 9:04 AM',p:15},
+  {t:'Plan Adherence · 3 days',s:'Yesterday 11:40 PM',p:40}
+];
+const SCREEN_NAME={schedule:'Itinerary Details',plan:'Driving Plan Page',home:'Coach Function Home Page',recovery:'Recovery Page',rewards:'Rewards Page'};
+</script>
+<script>
+const pad = n => String(n).padStart(2,'0');
+const mmss = s => pad(Math.floor(s/60))+':'+pad(s%60);
+
+class App{
+  constructor(host, cap, route, n){
+    this.host=host; this.capEl=cap; this.route=route; this.n=n;
+    this.done=new Set(); this.snoozed=false; this.redeemed=false; this.pick=null;
+    this.daily=65; this.today=73; this.reward=888; this.left=42*60+17;
+    this.render();
+  }
+  toast(msg){
+    const t=this.host.querySelector('.toast'); if(!t) return;
+    t.textContent=msg; t.classList.add('show');
+    clearTimeout(this._tt); this._tt=setTimeout(()=>t.classList.remove('show'),2200);
+  }
+  go(r){ this.route=r; this.render(); }
+
+  /* ---------- screens ---------- */
+  backUber(){ return `<button class="backrow" data-act="uber">${I.back} Back to Uber</button>`; }
+
+  home(){
+    const mins = this.snoozed?25:15, at = this.snoozed?'10:02 AM':'9:52 AM';
+    return `${this.backUber()}
+    <div class="between" style="margin-bottom:14px">
+      <div><h2 class="title">Hi, Jack</h2><p class="sub">Saturday, March 14, 2026</p></div>
+      <div style="flex:0 0 auto">${mascot('h'+this.n,48)}</div>
+    </div>
+    <div class="hero">
+      <div class="lab">Driver Fatigue Risk Score</div>
+      <div class="scorerow">
+        <div><div class="score tnum" data-count="84">84</div><div class="score-sub">Optimal Performance</div></div>
+        ${ring('h'+this.n,84,100,'HIGH',true)}
+      </div>
+      <div class="pill-ok"><span style="color:var(--mint)">${I.check}</span> Your status is good, continue accepting rides</div>
+    </div>
+    <div class="sec">Today's Driving Status</div>
+    <div class="grid2">
+      <div class="tile"><div class="k">Active Hours</div><div class="v tnum">5h 42m</div></div>
+      <div class="tile"><div class="k">Safety Score</div><div class="v tnum">9.8 <i class="dot-ok"></i></div></div>
+    </div>
+    <div class="rowcard" style="margin-top:11px">
+      <div class="ico">${I.clock}</div>
+      <div style="flex:1">
+        <div class="lab">Next recovery window</div>
+        <div style="font-size:15px;font-weight:800;letter-spacing:-.02em;margin-top:3px">Scheduled in ${mins}m</div>
+      </div>
+      <button class="btn" data-act="snooze" ${this.snoozed?'disabled':''}>${this.snoozed?'Snoozed':'Snooze'}</button>
+    </div>
+    <div class="sec">Daily points progress</div>
+    <div class="card">
+      <div class="between" style="margin-bottom:9px"><span style="font-size:12.5px;color:var(--t2);font-weight:600" class="tnum">${this.daily} / 100 points</span>
+      <span class="tag">${this.daily>=100?'Goal met':'On track'}</span></div>
+      <div class="bar"><i style="width:${Math.min(this.daily,100)}%"></i></div>
+      <div class="rw" style="margin-top:6px"><div><div class="rt">Rhythm adherence</div><div class="rs">4 of 7 sessions on time</div></div><div class="rp tnum">+40 pts</div></div>
+      <div class="rw"><div><div class="rt">Smooth braking</div><div class="rs">Today 2:20 PM</div></div><div class="rp tnum">+25 pts</div></div>
+    </div>
+    <div style="height:6px"></div>`;
+  }
+
+  recovery(){
+    const pct = 100 - (this.left/(60*60))*100;
+    return `${this.backUber()}
+    <div class="hero">
+      <div class="between"><div class="lab">Recovery Window</div><div class="badge">Active</div></div>
+      <div class="between" style="margin-top:8px">
+        <div>
+          <div style="font-size:23px;font-weight:800;letter-spacing:-.03em;line-height:1.15">Optimal<br>Performance</div>
+        </div>
+        <div style="flex:0 0 auto">${mascot('r'+this.n,56)}</div>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:9px;margin-top:10px">
+        <div class="tnum" style="font-size:42px;font-weight:800;letter-spacing:-.04em;color:var(--mint)" data-clock>${mmss(this.left)}</div>
+        <div class="lab">Min Remaining</div>
+      </div>
+      <div class="bar dark thin" style="margin-top:10px"><i data-fill style="width:${pct.toFixed(1)}%"></i></div>
+      <div style="font-size:10.5px;color:rgba(255,255,255,.5);margin-top:8px;text-align:center">Maintain low intensity for maximum recovery benefit</div>
+    </div>
+    <div class="card" style="margin-top:13px">
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:4px">
+        <div class="ico" style="width:28px;height:28px;flex:0 0 28px;border-radius:9px">${I.cup}</div>
+        <div style="font-size:15.5px;font-weight:800;letter-spacing:-.02em">Recovery Strategies</div>
+      </div>
+      ${STRATS.map((s,i)=>`<button class="strat ${this.done.has(i)?'done':''}" data-act="strat" data-i="${i}">
+        <div class="ico" style="width:30px;height:30px;flex:0 0 30px;border-radius:9px;${this.done.has(i)?'background:var(--mint);color:#04211A':''}">${this.done.has(i)?I.check:I[s.i]}</div>
+        <div style="flex:1"><div class="st">${s.t}</div><div class="ss">${s.s}</div></div>
+        ${this.done.has(i)?`<span class="tag">+${s.pts}</span>`:(s.best?'<span class="tag">Best</span>':'')}
+      </button>`).join('')}
+    </div>
+    <div class="card" style="margin-top:11px">
+      <div class="between"><div style="font-size:15px;font-weight:800;letter-spacing:-.02em;line-height:1.2">Weekly Endurance<br>Trends</div>
+      <span class="badge" style="background:var(--scr);color:var(--t2)">Last 7 days</span></div>
+      ${chart('r'+this.n)}
+      <div class="legend"><span><i style="background:var(--mint-deep)"></i>High</span><span><i style="background:var(--amber)"></i>Sustainable</span><span><i style="background:var(--red)"></i>Fatigue</span></div>
+    </div>`;
+  }
+
+  rewards(){
+    return `${this.backUber()}
+    <h2 class="title" style="margin-top:2px">Rewards &amp; Rules</h2>
+    <p class="sub" style="margin-bottom:14px">Follow the rhythm, earn rewards</p>
+    <div class="grid2">
+      <div class="tile" style="background:var(--mint-wash);text-align:center;padding:13px 10px">
+        <div class="lab" style="color:var(--mint-deep)">Today's points</div>
+        <div style="display:flex;justify-content:center;margin:4px 0 -6px">${ring('w'+this.n,this.today,100,this.today,false)}</div>
+        <div class="tag" style="display:block;margin-top:2px">Excellent</div>
+      </div>
+      <div class="tile" style="background:var(--amber-wash);text-align:center;padding:13px 10px;display:flex;flex-direction:column;justify-content:center;gap:4px">
+        <div class="lab" style="color:#B87418">Reward points</div>
+        <div class="tnum" style="font-size:38px;font-weight:800;color:var(--amber);letter-spacing:-.04em;line-height:1">${this.reward}</div>
+        <div style="font-size:11px;color:#B87418;font-weight:700">pts</div>
+        <button class="btn" data-act="redeem" style="background:#fff;border-color:#F4E3C8;color:#B87418;margin-top:4px">Redeem ${I.chev}</button>
+      </div>
+    </div>
+    <div class="card" style="margin-top:11px">
+      <div class="between"><div style="font-size:15px;font-weight:800;letter-spacing:-.02em;line-height:1.2">Weekly Endurance<br>Trends</div>
+      <span class="badge" style="background:var(--scr);color:var(--t2)">Last 7 days</span></div>
+      ${chart('w'+this.n)}
+      <div class="legend"><span><i style="background:var(--mint-deep)"></i>High</span><span><i style="background:var(--amber)"></i>Sustainable</span><span><i style="background:var(--red)"></i>Fatigue</span></div>
+    </div>
+    <div class="sec">Recent Rewards</div>
+    <div class="card">
+      ${REWARDS.map(r=>`<div class="rw"><div><div class="rt">${r.t}</div><div class="rs">${r.s}</div></div><div class="rp tnum">+${r.p} pts</div></div>`).join('')}
+    </div>`;
+  }
+
+  plan(){
+    const s=SESSIONS[2], p=Math.round(s.p/s.m*100);
+    return `${this.backUber()}
+    <h2 class="title">Driving Plan</h2>
+    <p class="sub" style="margin-bottom:13px">Today's rhythmic training schedule</p>
+    <div class="hero">
+      <div class="lab">Plan Overview</div>
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:8px;margin-top:11px">
+        <div style="display:flex;gap:18px">
+          <div><div style="font-size:10.5px;color:rgba(255,255,255,.55);font-weight:600">Total Drive</div>
+            <div class="tnum" style="font-size:25px;font-weight:800;color:var(--mint);letter-spacing:-.03em;line-height:1.2">195</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.42)">minutes</div></div>
+          <div><div style="font-size:10.5px;color:rgba(255,255,255,.55);font-weight:600">Total Rest</div>
+            <div class="tnum" style="font-size:25px;font-weight:800;color:var(--mint);letter-spacing:-.03em;line-height:1.2">45</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.42)">minutes</div></div>
+          <div><div style="font-size:10.5px;color:rgba(255,255,255,.55);font-weight:600">Sessions</div>
+            <div class="tnum" style="font-size:25px;font-weight:800;color:var(--mint);letter-spacing:-.03em;line-height:1.2">4</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.42)">total</div></div>
+        </div>
+        <div style="flex:0 0 auto;margin-bottom:-2px">${mascot('p'+this.n,50)}</div>
+      </div>
+    </div>
+    <button class="backrow between" data-act="go-schedule" style="width:100%;color:var(--t1);font-size:16px;font-weight:800;letter-spacing:-.02em;padding:16px 2px 10px">
+      <span>Session Schedule</span><span class="chev">${I.chev}</span></button>
+    <div class="card" style="background:var(--mint-wash);border-radius:15px">
+      <div style="display:flex;gap:11px;align-items:flex-start">
+        <div class="ico" style="background:var(--mint);color:#04211A">${I.play}</div>
+        <div style="flex:1">
+          <div class="between"><span style="font-size:14.5px;font-weight:700">${s.n}</span><span class="tnum" style="font-size:15px;font-weight:800">${s.m}</span></div>
+          <div class="between"><span style="font-size:12px;color:var(--t2)">${s.a} - ${s.b}</span><span style="font-size:10px;color:var(--t3)">min</span></div>
+          <div class="bar" style="margin-top:9px;background:#CFEFE4"><i style="width:${p}%"></i></div>
+          <div style="font-size:11.5px;color:var(--mint-deep);font-weight:600;margin-top:7px">In progress ${s.p}/${s.m} min</div>
+        </div>
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:11px">
+      ${[SESSIONS[0],SESSIONS[1]].map(x=>`<div class="tile" style="text-align:center;padding:13px 8px">
+        <div class="lab">${x.n}</div>
+        <div class="tnum" style="font-size:23px;font-weight:800;letter-spacing:-.03em;margin:5px 0 3px">${x.m}mins</div>
+        <div style="font-size:10px;color:var(--t2)" class="tnum">${x.a}-${x.b}</div>
+        <div class="tag" style="margin-top:4px;display:block">Completed</div></div>`).join('')}
+    </div>
+    <div class="card" style="margin-top:11px">
+      <div style="font-size:15.5px;font-weight:800;letter-spacing:-.02em;margin-bottom:10px">Ride Acceptance Strategy</div>
+      ${[['9:04 AM - 9:30 AM','Peak period · Prioritize short trips','var(--mint-deep)'],
+         ['9:30 AM - 9:52 AM','Wind down · Decline trips over 20 min','var(--amber)'],
+         ['9:52 AM - 10:07 AM','Recovery 2 · Auto-pause new requests','var(--lav)']]
+        .map(r=>`<div style="border-left:3px solid ${r[2]};padding:2px 0 2px 10px;margin-bottom:10px">
+          <div class="tnum" style="font-size:12.5px;font-weight:700">${r[0]}</div>
+          <div style="font-size:11.5px;color:var(--t2);margin-top:2px">${r[1]}</div></div>`).join('')}
+    </div>`;
+  }
+
+  schedule(){
+    return `<button class="backrow" data-act="go-plan" style="padding-top:8px">${I.back}</button>
+    <h2 class="title" style="margin-bottom:14px">Schedule</h2>
+    <div class="stack">
+      ${SESSIONS.map((s,i)=>{
+        const drive = s.t==='drive';
+        const on = s.s==='run';
+        const st = s.s==='done' ? `<div class="state">${I.check} Completed</div>`
+          : on ? `<div class="bar" style="margin-top:9px;height:5px;background:#DCD6F9"><i style="width:${Math.round(s.p/s.m*100)}%;background:linear-gradient(90deg,#4B3BD1,#6C5CE7)"></i></div>
+                  <div class="state run">In progress ${s.p}/${s.m} min</div>` : '';
+        return `<button class="sess ${on?'on':''} ${this.pick===i?'pick':''}" data-act="sess" data-i="${i}">
+          <div class="ico" style="${drive?'background:var(--lav-wash);color:var(--lav)':'background:var(--mint-wash);color:var(--mint-deep)'}">${drive?I.play:I.cup}</div>
+          <div style="flex:1;min-width:0">
+            <div class="nm">${s.n}</div>
+            <div class="tm tnum">${s.a} - ${s.b}</div>
+            ${st}
+          </div>
+          <div style="flex:0 0 auto"><div class="mn tnum">${s.m}</div><div class="mnu">min</div></div>
+        </button>`;}).join('')}
+    </div>`;
+  }
+
+  /* ---------- shell ---------- */
+  render(){
+    const r=this.route, tab = r==='schedule'?'plan':r;
+    const TABS=[['home','Home',I.home],['plan','Plan',I.cal],['recovery','Recovery',I.heart],['rewards','Rewards',I.trophy]];
+    this.host.innerHTML = `<div class="phone"><div class="screen">
+      <div class="island"><i></i></div>
+      <div class="statusbar"><span class="tnum">9:41</span><span class="sbr">${I.sig}${I.wifi}${I.bat}</span></div>
+      <div class="body">${this[r]()}</div>
+      <div class="toast"></div>
+      <div class="tabs">
+        ${TABS.map(t=>`<button class="tab ${tab===t[0]?'on':''}" data-act="tab" data-r="${t[0]}">${t[2]}<span>${t[1]}</span></button>`).join('')}
+        <div class="homebar"></div>
+      </div>
+    </div></div>`;
+    if(this.capEl) this.capEl.textContent = SCREEN_NAME[r];
+    this.after();
+  }
+
+  after(){
+    const rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const c = this.host.querySelector('[data-count]');
+    if(c && !rm){
+      const end=+c.dataset.count; let t0=null; c.textContent='0';
+      const step=ts=>{ if(t0===null) t0=ts; const k=Math.min((ts-t0)/900,1);
+        c.textContent=Math.round(end*(1-Math.pow(1-k,3)));
+        if(k<1) requestAnimationFrame(step); };
+      requestAnimationFrame(step);
+    }
+    if(this.pop){
+      this.pop=false;
+      this.host.querySelectorAll('[data-mascot]').forEach(m=>{
+        m.classList.remove('pop'); void m.offsetWidth; m.classList.add('pop');
+        setTimeout(()=>m.classList.remove('pop'),820);
+      });
+    }
+  }
+}
+
+/* ---------- mount ---------- */
+const ROUTES=['schedule','plan','home','recovery','rewards'];
+const rail=document.getElementById('rail');
+const apps=ROUTES.map((r,i)=>{
+  const slot=document.createElement('div'); slot.className='slot';
+  const stage=document.createElement('div'); stage.className='stage';
+  const cap=document.createElement('div'); cap.className='cap';
+  slot.append(stage,cap); rail.appendChild(slot);
+  return new App(stage,cap,r,i+1);
+});
+
+document.getElementById('mark').innerHTML = mascot('mk',34);
+
+rail.addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]'); if(!b) return;
+  const stage=b.closest('.stage'); const app=apps[[...rail.querySelectorAll('.stage')].indexOf(stage)];
+  const act=b.dataset.act;
+  if(act==='tab') return app.go(b.dataset.r);
+  if(act==='go-schedule') return app.go('schedule');
+  if(act==='go-plan') return app.go('plan');
+  if(act==='uber') return app.toast('Returning to the Uber driver app…');
+  if(act==='snooze'){
+    if(app.snoozed) return;
+    app.snoozed=true; app.pop=true; app.render(); app.toast('Recovery 2 pushed to 10:02 AM · 10 min later'); return;
+  }
+  if(act==='strat'){
+    const i=+b.dataset.i, s=STRATS[i];
+    if(app.done.has(i)){ app.done.delete(i); app.daily-=s.pts; app.today-=s.pts; app.reward-=s.pts; }
+    else { app.done.add(i); app.daily=Math.min(100,app.daily+s.pts); app.today=Math.min(100,app.today+s.pts); app.reward+=s.pts; }
+    app.pop=true; app.render(); if(app.done.has(i)) app.toast(`${s.t} logged · +${s.pts} pts`);
+    return;
+  }
+  if(act==='redeem'){
+    if(app.reward<500) return app.toast('Need 500 pts to redeem the next credit');
+    app.reward-=500; app.pop=true; app.render(); app.toast('500 pts redeemed · $8 fuel credit applied'); return;
+  }
+  if(act==='sess'){
+    const i=+b.dataset.i, s=SESSIONS[i];
+    app.pick = app.pick===i?null:i; app.render();
+    if(app.pick===i) app.toast(`${s.n} · ${s.a} - ${s.b} · ${s.m} min`);
+    return;
+  }
+});
+
+/* live recovery countdown, shared clock */
+setInterval(()=>{
+  apps.forEach(a=>{
+    if(a.left>0) a.left--;
+    if(a.route!=='recovery') return;
+    const c=a.host.querySelector('[data-clock]'), f=a.host.querySelector('[data-fill]');
+    if(c) c.textContent=mmss(a.left);
+    if(f) f.style.width=(100-(a.left/3600)*100).toFixed(1)+'%';
+  });
+},1000);
+</script>
+</body>
+</html>
