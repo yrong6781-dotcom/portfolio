@@ -417,8 +417,9 @@
       </ul>
 
       <!-- Driveletics: video project on its own screen, paused on the first frame until played (reel.js).
-           Hidden for now: remove the comment markers around the block below to show it again. -->
-<!--
+           Only shown through the private link ?k=<key>: the template stays inert (nothing rendered, video not loaded)
+           unless the key matches; once opened, it stays visible in that browser tab (sessionStorage). -->
+      <template id="driveletics-reel">
       <div class="reel" id="driveletics">
         <div class="reel-head" data-aos="fade-up">
           <span class="reel-pill">VIDEO PROJECT</span>
@@ -447,7 +448,21 @@
           </div>
         </figure>
       </div>
-      -->
+      </template>
+      <script>
+        (function () {
+          var KEY = "xvs2uz3wx6";
+          var fromLink = new URLSearchParams(location.search).get("k") === KEY;
+          var unlocked = fromLink;
+          try {
+            if (fromLink) sessionStorage.setItem("ry-portfolio-full", "1");
+            unlocked = unlocked || sessionStorage.getItem("ry-portfolio-full") === "1";
+          } catch (e) {}
+          if (!unlocked) return;
+          var tpl = document.getElementById("driveletics-reel");
+          tpl.parentNode.insertBefore(tpl.content.cloneNode(true), tpl);
+        })();
+      </script>
     </section>
     <section class="experience-section-container" id="experience">
       <div class="exp-layout">
