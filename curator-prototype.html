@@ -1,0 +1,2805 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="The Digital Curator — an interactive prototype of an AI museum guide for the British Museum. Bilingual, iPhone 16.">
+<meta property="og:title" content="The Digital Curator">
+<meta property="og:description" content="AI museum guide prototype · British Museum · bilingual">
+<title>数字策展人</title>
+<style>
+:root{
+  --jade-900:#0F2B1D; --jade-800:#1A4A31; --jade-700:#24603E;
+  --jade-600:#2C6842; --jade-500:#33764B; --jade-400:#4E9068;
+  --jade-300:#A8CBB7; --jade-200:#C5DBD1; --jade-100:#DCEBE3; --jade-50:#EDF6F1;
+  --gilt:#B08A45; --gilt-soft:#F1E7D3;
+  --ink:#0E1F17; --ink-2:#44574D; --ink-3:#5F7268;
+  --paper:#F2F6F3; --surface:#FFFFFF; --surface-2:#F7FAF8;
+  --line:#E0EAE4; --line-soft:#EDF2EF;
+  --shadow:0 1px 2px rgba(14,31,23,.05), 0 8px 24px -12px rgba(14,31,23,.18);
+  --shadow-lift:0 2px 6px rgba(14,31,23,.07), 0 18px 40px -18px rgba(14,31,23,.3);
+  --stage:#E6ECE8; --stage-ink:#2B3A33;
+  --font-sf:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --font-pf:"PingFang SC","PingFang TC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  /* Latin resolves through SF Pro, CJK falls through to PingFang SC */
+  --font-ui:var(--font-sf),"PingFang SC","Hiragino Sans GB",sans-serif;
+  --font-display:var(--font-ui);
+  /* spacing — mirrors Semi $spacing-* */
+  --sp-none:0px; --sp-super-tight:2px; --sp-extra-tight:4px; --sp-tight:8px;
+  --sp-base-tight:12px; --sp-base:16px; --sp-base-loose:20px; --sp-loose:24px;
+  --sp-extra-loose:32px; --sp-super-loose:40px;
+  /* radius — Semi naming, mobile ramp */
+  --r-xs:4px; --r-s:8px; --r-m:12px; --r-l:16px; --r-xl:24px; --r-full:9999px;
+  /* control heights — Semi $height-control-* +8 for touch */
+  --h-ctrl-s:32px; --h-ctrl-m:40px; --h-ctrl-l:48px;
+  /* icon sizes — Semi $width-icon-* */
+  --icon-s:12px; --icon-m:16px; --icon-l:20px; --icon-xl:24px;
+  /* component sizes */
+  --r-hairline:2px; --safe-side:28px;
+  --switch-w:44px; --switch-h:26px; --switch-knob:20px;
+  /* device */
+  --a11y-zoom:1;
+  --device-w:393px; --device-h:852px; --safe-top:59px; --safe-bottom:34px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ink:#E8F0EB; --ink-2:#A3B5AB; --ink-3:#74867C;
+    --paper:#0D1712; --surface:#14211B; --surface-2:#18261F;
+    --line:#243329; --line-soft:#1D2A23;
+    --jade-50:#152A20; --jade-100:#1B3527; --jade-200:#24462F; --jade-300:#3C6B4C;
+    --gilt-soft:#3A2F1C;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+    --shadow-lift:0 2px 6px rgba(0,0,0,.5), 0 18px 40px -18px rgba(0,0,0,.8);
+    --stage:#0A120E; --stage-ink:#C9D8CF;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#E8F0EB; --ink-2:#A3B5AB; --ink-3:#74867C;
+  --paper:#0D1712; --surface:#14211B; --surface-2:#18261F;
+  --line:#243329; --line-soft:#1D2A23;
+  --jade-50:#152A20; --jade-100:#1B3527; --jade-200:#24462F; --jade-300:#3C6B4C;
+  --gilt-soft:#3A2F1C;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+  --shadow-lift:0 2px 6px rgba(0,0,0,.5), 0 18px 40px -18px rgba(0,0,0,.8);
+  --stage:#0A120E; --stage-ink:#C9D8CF;
+}
+
+/* zh leads with PingFang SC; en leads with SF Pro — both keep the other as fallback */
+:root[data-lang="zh"]{--font-ui:"PingFang SC","PingFang TC",-apple-system,BlinkMacSystemFont,"SF Pro Text","Hiragino Sans GB",sans-serif}
+:root[data-lang="en"]{--font-ui:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue","PingFang SC",sans-serif}
+
+*{box-sizing:border-box}
+/* class-level display rules must never outrank the hidden attribute */
+[hidden]{display:none!important}
+body{margin:0;background:var(--stage);color:var(--stage-ink);font-family:var(--font-ui);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;border:0;padding:0;background:none;cursor:pointer}
+:focus-visible{outline:2px solid var(--jade-500);outline-offset:2px;border-radius:4px}
+
+/* ---------- stage ---------- */
+.stage{min-height:100%;padding:0 16px;padding-block:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}
+
+/* language switch */
+.langpill{display:inline-flex;align-items:center;background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-full);padding:2px;flex:none}
+.langpill button{padding:4px 8px;border-radius:var(--r-full);font-size:11.5px;font-weight:700;color:var(--ink-3);line-height:1.4;transition:background .18s,color .18s}
+.langpill button[aria-pressed="true"]{background:var(--jade-500);color:#fff}
+.fab{position:absolute;right:var(--sp-base);bottom:88px;z-index:35;width:56px;height:56px;border-radius:var(--r-full);
+  background:var(--jade-500);color:#fff;display:grid;place-items:center;
+  box-shadow:0 8px 24px -6px rgba(51,118,75,.55), 0 2px 6px rgba(14,31,23,.2);transition:transform .14s}
+.fab:active{transform:scale(.93)}
+.fab .ic{width:28px;height:28px}
+
+/* ---------- phone ---------- */
+.phone{width:var(--device-w);max-width:100%;height:var(--device-h);max-height:calc(100dvh - 150px);min-height:600px;
+  background:var(--paper);border-radius:47px;position:relative;overflow:hidden;
+  border:1px solid var(--line);box-shadow:var(--shadow-lift);display:flex;flex-direction:column}
+.island{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:125px;height:37px;background:#08110D;border-radius:var(--r-full);z-index:45}
+.homebar{position:absolute;left:50%;bottom:var(--sp-tight);transform:translateX(-50%);width:139px;height:5px;border-radius:var(--r-hairline);background:var(--ink);opacity:.22;z-index:60;pointer-events:none}
+.statusbar{flex:none;height:var(--safe-top);display:flex;align-items:center;justify-content:space-between;padding:var(--sp-base) var(--safe-side) 0;font-size:15px;font-weight:600;color:var(--ink);letter-spacing:.01em;position:relative;z-index:41}
+.statusbar .sigs{display:flex;gap:4px;align-items:center;opacity:.75}
+.statusbar .bar{width:3px;border-radius:2px;background:currentColor}
+
+.viewport{flex:1;position:relative;overflow:hidden}
+.screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+  zoom:var(--a11y-zoom,1)}
+.screen::-webkit-scrollbar{display:none}
+.screen[hidden]{display:none!important}
+.pad{padding:0 var(--sp-base) var(--sp-loose)}
+.tail{height:96px}
+
+/* ---------- shared atoms ---------- */
+.eyebrow{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--jade-500)}
+.eyebrow.mute{color:var(--ink-3)}
+.h1{font-family:var(--font-display);font-size:26px;line-height:1.28;font-weight:700;letter-spacing:-.02em;color:var(--ink);margin:4px 0 0;text-wrap:balance}
+.h2{font-size:17px;font-weight:700;color:var(--ink);margin:0;letter-spacing:-.01em}
+.h3{font-size:14.5px;font-weight:700;color:var(--ink);margin:0}
+.body{font-size:13.5px;line-height:1.72;color:var(--ink-2);margin:0}
+.body strong{color:var(--ink);font-weight:600}
+.body em{font-style:normal;color:var(--jade-500);font-weight:600}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);box-shadow:var(--shadow)}
+.sec{display:flex;flex-direction:column;gap:var(--sp-base-tight);margin-top:var(--sp-loose)}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.link{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--jade-500)}
+.chipwrap{display:flex;gap:8px;flex-wrap:wrap}
+.tag{font-size:11px;padding:4px 8px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);color:var(--ink-2)}
+.divider{height:1px;background:var(--line-soft)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-tight);height:var(--h-ctrl-l);padding:0 var(--sp-base-loose);border-radius:var(--r-m);
+  font-size:14.5px;font-weight:700;background:var(--jade-500);color:#fff;width:100%;transition:transform .12s, background .18s}
+.btn:active{transform:scale(.985);background:var(--jade-600)}
+.btn.ghost{background:var(--jade-50);color:var(--jade-500);border:1px solid var(--jade-100)}
+.btn.quiet{background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line)}
+.btn.sm{height:var(--h-ctrl-m);font-size:13px;border-radius:var(--r-s);width:auto;padding:0 var(--sp-base)}
+
+.ic{width:1em;height:1em;display:block;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ic.solid{fill:currentColor}
+.ic .fx{fill:currentColor;stroke:none}
+.ic.mark{fill:currentColor;stroke:none}
+.ic.mark path{stroke:none}
+
+/* topbar */
+.offbar{display:flex;align-items:center;gap:8px;margin:0 var(--sp-base) var(--sp-tight);padding:10px 12px;
+  border-radius:var(--r-s);background:var(--gilt-soft);color:#7A5B21;font-size:11.5px;font-weight:600;line-height:1.5}
+.offbar .ic{flex:none}
+.offbar .offdl{flex:none;margin-left:auto;font-size:11.5px;font-weight:700;color:#7A5B21;text-decoration:underline}
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:var(--sp-tight);padding:var(--sp-tight) var(--sp-base) var(--sp-base-tight);background:linear-gradient(var(--paper) 72%,transparent)}
+.topbar .brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;color:var(--ink)}
+.iconbtn{width:var(--h-ctrl-s);height:var(--h-ctrl-s);border-radius:var(--r-s);display:grid;place-items:center;background:var(--surface);border:1px solid var(--line);color:var(--ink-2);font-size:16px;flex:none}
+.spacer{flex:1}
+.livedot{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;letter-spacing:.06em;color:var(--jade-500);
+  background:var(--jade-50);border:1px solid var(--jade-100);padding:4px 8px;border-radius:999px}
+.livedot i{width:6px;height:6px;border-radius:50%;background:var(--jade-400);animation:pulse 1.9s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
+
+/* ---------- tab bar ---------- */
+.tabbar{flex:none;display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-super-tight);padding:var(--sp-tight) var(--sp-tight) calc(var(--safe-bottom) - var(--sp-tight));
+  background:var(--surface);border-top:1px solid var(--line);position:relative;z-index:30}
+.tabbar button{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 2px;border-radius:12px;color:var(--ink-3);font-size:10px;font-weight:600;transition:color .18s,background .18s}
+.tabbar button .ic{width:20px;height:20px}
+.tabbar button[aria-current="true"]{color:var(--jade-500);background:var(--jade-50)}
+
+/* ---------- splash ---------- */
+#s-splash{background:#12100C}
+.splash-img{position:absolute;inset:0;background:url(src/projects/curator/museum-hall.jpg) center top/cover no-repeat}
+.splash-veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,16,12,.25) 0%,rgba(18,16,12,.55) 42%,#12100C 78%)}
+.splash-in{position:relative;height:100%;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-end;
+  padding:0 var(--sp-loose) calc(var(--safe-bottom) + var(--sp-tight));text-align:center}
+/* 品牌锁定块相对整屏居中，不受底部 CTA 高度影响 */
+.splash-mid{position:absolute;left:var(--sp-loose);right:var(--sp-loose);top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;align-items:center}
+.splash-bottom{flex:none}
+.crest{width:46px;height:46px;border-radius:12px;background:var(--jade-500);display:grid;place-items:center;color:#fff;font-size:23px;margin-bottom:24px;
+  box-shadow:0 10px 30px -8px rgba(51,118,75,.8)}
+.crest::after{content:"";position:absolute;width:12px;height:12px;background:var(--jade-500);transform:translateY(24px) rotate(45deg);border-radius:2px}
+.splash-title{font-family:var(--font-display);font-size:25px;font-weight:700;color:#fff;letter-spacing:.22em;margin:0;line-height:1.4;text-wrap:balance}
+.splash-sub{margin:14px 0 0;font-size:12.5px;color:rgba(255,255,255,.6);letter-spacing:.06em}
+.splash-cta{margin-top:var(--sp-extra-loose);width:100%;height:var(--h-ctrl-l);border-radius:var(--r-m);border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.07);
+  color:#fff;font-size:14.5px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;backdrop-filter:blur(8px)}
+.splash-cta:active{background:rgba(255,255,255,.15)}
+.splash-cta[disabled]{opacity:.5}
+.loadwrap{animation:fade .2s ease}
+.splash-foot{margin-top:20px;width:100%;display:flex;align-items:center;justify-content:space-between;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.splash-foot b{color:var(--jade-400);font-weight:700;font-variant-numeric:tabular-nums}
+.loadline{margin-top:var(--sp-tight);width:100%;height:2px;border-radius:var(--r-hairline);background:rgba(255,255,255,.14);overflow:hidden}
+.loadline i{display:block;height:100%;width:0%;background:var(--jade-400);border-radius:2px;transition:width .26s linear}
+.splash-lang{position:absolute;top:20px;right:20px;z-index:3;display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:var(--r-full);border:1px solid rgba(255,255,255,.26);background:rgba(255,255,255,.10);backdrop-filter:blur(8px);color:#fff}
+.splash-lang button{font-size:12.5px;font-weight:700;color:rgba(255,255,255,.55);transition:color .18s}
+.splash-lang button[aria-current="true"]{color:#fff}
+.splash-lang .sep{color:rgba(255,255,255,.3);font-size:12px}
+
+/* ---------- onboarding ---------- */
+.steps{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--jade-500)}
+.steps .track{flex:1;height:3px;border-radius:2px;background:var(--jade-100);overflow:hidden}
+.steps .track i{display:block;height:100%;width:60%;background:var(--jade-500);border-radius:2px;transition:width .4s}
+.opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px;border-radius:var(--r-m);background:var(--surface-2);border:1.5px solid transparent;transition:background .18s,border-color .18s}
+.opt .glyph{width:40px;height:40px;border-radius:12px;background:var(--surface);display:grid;place-items:center;font-size:19px;flex:none;border:1px solid var(--line)}
+.opt b{display:block;font-size:14.5px;color:var(--ink);font-weight:700}
+.opt span{display:block;font-size:12px;color:var(--ink-3);margin-top:2px}
+.opt .check{margin-left:auto;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;color:transparent;flex:none}
+.opt[aria-pressed="true"]{background:var(--jade-50);border-color:var(--jade-300)}
+.opt[aria-pressed="true"] .glyph{background:var(--jade-100);border-color:transparent}
+.opt[aria-pressed="true"] .check{background:var(--jade-500);border-color:var(--jade-500);color:#fff}
+.fieldrow{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+.fieldrow .lbl{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.fieldrow .val{font-size:13px;font-weight:700;color:var(--jade-500);font-variant-numeric:tabular-nums}
+.selwrap{position:relative}
+.selwrap select{appearance:none;-webkit-appearance:none;width:100%;height:var(--h-ctrl-m);border:1px solid var(--line);border-radius:var(--r-s);background:var(--surface);padding:0 36px 0 var(--sp-base-tight);font:inherit;font-size:14px;font-weight:600;color:var(--ink)}
+.selwrap .chev{position:absolute;right:12px;top:50%;width:16px;height:16px;color:var(--ink-3);transform:translateY(-50%);pointer-events:none}
+.selnote{margin:8px 0 0;font-size:11.5px;line-height:1.6;color:var(--ink-3)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:2px;background:var(--jade-100);outline:none;margin:0}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:19px;height:19px;border-radius:50%;background:var(--jade-500);border:3px solid var(--surface);box-shadow:0 2px 6px rgba(14,31,23,.25);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;background:var(--jade-500);border:3px solid var(--surface);cursor:pointer}
+.scale{display:flex;justify-content:space-between;font-size:10.5px;color:var(--ink-3);margin-top:8px}
+.seg{display:grid;grid-auto-flow:column;gap:4px;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:4px}
+.seg button{padding:8px 4px;border-radius:8px;font-size:12.5px;font-weight:600;color:var(--ink-3);transition:background .18s,color .18s}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--jade-500);box-shadow:var(--shadow)}
+.sticky-cta{position:sticky;bottom:0;padding:var(--sp-base-tight) var(--sp-base) var(--sp-base);background:linear-gradient(transparent,var(--paper) 28%)}
+.skiplink{display:block;width:100%;margin-top:12px;padding:8px;font-size:13px;font-weight:600;color:var(--jade-500)}
+.fineprint{font-size:11px;line-height:1.6;color:var(--ink-3);text-align:center;margin:12px 0 0}
+.fineprint a{color:var(--jade-500);text-decoration:none;border-bottom:1px solid var(--jade-200)}
+
+/* ---------- recognition viewfinder ---------- */
+.finder{position:relative;border-radius:var(--r-l);overflow:hidden;aspect-ratio:4/3;background:#0d1410}
+.finder img{width:100%;height:100%;object-fit:cover;display:block}
+.finder .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,12,9,.5),transparent 38%,transparent 62%,rgba(6,12,9,.55))}
+.finder .where{position:absolute;top:11px;left:11px;display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:600;color:#fff;
+  background:rgba(10,20,15,.5);backdrop-filter:blur(6px);padding:4px 8px;border-radius:999px}
+.finder .tools{position:absolute;top:11px;right:11px;display:flex;flex-direction:column;gap:8px}
+.finder .tools button{width:31px;height:31px;border-radius:8px;background:rgba(10,20,15,.5);backdrop-filter:blur(6px);color:#fff;display:grid;place-items:center;font-size:14px}
+.bracket{position:absolute;width:26px;height:26px;border:2px solid var(--jade-400);opacity:.9}
+.bracket.tl{top:34%;left:9%;border-right:0;border-bottom:0;border-radius:4px 0 0 0}
+.bracket.tr{top:34%;right:9%;border-left:0;border-bottom:0;border-radius:0 4px 0 0}
+.bracket.bl{bottom:16%;left:9%;border-right:0;border-top:0;border-radius:0 0 0 4px}
+.bracket.br{bottom:16%;right:9%;border-left:0;border-top:0;border-radius:0 0 4px 0}
+.scanline{position:absolute;left:9%;right:9%;height:2px;background:linear-gradient(90deg,transparent,var(--jade-400),transparent);animation:scan 3.2s ease-in-out infinite}
+@keyframes scan{0%,100%{top:34%}50%{top:82%}}
+.finder .verdict{position:absolute;left:11px;bottom:11px;display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#fff;
+  background:rgba(51,118,75,.86);backdrop-filter:blur(6px);padding:4px 12px;border-radius:999px}
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.mode{display:flex;align-items:center;justify-content:center;gap:4px;height:38px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line);font-size:12px;font-weight:600;color:var(--ink-3)}
+.mode[aria-pressed="true"]{background:var(--jade-500);border-color:var(--jade-500);color:#fff}
+.mode[disabled]{opacity:.38;text-decoration:line-through;cursor:not-allowed}
+.finder[data-state="mid"] .bracket{border-color:var(--gilt)}
+.finder[data-state="low"] .bracket{border-color:#9AA8A0}
+.finder[data-state="low"] .scanline,.finder[data-state="mid"] .scanline{display:none}
+.finder[data-state="mid"] .verdict{background:rgba(176,138,69,.92)}
+.finder[data-state="low"] .verdict{background:rgba(40,52,46,.86)}
+.finder[data-state="scanning"] .verdict{background:rgba(40,52,46,.86)}
+.hintbar.as-action{width:100%;text-align:left;align-items:center}
+.hintbar.as-action b{color:var(--jade-700);font-weight:700}
+.degrade{margin-top:8px;padding:12px;border-radius:var(--r-m);background:var(--surface);border:1px solid var(--line)}
+.degrade.low{background:var(--surface-2)}
+.dg-head{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--ink-2);margin-bottom:8px}
+.dg-head .ic{color:var(--gilt)}
+.degrade.low .dg-head .ic{color:var(--ink-3)}
+.cand{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:8px;border-radius:var(--r-s);transition:background .16s}
+.cand:active{background:var(--jade-50)}
+.cand img{width:40px;height:40px;border-radius:var(--r-xs);object-fit:cover;flex:none}
+.cand .meta{flex:1;min-width:0}
+.cand b{display:block;font-size:13px;font-weight:700;color:var(--ink)}
+.cand .meta span{display:block;font-size:11px;color:var(--ink-3);margin-top:2px}
+.cand .pct{font-size:12px;font-weight:700;color:var(--ink-3);font-variant-numeric:tabular-nums;flex:none}
+.dg-alt{width:100%;margin-top:4px;padding:8px;font-size:12px;font-weight:600;color:var(--ink-3)}
+.dg-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.dg-btn{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 4px;border-radius:var(--r-s);
+  background:var(--surface);border:1px solid var(--line);font-size:11px;font-weight:600;color:var(--ink-2)}
+.dg-btn .ic{color:var(--jade-500)}
+.taginput{width:100%;height:var(--h-ctrl-l);border:1px solid var(--line);border-radius:var(--r-m);background:var(--surface-2);
+  padding:0 var(--sp-base-tight);font:inherit;font-size:15px;font-weight:600;color:var(--ink);text-align:center;letter-spacing:.08em}
+.hintbar{display:flex;align-items:center;gap:8px;margin-top:8px;padding:12px 12px;border-radius:12px;background:var(--jade-50);border:1px solid var(--jade-100);font-size:12px;color:var(--jade-700);line-height:1.5}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.stat{padding:12px;border-radius:12px;background:var(--surface);border:1px solid var(--line)}
+.stat .top{display:flex;align-items:center;gap:8px;min-width:0}
+.stat .top .ic{width:16px;height:16px;color:var(--jade-500);flex:none}
+.stat b{font-size:17px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stat span{display:block;font-size:11.5px;color:var(--ink-3);margin-top:4px}
+.rail{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;margin:0 calc(var(--sp-base) * -1);padding-inline:var(--sp-base);padding-bottom:4px}
+.rail::-webkit-scrollbar{display:none}
+.nearby{flex:none;width:144px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-m);overflow:hidden;transition:transform .12s}
+.nearby:active{transform:scale(.98)}
+.nearby img{width:100%;aspect-ratio:16/11;object-fit:cover;display:block;background:var(--surface-2)}
+.nearby .t{padding:12px}
+.nearby b{display:block;font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.35}
+.nearby span{display:block;font-size:11.5px;color:var(--ink-3);margin-top:4px}
+.nearby span .ic{display:inline-block;vertical-align:-2px;margin-right:3px;color:var(--jade-500)}
+
+/* exhibit rows */
+.exhibit{display:flex;gap:12px;width:100%;text-align:left;padding:12px;border-radius:var(--r-m);background:var(--surface);border:1px solid var(--line);align-items:center}
+.exhibit img{width:60px;height:60px;border-radius:8px;object-fit:cover;flex:none;background:var(--surface-2)}
+.exhibit .meta{flex:1;min-width:0}
+.exhibit b{display:block;font-size:14px;font-weight:700;color:var(--ink)}
+.exhibit span{display:block;font-size:11.5px;color:var(--ink-3);margin-top:2px;line-height:1.45}
+.walk{font-size:10px;font-weight:700;color:var(--ink-3);background:var(--surface-2);border-radius:8px;padding:4px 8px;flex:none;text-align:center;line-height:1.3}
+
+.hero-card{position:relative;border-radius:var(--r-l);overflow:hidden;border:1px solid var(--line)}
+.hero-card img{width:100%;display:block;aspect-ratio:16/11;object-fit:cover}
+.hero-card .cap{position:absolute;inset:auto 0 0 0;padding:16px 16px 12px;background:linear-gradient(transparent,rgba(6,12,9,.88))}
+.hero-card .cap b{display:block;font-family:var(--font-display);font-size:19px;color:#fff;font-weight:700;letter-spacing:-.01em}
+.hero-card .cap span{display:block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.66);margin-top:4px}
+.hero-card .pill{position:absolute;top:12px;left:12px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--jade-500);padding:4px 8px;border-radius:999px}
+
+.divert{border-radius:var(--r-m);padding:12px;background:var(--jade-50);border:1px solid var(--jade-100)}
+.divert .nudge-t,.divert .ttl{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;color:var(--jade-700)}
+.divert p{margin:8px 0 12px;font-size:12.5px;line-height:1.65;color:var(--jade-700);opacity:.85}
+.divert .row{display:flex;gap:8px}
+.divert .why{margin:8px 0 12px}
+.divert .why summary{font-size:11.5px;font-weight:700;color:var(--jade-600);cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:4px}
+.divert .why summary::-webkit-details-marker{display:none}
+.divert .why summary::before{content:"▸";transition:transform .18s;display:inline-block}
+.divert .why[open] summary::before{transform:rotate(90deg)}
+.divert .why ul{margin:8px 0 0;padding-left:16px}
+.divert .why li{font-size:11.5px;line-height:1.75;color:var(--jade-700);opacity:.82}
+
+/* ---------- detail ---------- */
+.detail-hero{position:relative;z-index:0;isolation:isolate}
+.detail-hero img{width:100%;display:block;aspect-ratio:1/1;object-fit:cover;background:#0d1410}
+.detail-hero .navrow{position:absolute;z-index:3;top:12px;left:12px;right:12px;display:flex;gap:8px}
+.detail-hero .navrow button{width:34px;height:34px;border-radius:50%;background:rgba(10,20,15,.45);backdrop-filter:blur(8px);color:#fff;display:grid;place-items:center;font-size:15px}
+.notthis{position:absolute;z-index:2;right:16px;bottom:16px;font-size:11px;font-weight:600;color:#fff;
+  background:rgba(10,20,15,.5);backdrop-filter:blur(6px);padding:5px 11px;border-radius:var(--r-full)}
+.detail-hero .grad{z-index:1;position:absolute;inset:auto 0 0 0;height:90px;background:linear-gradient(transparent,var(--paper))}
+.detail-hero .match{z-index:2;position:absolute;left:16px;bottom:16px;display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;color:#fff;background:rgba(51,118,75,.9);padding:4px 12px;border-radius:999px}
+
+.gblock{padding:var(--sp-base);border-radius:var(--r-m);background:var(--surface);border:1px solid var(--line)}
+.gblock .body{margin:0}
+.gb-k{display:block;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--jade-500);margin-bottom:var(--sp-tight)}
+.gblock.quote{background:var(--jade-50);border-color:var(--jade-100)}
+.gblock.quote p{margin:0;font-size:14.5px;line-height:1.85;color:var(--jade-700)}
+.gblock.ask{background:var(--gilt-soft);border-color:#E7D5AE}
+.gblock.ask .gb-k{color:#7A5B21}
+.gblock.ask p{margin:0;font-size:14px;line-height:1.7;color:#7A5B21}
+.tl{list-style:none;margin:0;padding:0}
+.tl li{position:relative;padding:0 0 var(--sp-base) var(--sp-base-loose);border-left:2px solid var(--jade-100)}
+.tl li:last-child{padding-bottom:0;border-left-color:transparent}
+.tl li::before{content:"";position:absolute;left:-5px;top:4px;width:8px;height:8px;border-radius:var(--r-full);background:var(--jade-400)}
+.tl b{display:block;font-size:12px;font-weight:700;color:var(--jade-500);font-variant-numeric:tabular-nums}
+.tl span{display:block;font-size:13px;color:var(--ink-2);margin-top:2px;line-height:1.6}
+.tl.prov li::before{background:var(--gilt)}
+.tl.prov b{color:var(--gilt)}
+.routeline{display:flex;align-items:center;gap:var(--sp-tight);overflow-x:auto;scrollbar-width:none}
+.routeline::-webkit-scrollbar{display:none}
+.rl-node{flex:none;text-align:center;padding:var(--sp-tight) var(--sp-base-tight);border-radius:var(--r-s);background:var(--jade-50);min-width:84px}
+.rl-node b{display:block;font-size:13px;font-weight:700;color:var(--jade-700)}
+.rl-node span{display:block;font-size:10.5px;color:var(--jade-600);margin-top:2px;line-height:1.4}
+.rl-arrow{flex:none;color:var(--jade-300);font-size:14px}
+.strata{display:flex;flex-direction:column;gap:var(--sp-tight)}
+.st{display:grid;grid-template-columns:4px auto 1fr;align-items:center;gap:var(--sp-base-tight)}
+.st-bar{width:4px;height:26px;border-radius:2px;background:var(--jade-400);opacity:calc(1 - var(--i) * .26)}
+.st b{font-size:13px;font-weight:700;color:var(--ink)}
+.st span:last-child{font-size:12px;color:var(--ink-3)}
+.composed{margin-top:var(--sp-base-tight);padding:var(--sp-base-tight);border-radius:var(--r-s);background:var(--jade-50);border:1px dashed var(--jade-200)}
+.composed summary{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:var(--jade-600);cursor:pointer;list-style:none}
+.composed summary::-webkit-details-marker{display:none}
+.cmp-list{display:flex;flex-wrap:wrap;gap:4px;margin-top:var(--sp-tight)}
+.cmp-chip{font-size:10.5px;font-weight:600;color:var(--jade-700);background:var(--surface);border:1px solid var(--jade-200);border-radius:var(--r-xs);padding:2px 6px}
+.cmp-why{margin:var(--sp-tight) 0 0;padding-left:16px}
+.cmp-why li{font-size:11px;line-height:1.7;color:var(--jade-700);opacity:.82}
+.grounding{position:absolute;inset:0;z-index:2;pointer-events:none}
+.rgn{position:absolute;pointer-events:auto;border:2px solid transparent;border-radius:var(--r-s);transition:border-color .22s,background .22s}
+.rgn span{position:absolute;left:4px;top:4px;max-width:calc(100% - 8px);overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap;font-size:10px;font-weight:700;color:#fff;background:var(--jade-500);
+  padding:3px 7px;border-radius:var(--r-xs);opacity:0;transition:opacity .22s}
+.rgn.on{border-color:var(--jade-400);background:rgba(127,224,168,.16)}
+.rgn.on span{opacity:1}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:0px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-m);overflow:hidden}
+.fact{background:var(--surface);padding:12px 12px}
+.fact span{display:block;font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.fact b{display:block;font-size:14px;font-weight:700;color:var(--ink);margin-top:4px}
+
+/* audio */
+.player{padding:12px;border-radius:var(--r-m);background:var(--surface);border:1px solid var(--line)}
+.player .top{display:flex;align-items:center;gap:12px}
+.player .playbtn{width:46px;height:46px;border-radius:50%;background:var(--jade-500);color:#fff;display:grid;place-items:center;font-size:17px;flex:none;transition:transform .12s}
+.player .playbtn:active{transform:scale(.93)}
+.player .info b{display:block;font-size:13.5px;font-weight:700;color:var(--ink)}
+.player .info span{display:block;font-size:11px;color:var(--ink-3);margin-top:2px}
+.player .rate{margin-left:auto;font-size:11.5px;font-weight:700;color:var(--jade-500);background:var(--jade-50);border:1px solid var(--jade-100);border-radius:8px;padding:4px 8px;flex:none}
+.wave{display:flex;align-items:flex-end;gap:2px;height:36px;margin-top:12px}
+.wave i{flex:1;border-radius:2px;background:var(--jade-100);transition:background .2s}
+.wave i.on{background:var(--jade-500)}
+.wave.playing i.on{animation:bounce .9s ease-in-out infinite alternate}
+.caps{margin-top:12px;padding-top:12px;border-top:1px solid var(--line-soft)}
+.caps summary{font-size:11.5px;font-weight:700;color:var(--jade-600);cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:4px}
+.caps summary::-webkit-details-marker{display:none}
+.caps summary::before{content:"▸";display:inline-block;transition:transform .18s}
+.caps[open] summary::before{transform:rotate(90deg)}
+#transcript p{margin:8px 0 0;font-size:12.5px;line-height:1.7;color:var(--ink-3);transition:color .2s}
+#transcript p.on{color:var(--ink);font-weight:600}
+#transcript .ts{display:inline-block;min-width:34px;font-size:10.5px;color:var(--jade-500);font-variant-numeric:tabular-nums}
+.times{display:flex;justify-content:space-between;font-size:10.5px;color:var(--ink-3);margin-top:8px;font-variant-numeric:tabular-nums}
+@keyframes bounce{from{transform:scaleY(.65)}to{transform:scaleY(1)}}
+@media (prefers-reduced-motion:reduce){
+  .wave.playing i.on,.scanline,.livedot i,.loadline i{animation:none!important}
+}
+
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:none;display:inline-flex;align-items:center;gap:4px;padding:8px 12px;border-radius:999px;font-size:12.5px;font-weight:600;
+  background:var(--surface);border:1px solid var(--line);color:var(--ink-3);white-space:nowrap}
+.tabs button[aria-selected="true"]{background:var(--jade-500);border-color:var(--jade-500);color:#fff}
+
+.switchrow{display:flex;align-items:center;gap:12px;padding:12px 12px;border-radius:var(--r-m);background:var(--surface);border:1px solid var(--line)}
+.switchrow .glyph{width:34px;height:34px;border-radius:8px;background:var(--jade-50);color:var(--jade-500);display:grid;place-items:center;font-size:16px;flex:none}
+.switchrow .txt{flex:1;min-width:0}
+.switchrow b{display:flex;align-items:center;gap:4px;font-size:13.5px;font-weight:700;color:var(--ink)}
+.switchrow span{display:block;font-size:11.5px;color:var(--ink-3);margin-top:2px;line-height:1.5}
+.sw{width:var(--switch-w);height:var(--switch-h);border-radius:999px;background:var(--line);position:relative;flex:none;transition:background .22s}
+.sw i{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .22s}
+.sw[aria-pressed="true"]{background:var(--jade-500)}
+.sw[aria-pressed="true"] i{transform:translateX(18px)}
+.req{font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--gilt);background:var(--gilt-soft);border-radius:4px;padding:2px 4px}
+
+.insight{padding:16px;border-radius:var(--r-m);background:var(--surface);border:1px solid var(--line)}
+.source{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line-soft);font-size:11px;color:var(--ink-3)}
+
+.knowgrid{display:flex;gap:var(--sp-tight);overflow-x:auto;scrollbar-width:none;padding-bottom:2px;margin:0 calc(var(--sp-base) * -1);padding-inline:var(--sp-base)}
+.knowgrid::-webkit-scrollbar{display:none}
+.know{flex:none;width:126px;padding:12px;border-radius:var(--r-m);background:var(--surface);border:1px solid var(--line)}
+.know .emoji{font-size:20px}
+.know span{display:block;font-size:10.5px;color:var(--ink-3);margin-top:8px}
+.know b{display:block;font-size:14.5px;font-weight:700;color:var(--ink);margin-top:2px}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rel img{width:100%;aspect-ratio:1/1.24;object-fit:cover;border-radius:var(--r-m);display:block;background:var(--surface-2);border:1px solid var(--line)}
+.rel span{display:block;font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-top:8px}
+.rel b{display:block;font-size:13.5px;font-weight:700;color:var(--ink);margin-top:2px;line-height:1.35}
+
+/* ---------- chat ---------- */
+#s-chat:not([hidden]){display:flex;flex-direction:column}
+.modelchip{display:inline-flex;align-items:center;gap:6px;height:var(--h-ctrl-s);padding:0 var(--sp-base-tight);
+  border-radius:var(--r-full);background:var(--surface-2);border:1px solid var(--line);
+  font-size:12.5px;font-weight:700;color:var(--ink-2);flex:none;max-width:56%}
+.modelchip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.modelchip .chev{width:14px;height:14px;color:var(--ink-3);flex:none}
+.modelchip[aria-expanded="true"]{background:var(--jade-50);border-color:var(--jade-200);color:var(--jade-700)}
+.modelmenu{margin:0 var(--sp-base) var(--sp-tight);padding:var(--sp-extra-tight);border-radius:var(--r-m);
+  background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow-lift);
+  animation:rise .18s cubic-bezier(.2,.8,.3,1)}
+.mrow{display:flex;align-items:center;gap:var(--sp-base-tight);width:100%;text-align:left;
+  padding:var(--sp-base-tight);border-radius:var(--r-s);color:var(--jade-500)}
+.mrow:active{background:var(--surface-2)}
+.mrow.on{background:var(--jade-50)}
+.mrow .mr-t{flex:1;min-width:0}
+.mrow b{display:block;font-size:13.5px;font-weight:700;color:var(--ink)}
+.mrow .mr-t span{display:block;font-size:11.5px;color:var(--ink-3);margin-top:2px;line-height:1.5}
+.askhome{padding:var(--sp-extra-tight) var(--sp-base) var(--sp-base);flex:none}
+.ask-t{margin:var(--sp-tight) 0 0;font-size:30px;font-weight:700;letter-spacing:-.03em;color:var(--ink);line-height:1.15}
+.ask-s{margin:var(--sp-tight) 0 var(--sp-base-loose);font-size:13px;color:var(--ink-3);line-height:1.6}
+.ask-list{display:flex;flex-direction:column}
+.ask-line{display:block;width:100%;text-align:left;padding:var(--sp-base-tight) 0;
+  border-bottom:1px solid var(--line-soft);transition:opacity .15s}
+.ask-line:last-child{border-bottom:0}
+.ask-line:active{opacity:.55}
+.ask-line b{display:block;font-size:15px;font-weight:700;color:var(--jade-600)}
+.ask-line span{display:block;font-size:12.5px;color:var(--ink-3);margin-top:4px;line-height:1.55}
+.chatwrap{flex:1 0 auto;display:flex;flex-direction:column;gap:var(--sp-base-tight);padding:var(--sp-extra-tight) var(--sp-base) var(--sp-tight)}
+.bubble-me{align-self:flex-end;max-width:84%;background:var(--jade-500);color:#fff;padding:12px 12px;border-radius:16px 16px 4px 16px;font-size:13.5px;line-height:1.65}
+.bubble-ai{align-self:flex-start;max-width:92%;display:flex;gap:8px}
+.bubble-ai .av{width:28px;height:28px;border-radius:8px;background:var(--jade-500);color:#fff;display:grid;place-items:center;font-size:13px;flex:none;margin-top:2px}
+.bubble-ai .body-wrap{background:var(--surface);border:1px solid var(--line);border-radius:4px 16px 16px 16px;padding:12px 12px;box-shadow:var(--shadow)}
+.bubble-ai p{margin:0 0 8px;font-size:13.5px;line-height:1.72;color:var(--ink-2)}
+.bubble-ai p:last-of-type{margin-bottom:0}
+.bubble-ai p strong{color:var(--ink);font-weight:700}
+.meta-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px;padding-top:8px;border-top:1px solid var(--line-soft)}
+.srcchip{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;color:var(--ink-3);background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:4px 8px}
+.bubble-ai p.from-archive{border-left:2px solid var(--jade-300);padding-left:10px}
+.bubble-ai p.from-ai{border-left:2px dashed var(--line);padding-left:10px;color:var(--ink-2)}
+.cite{font-size:9px;font-weight:700;color:var(--jade-500);vertical-align:super;margin-left:2px}
+.aimark{display:inline-block;margin-left:6px;font-size:9.5px;font-weight:700;letter-spacing:.06em;color:var(--gilt);background:var(--gilt-soft);border-radius:4px;padding:1px 5px;vertical-align:1px}
+.srcchip b{color:var(--jade-500)}
+.provkey{display:flex;gap:16px;padding-left:38px;margin-top:-4px}
+.provkey span{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;color:var(--ink-3)}
+.provkey i{width:12px;height:0;border-top:2px solid var(--jade-300);display:block}
+.provkey i.sw-ai{border-top:2px dashed var(--ink-3)}
+.acts{display:flex;gap:12px;margin-top:8px;font-size:11px;color:var(--ink-3)}
+.acts button{display:inline-flex;align-items:center;gap:4px}
+.followups{display:flex;flex-direction:column;gap:8px;align-items:flex-start;margin-top:2px}
+.followups button{display:inline-flex;align-items:center;gap:8px;max-width:100%;text-align:left;font-size:12.5px;font-weight:600;color:var(--jade-600);
+  background:var(--jade-50);border:1px solid var(--jade-100);border-radius:12px;padding:8px 12px;line-height:1.45}
+.followups button:active{background:var(--jade-100)}
+.visualcard{border-radius:var(--r-m);overflow:hidden;border:1px solid var(--line);background:var(--surface)}
+.visualcard img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.visualcard .cap{padding:12px 12px}
+.body-wrap.redline{background:var(--gilt-soft);border-color:#E7D5AE}
+.rl-t{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:#7A5B21;margin-bottom:8px}
+.body-wrap.redline p{color:#7A5B21;margin:0}
+.typing{display:inline-flex;gap:4px;align-items:center;padding:4px 0}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--jade-300);animation:blink 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,60%,100%{opacity:.3}30%{opacity:1}}
+.composer{position:sticky;bottom:0;padding:var(--sp-tight) var(--sp-base) var(--sp-base-tight);background:linear-gradient(transparent,var(--paper) 30%);display:flex;gap:8px;align-items:center}
+.cbox{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);padding:var(--sp-base-tight);box-shadow:var(--shadow)}
+.ctools{display:flex;align-items:center;gap:var(--sp-tight);margin-top:var(--sp-base-tight)}
+.ctools .spacer{flex:1}
+.ct{width:32px;height:32px;border-radius:var(--r-s);display:grid;place-items:center;color:var(--ink-3);background:var(--surface-2)}
+.ct .ic{width:16px;height:16px}
+.mic{width:38px;height:38px;border-radius:var(--r-full);background:var(--jade-500);color:#fff;display:grid;place-items:center;flex:none}
+.mic .ic{width:18px;height:18px}
+.composer input{width:100%;border:0;padding:0;background:none;outline:none;font:inherit;font-size:14px;color:var(--ink);min-width:0}
+.composer input::placeholder{color:var(--ink-3)}
+.composer .send{width:38px;height:38px;border-radius:var(--r-full);background:var(--jade-50);color:var(--jade-500);display:grid;place-items:center;flex:none}
+.composer .send .ic{width:17px;height:17px}
+
+/* ---------- route ---------- */
+.progresscard{padding:16px;border-radius:var(--r-l);background:linear-gradient(140deg,var(--jade-600),var(--jade-800));color:#fff}
+.progresscard .head{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:600;opacity:.85}
+.progresscard .track{height:6px;border-radius:4px;background:rgba(255,255,255,.22);margin:12px 0 12px;overflow:hidden}
+.progresscard .track i{display:block;height:100%;background:#fff;border-radius:4px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.progresscard .nums{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.progresscard .nums b{display:block;font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
+.progresscard .nums span{display:block;font-size:10.5px;opacity:.72;margin-top:2px}
+.pacing{margin-top:12px;padding:12px;border-radius:var(--r-m);border:1px solid var(--jade-100);background:var(--jade-50)}
+.pacing[data-tone="warn"]{border-color:#E7D5AE;background:var(--gilt-soft)}
+.pacing .pace-t{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:var(--jade-700)}
+.pacing[data-tone="warn"] .pace-t{color:#7A5B21}
+.pacing p{margin:4px 0 0;font-size:12px;line-height:1.6;color:var(--jade-700);opacity:.85}
+.pacing[data-tone="warn"] p{color:#7A5B21}
+.pacing .btn{margin-top:12px}
+.aiNote{display:flex;gap:8px;padding:12px;border-radius:var(--r-m);background:var(--jade-50);border:1px solid var(--jade-100)}
+.aiNote b{display:block;font-size:12.5px;font-weight:700;color:var(--jade-700)}
+.aiNote p{margin:4px 0 0;font-size:12px;line-height:1.6;color:var(--jade-700);opacity:.82}
+.map{border-radius:var(--r-m);overflow:hidden;border:1px solid var(--line);background:var(--surface)}
+.plan{position:relative;width:100%;line-height:0}
+.plan img{width:100%;display:block}
+.plan-chip{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;
+  background:#fff;color:#14211B;border-radius:12px;font-size:14px;font-weight:600;line-height:1.2;
+  box-shadow:0 2px 10px rgba(20,33,27,.14);white-space:nowrap;padding:0 8px}
+.plan-dot{position:absolute;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:var(--r-full);
+  background:var(--jade-500);box-shadow:0 0 0 2px #fff}
+.plan-dot[data-state="next"]{background:#fff;box-shadow:0 0 0 2px #8FA79A inset, 0 0 0 2px rgba(255,255,255,.85)}
+.plan-dot[data-state="now"]{background:var(--gilt);width:16px;height:16px}
+.plan-dot[data-state="now"]::after{content:"";position:absolute;inset:-6px;border-radius:var(--r-full);
+  border:2px solid var(--gilt);opacity:.55}
+.plan-legend{position:absolute;left:var(--sp-tight);bottom:var(--sp-tight);display:flex;align-items:center;gap:4px;
+  background:rgba(255,255,255,.9);backdrop-filter:blur(6px);border-radius:var(--r-s);padding:4px 8px;
+  font-size:10px;font-weight:600;color:#3A4A42;line-height:1.3}
+.gaincard{padding:var(--sp-base);border-radius:var(--r-l);background:linear-gradient(140deg,var(--jade-600),var(--jade-800));color:#fff}
+.gaincard h4{margin:0 0 var(--sp-base-tight);font-size:17px;font-weight:700}
+.gainrow+.gainrow{margin-top:var(--sp-base-tight)}
+.gainrow .top{display:flex;align-items:baseline;justify-content:space-between;font-size:13px}
+.gainrow .top b{font-variant-numeric:tabular-nums}
+.gainrow .track{height:6px;border-radius:var(--r-hairline);background:rgba(255,255,255,.24);margin-top:var(--sp-tight);overflow:hidden}
+.gainrow .track i{display:block;height:100%;background:#fff;border-radius:var(--r-hairline);transition:width .6s cubic-bezier(.4,0,.2,1)}
+.gaincard .quote{margin:var(--sp-base) 0 0;padding-top:var(--sp-base-tight);border-top:1px solid rgba(255,255,255,.2);
+  font-size:12.5px;line-height:1.65;color:rgba(255,255,255,.8)}
+.routelist{display:flex;flex-direction:column;gap:8px}
+.reportcard{display:flex;align-items:center;gap:12px;width:100%;text-align:left;margin-top:12px;padding:14px;
+  border-radius:var(--r-m);background:var(--surface);border:1px dashed var(--line);color:var(--ink-3)}
+.reportcard .rc-t{flex:1;min-width:0}
+.reportcard b{display:block;font-size:14px;font-weight:700;color:var(--ink)}
+.reportcard .rc-t span{display:block;font-size:11.5px;margin-top:2px}
+.reportcard .rc-ic{width:38px;height:38px;border-radius:var(--r-s);background:var(--surface-2);display:grid;place-items:center;flex:none}
+.reportcard.done{border-style:solid;border-color:var(--jade-300);background:var(--jade-50);color:var(--jade-700)}
+.reportcard.done .rc-ic{background:var(--jade-500);color:#fff}
+.stop{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;padding:12px;border-radius:var(--r-m);background:var(--surface);border:1px solid var(--line);transition:border-color .2s}
+.stop .dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;flex:none;margin-top:20px;color:transparent;font-size:11px}
+.stop img{width:52px;height:52px;border-radius:8px;object-fit:cover;flex:none;background:var(--surface-2)}
+.stop .meta{flex:1;min-width:0}
+.stop .state{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.stop b{display:block;font-size:14px;font-weight:700;color:var(--ink);margin-top:2px}
+.stop .sub{display:block;font-size:11.5px;color:var(--ink-3);margin-top:2px}
+.stop .badges{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
+.stop .bdg{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;background:var(--surface-2);border:1px solid var(--line);color:var(--ink-3)}
+.stop[data-state="done"]{opacity:.62}
+.stop[data-state="done"] .dot{background:var(--jade-500);border-color:var(--jade-500);color:#fff}
+.stop[data-state="done"] .state{color:var(--jade-500)}
+.stop[data-state="now"]{border-color:var(--jade-400);background:var(--jade-50)}
+.stop[data-state="now"] .dot{border-color:var(--jade-500);background:var(--jade-100)}
+.stop[data-state="now"] .state{color:var(--jade-500)}
+.stop[data-state="now"] .bdg{background:var(--jade-100);border-color:var(--jade-200);color:var(--jade-700)}
+
+/* ---------- report ---------- */
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tile{padding:16px;border-radius:var(--r-m);background:var(--surface);border:1px solid var(--line)}
+.tile .ic{width:17px;height:17px;color:var(--jade-500)}
+.tile b{display:block;font-size:27px;font-weight:700;color:var(--ink);margin-top:8px;font-variant-numeric:tabular-nums;letter-spacing:-.03em;line-height:1}
+.tile span{display:block;font-size:11px;color:var(--ink-3);margin-top:4px}
+.tile.accent{background:linear-gradient(140deg,var(--jade-600),var(--jade-800));border-color:transparent}
+.tile.accent .ic,.tile.accent b{color:#fff}
+.tile.accent span{color:rgba(255,255,255,.75)}
+.noradar{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:24px 16px;color:var(--ink-3)}
+.noradar .ic{color:var(--ink-3);opacity:.6}
+.noradar b{font-size:13.5px;color:var(--ink-2)}
+.noradar p{margin:0;font-size:12px;line-height:1.6;max-width:30ch}
+.styles{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.style{position:relative;padding:12px;border-radius:var(--r-m);background:var(--surface);border:1.5px solid var(--line);text-align:left;transition:border-color .2s,background .2s}
+.style .emoji{font-size:19px}
+.style b{display:block;font-size:13.5px;font-weight:700;color:var(--ink);margin-top:8px}
+.style span{display:block;font-size:11px;color:var(--ink-3);margin-top:2px}
+.style[aria-pressed="true"]{border-color:var(--jade-400);background:var(--jade-50)}
+.style .rec{position:absolute;top:11px;right:11px;font-size:9px;font-weight:700;letter-spacing:.06em;color:var(--gilt);background:var(--gilt-soft);border-radius:4px;padding:2px 4px}
+.gain{display:flex;gap:12px;padding:12px;border-radius:var(--r-m);background:var(--surface);border:1px solid var(--line)}
+.gain .emoji{font-size:19px;flex:none}
+.gain b{display:block;font-size:13.5px;font-weight:700;color:var(--ink)}
+.gain p{margin:4px 0 0;font-size:12px;line-height:1.6;color:var(--ink-3)}
+.poster{border-radius:var(--r-l);padding:16px;background:linear-gradient(150deg,#16231C,#0E1A14);border:1px solid rgba(78,144,104,.32)}
+.poster .brand{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;color:var(--gilt);letter-spacing:.06em}
+.poster .mosaic{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:12px 0}
+.poster .mosaic img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:8px;display:block}
+.poster h4{margin:0;font-family:var(--font-display);font-size:18px;font-weight:700;letter-spacing:-.01em;color:#fff}
+.poster p{margin:4px 0 12px;font-size:11.5px;color:rgba(255,255,255,.6)}
+.poster .row{display:flex;gap:8px}
+.poster .gold{flex:1;height:44px;border-radius:12px;background:var(--jade-400);color:#08150E;font-size:13.5px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px}
+.poster .icn{width:44px;height:44px;border-radius:12px;border:1px solid rgba(255,255,255,.2);color:#fff;display:grid;place-items:center;font-size:16px}
+
+/* ---------- profile ---------- */
+.profcard{display:flex;align-items:center;gap:12px;padding:16px;border-radius:var(--r-l);background:linear-gradient(140deg,var(--jade-600),var(--jade-800));color:#fff}
+.profcard .av{width:54px;height:54px;border-radius:16px;background:rgba(255,255,255,.16);display:grid;place-items:center;font-size:24px;flex:none;position:relative}
+.profcard .av i{position:absolute;right:-2px;bottom:-2px;width:14px;height:14px;border-radius:50%;background:#5FD08A;border:2.5px solid var(--jade-700)}
+.profcard b{display:block;font-size:17px;font-weight:700}
+.profcard .tags{display:flex;gap:4px;margin-top:8px;flex-wrap:wrap}
+.profcard .tags span{font-size:10.5px;background:rgba(255,255,255,.16);border-radius:4px;padding:2px 8px}
+.persona{display:grid;grid-template-columns:1fr 1fr;gap:0px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-m);overflow:hidden}
+.persona div{background:var(--surface);padding:12px 12px}
+.persona span{display:block;font-size:10.5px;color:var(--ink-3)}
+.persona b{display:block;font-size:13.5px;font-weight:700;color:var(--ink);margin-top:4px}
+.rows{border:1px solid var(--line);border-radius:var(--r-m);overflow:hidden;background:var(--surface)}
+.row-item{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 12px;border-bottom:1px solid var(--line-soft)}
+.row-item:last-child{border-bottom:0}
+.row-item .glyph{width:32px;height:32px;border-radius:8px;background:var(--jade-50);color:var(--jade-500);display:grid;place-items:center;font-size:15px;flex:none}
+.row-item .txt{flex:1;min-width:0}
+.row-item b{display:flex;align-items:center;gap:4px;font-size:13.5px;font-weight:600;color:var(--ink)}
+.row-item span{display:block;font-size:11.5px;color:var(--ink-3);margin-top:2px}
+.lost{display:inline-flex;align-items:flex-start;gap:5px;color:var(--gilt)}
+.lost .ic{margin-top:2px;flex:none}
+.row-item .val{font-size:12.5px;font-weight:600;color:var(--ink-3);flex:none}
+.grouplbl{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:20px 0 8px}
+.trust{display:flex;gap:8px;padding:12px;border-radius:var(--r-m);background:var(--jade-50);border:1px solid var(--jade-100)}
+.trust b{display:block;font-size:13px;font-weight:700;color:var(--jade-700)}
+.trust p{margin:4px 0 0;font-size:12px;line-height:1.65;color:var(--jade-700);opacity:.82}
+
+/* ---------- modal ---------- */
+.voicebg{position:absolute;inset:0;z-index:55;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:var(--sp-base);padding:var(--sp-loose);text-align:center;
+  background:radial-gradient(110% 64% at 50% 38%, #FFFFFF 0%, var(--jade-50) 46%, var(--paper) 100%);
+  animation:fade .24s ease}
+.v-head{font-size:13px;font-weight:600;color:var(--jade-600);letter-spacing:.04em}
+.orb{width:188px;height:188px;position:relative}
+.orb canvas{width:100%;height:100%;display:block}
+.v-lead{margin:0;font-size:20px;font-weight:700;line-height:1.45;color:var(--ink);letter-spacing:-.01em;text-wrap:balance;max-width:19ch}
+.v-lead b{color:var(--jade-500)}
+.v-wave{display:flex;align-items:center;gap:5px;height:24px}
+.v-wave i{width:4px;height:100%;border-radius:2px;background:var(--jade-400);transform-origin:center;transform:scaleY(.4)}
+.v-mic{width:72px;height:72px;border-radius:var(--r-full);background:var(--jade-500);color:#fff;display:grid;place-items:center;
+  box-shadow:0 12px 32px -8px rgba(51,118,75,.7)}
+.v-ctl{display:flex;align-items:center;gap:var(--sp-loose)}
+.v-small{width:44px;height:44px;border-radius:var(--r-full);background:var(--surface);border:1px solid var(--line);
+  color:var(--ink-2);display:grid;place-items:center;box-shadow:var(--shadow)}
+.v-small.ok{color:var(--jade-500)}
+.v-timer{font-size:13px;font-weight:700;color:var(--ink-3);font-variant-numeric:tabular-nums;min-width:48px}
+@media (prefers-reduced-motion:reduce){.v-wave i{transition:none}}
+.sheet-bg{position:absolute;inset:0;z-index:50;background:rgba(8,16,12,.45);backdrop-filter:blur(3px);display:grid;place-items:center;padding:20px;animation:fade .25s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.sheet{width:100%;background:var(--surface);border-radius:var(--r-xl);padding:20px 20px;text-align:center;box-shadow:var(--shadow-lift);animation:rise .3s cubic-bezier(.2,.8,.3,1)}
+@keyframes rise{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
+.sheet .pill{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:var(--jade-600);background:var(--jade-50);border:1px solid var(--jade-100);padding:4px 12px;border-radius:999px}
+.sheet img{width:160px;height:160px;object-fit:cover;border-radius:var(--r-m);margin:16px auto 0;display:block;background:var(--surface-2)}
+.sheet h3{margin:16px 0 0;font-family:var(--font-display);font-size:20px;font-weight:700;letter-spacing:-.01em;color:var(--ink)}
+.sheet .sub{margin:8px 0 0;font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.sheet p{margin:12px 0 16px;font-size:13px;line-height:1.7;color:var(--ink-2)}
+.sheet .dismiss{margin-top:12px;font-size:13px;font-weight:600;color:var(--ink-3)}
+#posterSheet{background:rgba(8,16,12,.7)}
+.postersheet{width:100%;max-width:312px;animation:rise .3s cubic-bezier(.2,.8,.3,1)}
+.postersheet .poster{box-shadow:0 24px 60px -20px rgba(0,0,0,.6)}
+.postersheet .dismiss{display:block;width:100%;margin-top:16px;padding:8px;font-size:13px;font-weight:600;color:#fff;opacity:.8}
+
+/* ---------- screen index ---------- */
+
+@media (max-width:440px){
+  .stage{padding-block:0}
+  .phone{border-radius:32px;max-height:none;height:820px}
+}
+</style>
+
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-back" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+<symbol id="i-scan" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/></symbol>
+<symbol id="i-nfc" viewBox="0 0 24 24"><path d="M6 8.32a7.43 7.43 0 0 1 0 7.36"/><path d="M9.46 6.21a11.76 11.76 0 0 1 0 11.58"/><path d="M12.91 4.1a15.91 15.91 0 0 1 .01 15.8"/><path d="M16.37 2a20.16 20.16 0 0 1 0 20"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol>
+<symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15"/><path d="M9 3.236v15"/></symbol>
+<symbol id="i-chat" viewBox="0 0 24 24"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/></symbol>
+<symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></symbol>
+<symbol id="i-pause" viewBox="0 0 24 24"><rect x="14" y="3" width="5" height="18" rx="1"/><rect x="5" y="3" width="5" height="18" rx="1"/></symbol>
+<symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><path d="M12 5v16"/><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></symbol>
+<symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></symbol>
+<symbol id="i-volume" viewBox="0 0 24 24"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></symbol>
+<symbol id="i-lang" viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></symbol>
+<symbol id="i-bulb" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></symbol>
+<symbol id="i-camera" viewBox="0 0 24 24"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></symbol>
+<symbol id="i-bar" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></symbol>
+<symbol id="i-settings" viewBox="0 0 24 24"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></symbol>
+<symbol id="i-landmark" viewBox="0 0 24 24"><path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></symbol>
+<symbol id="i-museum" viewBox="0 0 24 24"><path d="M3.6 9.4 12 3.4l8.4 6v11.2H3.6Z"/><path d="M8.6 16.8v-5.2L12 14.4l3.4-2.8v5.2"/></symbol>
+<symbol id="i-compose" viewBox="0 0 24 24"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></symbol>
+<symbol id="i-chevdown" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-blob" viewBox="0 0 24 24"><path d="M19.39 11.58C19.49 12.64 19.46 13.91 19.05 14.88C18.63 15.85 17.70 16.70 16.89 17.40C16.08 18.10 15.16 18.67 14.19 19.09C13.22 19.51 12.14 19.84 11.08 19.90C10.02 19.95 8.81 19.83 7.82 19.44C6.83 19.04 5.82 18.32 5.13 17.52C4.44 16.72 4.08 15.63 3.68 14.64C3.28 13.65 2.86 12.64 2.76 11.58C2.66 10.52 2.69 9.25 3.11 8.28C3.52 7.31 4.45 6.46 5.26 5.76C6.07 5.06 7.00 4.49 7.97 4.07C8.94 3.65 10.02 3.32 11.08 3.26C12.14 3.21 13.34 3.33 14.33 3.72C15.32 4.12 16.33 4.84 17.02 5.64C17.71 6.44 18.08 7.53 18.47 8.52C18.87 9.51 19.30 10.52 19.39 11.58Z" fill="currentColor" fill-opacity=".34"/><path d="M21.23 11.75C21.23 12.79 20.95 13.96 20.50 14.88C20.04 15.81 19.23 16.58 18.49 17.32C17.75 18.05 16.97 18.79 16.04 19.27C15.11 19.76 13.96 20.23 12.92 20.22C11.89 20.20 10.78 19.65 9.85 19.17C8.91 18.70 8.06 18.07 7.31 17.36C6.56 16.65 5.79 15.83 5.34 14.89C4.89 13.96 4.61 12.79 4.61 11.75C4.62 10.70 4.90 9.54 5.35 8.61C5.81 7.68 6.61 6.91 7.36 6.18C8.10 5.45 8.88 4.71 9.81 4.22C10.73 3.74 11.89 3.26 12.92 3.28C13.96 3.29 15.06 3.85 16.00 4.32C16.94 4.80 17.78 5.42 18.54 6.14C19.29 6.85 20.06 7.67 20.51 8.60C20.96 9.54 21.24 10.70 21.23 11.75Z" fill="currentColor" fill-opacity=".34"/><path d="M20.13 13.01C20.05 14.04 19.77 15.04 19.40 16.00C19.04 16.97 18.62 18.01 17.94 18.78C17.26 19.54 16.27 20.21 15.31 20.60C14.35 20.99 13.19 21.16 12.17 21.10C11.14 21.04 10.12 20.63 9.17 20.23C8.23 19.83 7.27 19.37 6.48 18.70C5.69 18.03 4.80 17.17 4.42 16.22C4.04 15.27 4.12 14.04 4.20 13.01C4.29 11.97 4.57 10.97 4.93 10.01C5.30 9.05 5.72 8.00 6.40 7.24C7.08 6.47 8.06 5.80 9.02 5.42C9.98 5.03 11.14 4.86 12.17 4.92C13.19 4.98 14.21 5.38 15.16 5.78C16.11 6.18 17.06 6.65 17.86 7.32C18.65 7.99 19.54 8.85 19.92 9.80C20.30 10.75 20.22 11.97 20.13 13.01Z" fill="currentColor" fill-opacity=".34"/><path d="M16.95 12.00C16.95 12.64 16.87 13.32 16.65 13.93C16.44 14.54 16.12 15.22 15.66 15.66C15.21 16.11 14.52 16.40 13.91 16.61C13.30 16.82 12.64 16.90 12.00 16.92C11.36 16.94 10.65 16.94 10.05 16.72C9.44 16.50 8.83 16.08 8.39 15.61C7.94 15.15 7.58 14.53 7.36 13.92C7.14 13.32 7.05 12.64 7.05 12.00C7.05 11.36 7.13 10.68 7.35 10.07C7.56 9.46 7.88 8.78 8.34 8.34C8.79 7.89 9.48 7.60 10.09 7.39C10.70 7.18 11.36 7.10 12.00 7.08C12.64 7.06 13.35 7.06 13.95 7.28C14.56 7.50 15.17 7.92 15.61 8.39C16.06 8.85 16.42 9.47 16.64 10.08C16.86 10.68 16.95 11.36 16.95 12.00Z" fill="currentColor" fill-opacity=".95"/></symbol>
+</defs></svg>
+
+<div class="stage">
+  <div class="phone">
+    <div class="island"></div>
+    <div class="statusbar">
+      <span id="clock">10:24</span>
+      <span class="sigs">
+        <svg class="ic" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-nfc"/></svg>
+        <span class="bar" style="height:7px"></span><span class="bar" style="height:10px"></span><span class="bar" style="height:13px"></span>
+        <svg class="ic" style="width:18px;height:18px" viewBox="0 0 24 24"><rect x="2" y="7" width="17" height="10" rx="2.5"/><path d="M21.5 11v2"/><rect x="4" y="9" width="12" height="6" rx="1" fill="currentColor" stroke="none"/></svg>
+      </span>
+    </div>
+
+    <div class="viewport" id="viewport">
+
+      <!-- ============ SPLASH ============ -->
+      <section class="screen" id="s-splash">
+        <div class="splash-img"></div><div class="splash-veil"></div>
+        <div class="splash-lang">
+          <svg class="ic" style="width:15px;height:15px;opacity:.7"><use href="#i-globe"/></svg>
+          <button id="sp-en" onclick="setLang('en')">EN</button>
+          <span class="sep">/</span>
+          <button id="sp-zh" onclick="setLang('zh')">中文</button>
+        </div>
+        <div class="splash-in">
+          <div class="splash-mid">
+            <div class="crest">⛩</div>
+            <h2 class="splash-title">THE DIGITAL CURATOR</h2>
+            <p class="splash-sub">Artificially Intelligent, Culturally Human</p>
+          </div>
+          <div class="splash-bottom">
+            <button class="splash-cta" id="splashCta" onclick="enterMuseum()">
+              <svg class="ic" style="width:17px;height:17px"><use href="#i-sparkle"/></svg>
+              <span data-t="splashCta">进入 AI 线上博物馆</span>
+            </button>
+            <div class="loadwrap" id="loadWrap" hidden>
+              <div class="splash-foot"><span id="loadLabel">正在进入</span><b id="loadPct">0%</b></div>
+              <div class="loadline"><i id="loadBar"></i></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ ONBOARDING ============ -->
+      <section class="screen" id="s-onboard" hidden>
+        <div class="topbar">
+          <button class="iconbtn" onclick="go('splash')"><svg class="ic"><use href="#i-close"/></svg></button>
+          <span class="spacer"></span>
+          <span class="livedot"><i></i><span data-t="obPhase">定制阶段 01</span></span>
+        </div>
+        <div class="pad">
+          <h2 class="h1" data-t="obTitle">定制你的这场参观</h2>
+          <p class="body" style="margin-top:8px" data-t="obLead">告诉策展人你的兴趣，AI 会据此重排展线、挑选讲解深度，并在参观中持续调整。</p>
+
+          <div class="sec">
+            <div style="display:flex;flex-direction:column;gap:8px" id="visitorOpts"></div>
+          </div>
+
+          <div class="sec">
+            <div class="card" style="padding:16px">
+              <div class="fieldrow"><span class="lbl" data-t="obDur">参观时长</span><span class="val" id="durVal">90 分钟</span></div>
+              <input type="range" id="dur" min="30" max="180" step="15" value="90" aria-label="duration">
+              <div class="scale"><span data-t="obDurA">快速打卡</span><span data-t="obDurB">沉浸深游</span></div>
+            </div>
+          </div>
+
+          <div class="sec">
+            <div class="card" style="padding:16px">
+              <div class="fieldrow"><span class="lbl" data-t="obDepth">讲解深度</span><span class="val" id="depthVal">标准级</span></div>
+              <div class="seg" id="depthSeg"></div>
+            </div>
+          </div>
+
+          <div class="sec">
+            <div class="card" style="padding:16px">
+              <div class="fieldrow"><span class="lbl" data-t="obLangLbl">讲解语言</span><span class="val" id="langVal">简体中文</span></div>
+              <div class="selwrap">
+                <select id="narrSel" onchange="setNarration(this.value)" aria-label="narration language"></select>
+                <svg class="ic chev"><use href="#i-chevdown"/></svg>
+              </div>
+              <p class="selnote" id="narrNote"></p>
+            </div>
+          </div>
+        </div>
+        <div class="sticky-cta">
+          <button class="btn" onclick="finishOnboard()"><span data-t="obCta">进入博物馆</span><svg class="ic" style="width:17px;height:17px"><use href="#i-arrow"/></svg></button>
+          <p class="fineprint"><span data-t="obFine1">继续即表示同意</span> <a href="#" onclick="go('profile');return false" data-t="obFine2">《策展隐私条款》</a><span data-t="obFine3">。你的画像仅在本机推理，随时可关闭。</span></p>
+        </div>
+      </section>
+
+      <!-- ============ GUIDE ============ -->
+      <section class="screen" id="s-guide" hidden>
+        <div class="topbar">
+          <div style="min-width:0">
+            <div class="brand">
+              <svg class="ic" style="width:19px;height:19px;color:var(--jade-500)"><use href="#i-museum"/></svg>
+              <span data-t="museum">大英博物馆</span>
+            </div>
+        <div class="offbar" hidden></div>
+            <div class="livedot" style="margin-top:4px;background:none;border:0;padding:0"><i></i><span data-t="guideLive">智慧导览已启动</span></div>
+          </div>
+          <span class="spacer"></span>
+          <div class="langpill" role="group" aria-label="Language">
+            <button id="lang-zh" aria-pressed="true" onclick="setLang('zh')">中</button>
+            <button id="lang-en" aria-pressed="false" onclick="setLang('en')">EN</button>
+          </div>
+          <button class="iconbtn" onclick="openNfc()" aria-label="NFC"><svg class="ic"><use href="#i-bell"/></svg></button>
+        </div>
+        <div class="pad">
+          <div class="finder" id="finder" data-state="high" onclick="rescan()" role="button" tabindex="0">
+            <img src="src/projects/curator/porcelain-hall.jpg" alt="">
+            <div class="scrim"></div>
+            <span class="where"><svg class="ic" style="width:12px;height:12px"><use href="#i-pin"/></svg><span data-t="whereNow">95 号厅 · 中国陶瓷</span></span>
+            <div class="tools">
+              <button aria-label="expand"><svg class="ic"><use href="#i-scan"/></svg></button>
+              <button aria-label="volume"><svg class="ic"><use href="#i-volume"/></svg></button>
+            </div>
+            <span class="bracket tl"></span><span class="bracket tr"></span><span class="bracket bl"></span><span class="bracket br"></span>
+            <span class="scanline"></span>
+            <span class="verdict" id="scanVerdict"></span>
+          </div>
+
+          <div class="modes" id="modes"></div>
+          <div id="scanBody"></div>
+
+          <div class="stats" id="statGrid"></div>
+
+          <div class="sec">
+            <div class="sec-head"><h3 class="h2" data-t="nearby">附近推荐</h3><button class="link" onclick="go('route')" data-t="wholeRoute">全部路线 ›</button></div>
+          </div>
+          <div class="rail" id="nearbyRail"></div>
+
+          <div class="tail"></div>
+        </div>
+      </section>
+
+      <!-- ============ DETAIL ============ -->
+      <section class="screen" id="s-detail" hidden>
+        <div class="detail-hero">
+          <img src="src/projects/curator/dragon-vessel.jpg" id="heroImg" alt="">
+          <div class="grounding" id="grounding"></div>
+          <div class="navrow">
+            <button onclick="go('guide')" aria-label="back"><svg class="ic"><use href="#i-back"/></svg></button>
+            <span style="flex:1"></span>
+            <button aria-label="favorite"><svg class="ic"><use href="#i-heart"/></svg></button>
+            <button aria-label="share"><svg class="ic"><use href="#i-share"/></svg></button>
+          </div>
+          <span class="match"><svg class="ic" style="width:12px;height:12px"><use href="#i-sparkle"/></svg><span data-t="matchTxt">AI 识别匹配 · 置信度 97%</span></span>
+          <button class="notthis" onclick="go('guide');S.scan='mid';renderScan()" data-t="notThis">不是这件？</button>
+          <div class="grad"></div>
+        </div>
+        <div class="pad" style="margin-top:-8px;position:relative;z-index:1">
+          <div class="chipwrap" style="margin-bottom:8px">
+            <span class="tag" id="objCat" style="background:var(--jade-50);border-color:var(--jade-100);color:var(--jade-600)">中国陶瓷</span>
+            <span class="tag" id="objRoom">95 号厅</span>
+          </div>
+          <h2 class="h1" style="margin:0" id="objName">大维德花瓶</h2>
+          <p style="margin:8px 0 0;font-size:13px;color:var(--ink-3)" id="objDyn">元代 · 至正十一年（1351）</p>
+          <div class="chipwrap" style="margin-top:12px" id="a1Tags"></div>
+
+          <div class="sec">
+            <div class="seg" id="readSeg" style="grid-auto-flow:column">
+              <button aria-pressed="true" onclick="setRead('quick')" data-t="readQuick">30 秒速览</button>
+              <button aria-pressed="false" onclick="setRead('deep')" data-t="readDeep">深读</button>
+            </div>
+          </div>
+
+          <div class="sec" id="ctSec">
+            <div class="switchrow">
+              <span class="glyph"><svg class="ic"><use href="#i-lang"/></svg></span>
+              <span class="txt">
+                <b data-t="ctTitle">文化转译模式</b>
+                <span data-t="ctSub">把历史术语换成你熟悉的类比</span>
+              </span>
+              <button class="sw" id="ctSw" aria-pressed="false" onclick="toggleCT()"><i></i></button>
+            </div>
+          </div>
+
+          <div class="sec">
+            <div class="player">
+              <div class="top">
+                <button class="playbtn" id="playBtn" onclick="togglePlay()" aria-label="play">
+                  <svg class="ic solid" id="playIcon" style="width:18px;height:18px"><use href="#i-play"/></svg>
+                </button>
+                <span class="info"><b data-t="audioTitle">AI 语音讲解</b><span id="audioSub">标准级 · 约 3 分钟</span></span>
+                <button class="rate" id="rateBtn" onclick="cycleRate()">1.0×</button>
+              </div>
+              <div class="wave" id="wave"></div>
+              <div class="times"><span id="tNow">0:00</span><span id="tTotal">3:00</span></div>
+              <details class="caps"><summary data-t="captions">字幕</summary><div id="transcript"></div></details>
+            </div>
+
+          <div id="composeBar"></div>
+          <div id="genBlocks"></div>
+          <div class="sec" id="relSec">
+            <div class="sec-head"><h3 class="h2" data-t="related">相关推荐</h3><span class="link" data-t="byInterest">按兴趣</span></div>
+            <div class="grid2" id="relGrid"></div>
+          </div>
+
+          <div class="sec" id="askSec">
+            <button class="btn ghost" onclick="go('chat')">
+              <svg class="ic mark" style="width:20px;height:20px"><use href="#i-blob"/></svg>
+              <span data-t="askAbout">就这件展品追问策展人</span>
+            </button>
+          </div>
+          <div class="tail"></div>
+        </div>
+      </section>
+
+      <!-- ============ CHAT ============ -->
+      <section class="screen" id="s-chat" hidden>
+        <div class="topbar">
+          <button class="iconbtn" onclick="go('guide')"><svg class="ic"><use href="#i-back"/></svg></button>
+          <span class="spacer"></span>
+          <button class="modelchip" id="modelChip" onclick="toggleModelMenu()" aria-haspopup="listbox" aria-expanded="false">
+            <span id="modelName">Claude Sonnet 5</span>
+            <svg class="ic chev"><use href="#i-chevdown"/></svg>
+          </button>
+          <button class="iconbtn" onclick="resetChat()" aria-label="new chat"><svg class="ic"><use href="#i-compose"/></svg></button>
+        </div>
+        <div class="offbar" hidden></div>
+        <div class="modelmenu" id="modelMenu" hidden></div>
+        <div class="askhome" id="askHome"></div>
+        <div class="chatwrap" id="chatWrap"></div>
+        <div class="composer">
+          <div class="cbox">
+            <input id="chatInput" data-t-ph="chatPh" placeholder="输入问题，或按住麦克风语音提问…">
+            <div class="ctools">
+              <button class="ct" aria-label="camera"><svg class="ic"><use href="#i-camera"/></svg></button>
+              <button class="ct" aria-label="scan"><svg class="ic"><use href="#i-scan"/></svg></button>
+              <button class="ct" aria-label="scope"><svg class="ic"><use href="#i-globe"/></svg></button>
+              <span class="spacer"></span>
+              <button class="send" onclick="sendTyped()" aria-label="send"><svg class="ic"><use href="#i-send"/></svg></button>
+              <button class="mic" onclick="openVoice()" aria-label="voice"><svg class="ic"><use href="#i-mic"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ ROUTE ============ -->
+      <section class="screen" id="s-route" hidden>
+        <div class="topbar">
+          <div>
+            <div class="brand" data-t="routeTitle">个性化路线</div>
+        <div class="offbar" hidden></div>
+            <div style="font-size:10.5px;color:var(--ink-3);margin-top:2px" id="routeSub">国内深度 · 90 分钟 · 标准级讲解</div>
+          </div>
+          <span class="spacer"></span>
+          <span class="livedot" id="routeOptBadge"><i></i><span data-t="routeOpt">AI 实时优化</span></span>
+        </div>
+        <div class="pad">
+          <div class="progresscard">
+            <div class="head"><span data-t="routeProg">参观进度</span><span id="progLabel">2 / 5</span></div>
+            <div class="track"><i id="progBar" style="width:40%"></i></div>
+            <div class="nums">
+              <div><b id="numUsed">16</b><span data-t="minUsed">已用分钟</span></div>
+              <div><b id="numLeft">74</b><span data-t="minLeft">剩余分钟</span></div>
+              <div><b id="numStops">3</b><span data-t="stopsLeft">剩余展品</span></div>
+            </div>
+          </div>
+
+
+          <div class="sec">
+            <div class="divert" id="divertCard">
+              <div class="ttl"><svg class="ic" style="width:16px;height:16px"><use href="#i-bulb"/></svg><span data-t="divertTitle">智能改道建议</span></div>
+              <p id="divertText" data-t="divertText">91a 号厅中国书画当前人流下降 40%，此刻比 33 号厅更从容。要把它提到下一站吗？</p>
+              <div class="row">
+                <button class="btn sm" onclick="acceptDivert()" data-t="accept">接受改道</button>
+                <button class="btn sm quiet" onclick="dismissDivert()" data-t="dismiss">暂不</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="sec">
+            <div class="seg" id="routeSeg" style="grid-auto-flow:column">
+              <button aria-pressed="true" onclick="routeTab('list')" data-t="tabList">路线列表</button>
+              <button aria-pressed="false" onclick="routeTab('map')" data-t="tabMap">楼层地图</button>
+            </div>
+          </div>
+
+          <div class="sec" id="routeListPane">
+            <div class="routelist" id="routeList"></div>
+            <div id="reportEntry"></div>
+          </div>
+
+          <div class="sec" id="routeMapPane" hidden>
+            <div class="map" id="mapBox"></div>
+            <div class="chipwrap" style="justify-content:center;margin-top:4px">
+              <span class="tag"><span style="color:var(--jade-500)">●</span> <span data-t="legDone">已参观</span></span>
+              <span class="tag"><span style="color:var(--gilt)">◆</span> <span data-t="legNow">当前位置</span></span>
+              <span class="tag"><span style="color:var(--ink-3)">○</span> <span data-t="legNext">待参观</span></span>
+            </div>
+            <div class="gaincard" id="gainCard" style="margin-top:12px"></div>
+          </div>
+          <div class="tail"></div>
+        </div>
+      </section>
+
+      <!-- ============ REPORT ============ -->
+      <section class="screen" id="s-report" hidden>
+        <div class="topbar">
+          <button class="iconbtn" onclick="go('route')"><svg class="ic"><use href="#i-back"/></svg></button>
+          <div class="brand" style="font-size:19px" data-t="repTitle">参观报告</div>
+          <span class="spacer"></span>
+          <button class="btn sm quiet" onclick="openPoster()"><svg class="ic" style="width:15px;height:15px"><use href="#i-share"/></svg><span data-t="share">分享</span></button>
+        </div>
+        <div class="pad">
+          <p style="margin:0 0 12px;font-size:12px;color:var(--ink-3)" id="repDate">4 月 15 日 · 大英博物馆 · 90 分钟</p>
+          <div class="tiles">
+            <div class="tile"><svg class="ic"><use href="#i-eye"/></svg><b id="repSeen">3</b><span data-t="repSeenL">参观展品</span></div>
+            <div class="tile"><svg class="ic"><use href="#i-clock"/></svg><b id="repMin">45</b><span data-t="repMinL">参观分钟</span></div>
+            <div class="tile"><svg class="ic"><use href="#i-book"/></svg><b id="repInt">0</b><span data-t="repIntL">知识互动</span></div>
+            <div class="tile accent"><svg class="ic"><use href="#i-star"/></svg><b>4.8</b><span data-t="repScoreL">体验评分</span></div>
+          </div>
+
+          <div class="sec">
+            <div class="sec-head"><h3 class="h2" data-t="repStyle">报告风格</h3><span class="eyebrow mute" data-t="repStyleHint">AI 已推荐</span></div>
+            <div class="styles" id="styleGrid"></div>
+          </div>
+
+          <div class="sec">
+            <div class="card" style="padding:16px">
+              <div class="sec-head" style="margin-bottom:4px">
+                <h3 class="h3" style="display:flex;align-items:center;gap:8px"><svg class="ic" style="width:15px;height:15px;color:var(--jade-500)"><use href="#i-bar"/></svg><span data-t="radarT">兴趣图谱</span></h3>
+                <span class="eyebrow mute" data-t="fromBehavior">来自停留行为</span>
+              </div>
+              <div id="radarBox"></div>
+              <p class="body" style="font-size:12.5px;text-align:center;margin-top:4px" data-t="radarNote">艺术与文化维度显著突出，建议下次优先探索 91a 号厅的中国书画。</p>
+            </div>
+          </div>
+
+          <div class="sec">
+            <h3 class="h2" data-t="repGain">本次知识收获</h3>
+            <div style="display:flex;flex-direction:column;gap:8px" id="gainList"></div>
+          </div>
+
+          <div class="tail"></div>
+        </div>
+      </section>
+
+      <!-- ============ PROFILE ============ -->
+      <section class="screen" id="s-profile" hidden>
+        <div class="topbar">
+          <div>
+            <div class="brand" style="font-size:19px" data-t="profTitle">我的</div>
+            <div style="font-size:10.5px;color:var(--ink-3);margin-top:2px" data-t="profSub">个人设置与隐私管理</div>
+          </div>
+          <span class="spacer"></span>
+          <button class="iconbtn" aria-label="settings"><svg class="ic"><use href="#i-settings"/></svg></button>
+        </div>
+        <div class="pad">
+          <div class="profcard">
+            <span class="av">👤<i></i></span>
+            <div>
+              <b data-t="profName">博物馆探索者</b>
+              <div class="tags" id="profTags"></div>
+            </div>
+          </div>
+
+          <p class="grouplbl" data-t="profPersona">你的 AI 画像</p>
+          <div class="persona" id="personaGrid"></div>
+
+          <p class="grouplbl" data-t="profLangSec">语言与内容</p>
+          <div class="rows">
+            <button class="row-item" onclick="go('onboard')">
+              <span class="glyph"><svg class="ic"><use href="#i-lang"/></svg></span>
+              <span class="txt"><b data-t="rowLang">讲解语言</b><span data-t="rowLangS">可选 10 种语音讲解</span></span>
+              <span class="val" id="rowLangVal">简体中文</span>
+              <svg class="ic" style="width:15px;height:15px;color:var(--ink-3)"><use href="#i-arrow"/></svg>
+            </button>
+            <div class="row-item">
+              <span class="glyph"><svg class="ic"><use href="#i-globe"/></svg></span>
+              <span class="txt"><b data-t="rowCT">文化转译引擎</b><span data-t="rowCTS">把术语换成跨文化类比</span></span>
+              <button class="sw" id="ctSw2" aria-pressed="false" onclick="toggleCT()"><i></i></button>
+            </div>
+            <div class="row-item">
+              <span class="glyph"><svg class="ic"><use href="#i-eye"/></svg></span>
+              <span class="txt"><b data-t="rowFont">字号</b><span data-t="rowFontS">整体放大界面，便于阅读</span></span>
+              <div class="seg" id="fontSeg" style="grid-auto-flow:column;flex:none"></div>
+            </div>
+            <div class="row-item">
+              <span class="glyph"><svg class="ic"><use href="#i-download"/></svg></span>
+              <span class="txt"><b data-t="rowOffline">离线模式</b><span data-t="rowOfflineS">地下展厅常无信号</span></span>
+              <button class="sw" id="offlineSw" aria-pressed="false" onclick="toggleOffline(this)"><i></i></button>
+            </div>
+            <div class="row-item">
+              <span class="glyph"><svg class="ic"><use href="#i-map"/></svg></span>
+              <span class="txt"><b data-t="rowDivert">自动改道</b><span data-t="rowDivertS">允许 AI 按实时人流调整你的路线</span></span>
+              <button class="sw" id="divertSw" aria-pressed="true" onclick="toggleAutoDivert(this)"><i></i></button>
+            </div>
+            <div class="row-item">
+              <span class="glyph"><svg class="ic"><use href="#i-volume"/></svg></span>
+              <span class="txt"><b data-t="rowRate">讲解速度</b><span data-t="rowRateS">语音播报倍速</span></span>
+              <button class="val" onclick="cycleRate()" id="rowRateVal">正常 1.0×</button>
+            </div>
+          </div>
+
+          <p class="grouplbl" data-t="profPriv">隐私与权限</p>
+          <div class="rows" id="permRows"></div>
+
+          <div class="sec">
+            <div class="trust">
+              <svg class="ic" style="width:18px;height:18px;color:var(--jade-500);flex:none;margin-top:0px"><use href="#i-shield"/></svg>
+              <div><b data-t="trustT">透明策展</b><p data-t="trustP">画像推理在本机完成，行为数据默认不上传。每段 AI 讲解都标注来源，你可以随手举报错误。</p></div>
+            </div>
+          </div>
+
+          <div class="sec">
+            <button class="btn quiet" onclick="go('splash')"><svg class="ic" style="width:16px;height:16px"><use href="#i-refresh"/></svg><span data-t="restart">重新开始一次导览</span></button>
+          </div>
+          <div class="tail"></div>
+        </div>
+      </section>
+
+    </div>
+
+    <button class="fab" id="fab" onclick="go('chat')" aria-label="AI">
+      <svg class="ic mark"><use href="#i-blob"/></svg>
+    </button>
+    <nav class="tabbar" id="tabbar"></nav>
+    <div class="homebar"></div>
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+   i18n dictionary
+   ============================================================ */
+const T = {
+  zh:{
+    appName:"数字策展人", appTag:"大英博物馆 · AI 智慧导览",
+    splashCta:"进入 AI 线上博物馆", splashLoad:"正在初始化核心模型", splashEntering:"正在进入",
+    obPhase:"定制阶段 01", obStep:"第 1 步 / 共 1 步", obStepR:"个性化",
+    obTitle:"定制你的这场参观",
+    obLead:"告诉策展人你的兴趣，AI 会据此重排展线、挑选讲解深度，并在参观中持续调整。",
+    obWho:"你以什么身份参观", obPickOne:"单选",
+    obDur:"参观时长", obDurA:"快速打卡", obDurB:"沉浸深游",
+    obDepth:"讲解深度", obLangLbl:"讲解语言",
+    obCta:"进入博物馆",
+    obFine1:"继续即表示同意", obFine2:"《策展隐私条款》", obFine3:"。你的画像仅在本机推理，随时可关闭。",
+    museum:"大英博物馆", guideLive:"智慧导览已启动",
+    whereNow:"95 号厅 · 中国陶瓷", verdict:"已识别 · 置信度 97%",
+    narrBoth:"界面与语音讲解都会使用该语言。",
+    narrAudioOnly:(n)=>`语音讲解将使用${n}；界面暂只提供中文与英文。`,
+    repReady:"参观报告已生成", repReadyS:(n,m)=>`${n} 件展品 · ${m} 分钟 · 点此查看`,
+    repDraft:"参观报告", repDraftS:(d,a)=>`走完路线后生成 · 当前 ${d}/${a} 件`,
+    dlNow:"立即下载",
+    askTitle:"开始提问", askSub:"问任何关于馆藏的问题，策展人即时回答。",
+    voiceListening:"正在聆听…", voiceLead:"用日常的话问，<b>策展人</b>听得懂",
+    bNarr:"讲解", bInscr:"铭文", bTimeline:"断代时间轴", bProvenance:"流传谱系",
+    bRoute:"材料溯源", bMaterial:"材质剖面", bCompare:"对比", bQuestion:"提问", bNumbers:"速览",
+    composedFor:(n)=>`AI 为这件展品编排了 ${n} 个模块 · 展开看依据`,
+    ruleNarr:"讲解正文：所有展品都有",
+    ruleInscr:"这件器物带铭文，且讲解深度在标准级以上",
+    ruleTime:"有确切纪年，且你选的是国内深度（或深度讲解）",
+    ruleProv:"这件有完整的流传记录，值得单列",
+    ruleRoute:"国际游客：补一条材料与贸易的来路",
+    ruleMat:"国内深度 + 标准级以上：加入材质剖面",
+    ruleCmp:"这件的意义要靠对比才讲得清",
+    ruleQ:"亲子模式：用一个问题收尾，而不是结论",
+    ruleNum:"关键数值，所有展品都有",
+    readQuick:"30 秒速览", readDeep:"深读",
+    rowFont:"字号", rowFontS:"整体放大界面，便于阅读",
+    rowOffline:"离线模式", rowOfflineS:"地下展厅常无信号",
+    offWarnP:"当前离线。语音讲解与问答需要联网，先下载本次路线。",
+    offOkP:"当前离线。本次路线与讲解已下载，可正常使用；AI 追问需联网。",
+    dlRoute:"下载本次路线，离线可用", dlDone:"已下载，可离线使用",
+    thanks:"已记录",
+    flagTitle:"报告内容问题", flagHint:"选择问题类型，大英博物馆亚洲部会复核这条讲解。",
+    flagFact:"史实有误", flagSource:"与标注来源不符", flagTone:"表述不当",
+    flagDoneT:"已提交", flagDoneP:"大英博物馆亚洲部将在 48 小时内复核。复核结果会同步更新这条讲解。",
+    ticket:"工单号", gotIt:"知道了",
+    redlineT:"这个问题不在讲解范围内",
+    redlineP:"文物的估价与真伪鉴定属于专业鉴定范畴，AI 导览不提供此类判断，以免误导。如有需要，可咨询大英博物馆亚洲部。",
+    pstNote:"我的研究笔记", pstTrip:"我的文化之旅", pstStory:"我们看见的故事", pstCard:"今日打卡图鉴",
+    permOff:(what)=>`已关闭 · ${what}`,
+    camOff:"摄像头已关闭", camOffHint:"视觉识别不可用，改用下面两种方式",
+    walkMin:(n)=>`步行 ${n} 分钟`,
+    whyThis:"依据是什么？",
+    why1:"91a 号厅 14:30 实时人流 —— 较均值下降 40%（馆方实时客流系统）",
+    why2:"你在陶瓷与玉器前的停留时长排名前 20%（本机行为数据）",
+    why3:"改道后总步行距离 +3 分钟，不影响你的时间预算",
+    divertDoneT:"已改道", undo:"撤销",
+    divertDismissed:"已忽略本次建议。你可以在「我的 · 自动改道」里关闭这类提醒。",
+    divertOffP:"自动改道已关闭。AI 不会再调整你的路线顺序。",
+    divertNoData:"行为数据收集已关闭，无法评估人流与你的兴趣，改道建议暂不可用。",
+    rowDivert:"自动改道", rowDivertS:"允许 AI 按实时人流调整你的路线",
+    captions:"字幕",
+    exploreT:"探索度", exploreCover:"路线覆盖", exploreDepth:"深度接触",
+    basedOn:"依据：",
+    evSeen:(n)=>`看过 ${n} 件`, evAudio:(n)=>`听完 ${n} 段讲解`,
+    evAsk:(n)=>`追问 ${n} 次`, evDeep:(n)=>`展开深读 ${n} 次`,
+    notMastery:"这是接触行为的统计，不代表掌握程度。",
+    radarOffT:"兴趣图谱未生成", radarOffP:"兴趣图谱需要行为数据。你已在「我的 · 隐私与权限」中关闭该项。",
+    routeFixed:"已按固定路线",
+    obSkip:"先扫一件看看，稍后再定制 →",
+    nudgeT:"要为你排条路线吗？", nudgeP:"回答三个问题，AI 会按你的兴趣重排展线、调整讲解深度。",
+    nudgeGo:"去定制", nudgeNo:"不用了",
+    scanBusy:"识别中…", scanBusyHint:"正在比对馆藏影像库",
+    scanHigh:"已识别 · 置信度 97%", scanHighHint:"档案已匹配，点此查看讲解",
+    scanMid:"不确定 · 置信度 68%", scanMidHint:"像这几件，请选一个（选择会回流用于纠正模型）",
+    scanLow:"未能识别 · 光线不足", scanLowHint:"玻璃反光较强，建议换一种方式",
+    noneOfThese:"都不是，重新识别", useNfc:"读 NFC", useTag:"输入展签号", retry:"重新对焦",
+    tagTitle:"输入展签编号", tagHint:"展签右下角的编号，例如 POR-0421", tagGo:"查档案",
+    notThis:"不是这件？",
+    inferredMark:"AI 归纳", keyArchive:"档案原文，可核验", keyInferred:"AI 归纳，勿直接引用",
+    audioSubFor:(d,m)=>`${d} · 约 ${m} 分钟`,
+    paceOver:(n)=>`按当前节奏会超时约 ${n} 分钟`,
+    paceOverP:(a,l)=>`你在已看展品前的实际停留比计划长约 50%。剩下的还需 ${a} 分钟，预算只剩 ${l} 分钟。`,
+    paceDrop:"跳过最后一件",
+    paceOk:(n)=>`时间充裕，还余 ${n} 分钟`,
+    paceOkP:(k,d)=>`按 ${d} 分钟预算，为你排了 ${k} 件。`,
+    paceDropped:(names)=>`已移出：${names}。`,
+    hintScan:"将摄像头对准展品，AI 会自动识别并接上讲解",
+    hintNfc:"靠近展签上的 NFC 标签，0.3 秒即可调出完整档案",
+    hintLoc:"室内定位已开启，走到哪讲到哪，误差约 1.5 米",
+    statSeen:"已参观", statMin:"参观时长", statType:"参观类型", statTypeV:"探索型", nearby:"附近推荐",
+    curNow:"眼前这件", seeAll:"查看详情", pillNow:"当前展品",
+    upNext:"接下来", wholeRoute:"全部路线 ›",
+    divertTitle:"智能改道建议",
+    divertText:"91a 号厅中国书画当前人流下降 40%，此刻比 33 号厅更从容。要把它提到下一站吗？",
+    divertDone:"已把 91a 号厅提到下一站，路线与预计时长已同步更新。",
+    accept:"接受改道", dismiss:"暂不",
+    matchTxt:"AI 识别匹配 · 置信度 97%", catPorcelain:"中国陶瓷", a1Loc:"95 号厅",
+    a1Name:"大维德花瓶", a1Meta:"元代 · 至正十一年 1351 · 95 号厅", a1Dyn:"元代 · 至正十一年（1351）",
+    ctTitle:"文化转译模式", ctSub:"把历史术语换成你熟悉的类比",
+    audioTitle:"AI 语音讲解", audioSub:"精华版 · 约 3 分钟 · 策展人音色",
+    quickFacts:"速览", knowPoints:"AI 提炼知识点", autoGen:"自动生成",
+    related:"相关推荐", byInterest:"按兴趣", askAbout:"就这件展品追问策展人",
+    src1:"来源：大英博物馆馆藏数据库 · PDF B.613–614",
+    srcCT:"文化转译引擎 · 跨文化类比模式（非考古结论）",
+    chatPh:"输入问题，或按住麦克风语音提问…",
+    helpful:"有帮助", improve:"需改进", readAloud:"朗读",
+    followUpLbl:"AI 推荐追问",
+    routeTitle:"个性化路线", routeOpt:"AI 实时优化", routeProg:"参观进度",
+    minUsed:"已用分钟", minLeft:"剩余分钟", stopsLeft:"剩余展品",
+    aiNoteT:"路线已根据你的停留实时更新",
+    aiNoteP:"检测到你在陶瓷类展品前停留明显更久，已将 95 号厅提前，并把 91a 号厅挪到行程末段。",
+    tabList:"路线列表", tabMap:"楼层地图",
+    routeTip:"点按任意展品即可标记为已参观，路线与报告会同步更新。",
+    legDone:"已参观", legNow:"当前位置", legNext:"待参观",
+    stDone:"已参观", stNow:"当前", stNext:"待参观",
+    autoGen2:"AI 自动生成", repTitle:"参观报告", share:"分享",
+    repSeenL:"参观展品", repMinL:"参观分钟", repIntL:"知识互动", repScoreL:"体验评分",
+    repStyle:"报告风格", repStyleHint:"AI 已推荐", radarT:"兴趣图谱", fromBehavior:"来自停留行为",
+    radarNote:"艺术与文化维度显著突出，建议下次优先探索 91a 号厅的中国书画。",
+    repGain:"本次知识收获",
+    posterBrand:"大英博物馆 · 智慧导览", posterT:"我的文化之旅", posterShare:"分享海报", posterClose:"关闭",
+    profTitle:"我的", profSub:"个人设置与隐私管理", profName:"博物馆探索者",
+    profPersona:"你的 AI 画像", profLangSec:"语言与内容", profPriv:"隐私与权限",
+    rowReport:"参观报告", rowReportS:"本次行程的数据与知识收获",
+    rowLang:"讲解语言", rowLangS:"可选 10 种语音讲解",
+    rowCT:"文化转译引擎", rowCTS:"把术语换成跨文化类比",
+    rowRate:"讲解速度", rowRateS:"语音播报倍速",
+    trustT:"透明策展",
+    trustP:"画像推理在本机完成，行为数据默认不上传。每段 AI 讲解都标注来源，你可以随手举报错误。",
+    restart:"重新开始一次导览",
+    nfcPill:"检测到 NFC 展签", nfcName:"汉代玉璧", nfcMeta:"西汉 · 公元前 202 – 公元 8 年",
+    nfcDesc:"这件礼器出土于东侧展厅。轻触即可听它背后被反复改写的那段礼制故事。",
+    nfcCta:"开始语音讲解", nfcDismiss:"稍后再说",
+    legend:"可交互原型：切换语言、选身份、播讲解、问策展人、走完路线并生成报告。",
+    tabGuide:"导览", tabMuseum:"展馆", tabRoute:"路线", tabChat:"问答", tabReport:"报告", tabMe:"我的",
+    ixSplash:"启动页", ixOnboard:"个性化定制", ixGuide:"导览首页", ixDetail:"展品详情",
+    ixChat:"AI 问答", ixRoute:"路线地图", ixReport:"参观报告", ixProfile:"我的与隐私",
+    minute:"分钟", hours:"小时", required:"必要",
+    depthL:["轻览","标准级","深度"], rateL:["正常","稍快","快速"],
+    langName:"简体中文",
+    reportDate:(m)=>`4 月 15 日 · 大英博物馆 · ${m} 分钟`,
+    posterLine:(n,m)=>`参观了 ${n} 件展品 · ${m} 分钟沉浸探索`,
+    durVal:(m)=>`${m} 分钟`,
+    routeSub:(v,m,d)=>`${v} · ${m} 分钟 · ${d}讲解`,
+    rateVal:(r)=>`${r}×`, rateRow:(l,r)=>`${l} ${r}×`
+  },
+  en:{
+    appName:"The Digital Curator", appTag:"The British Museum · AI Guided Visit",
+    splashCta:"Enter the AI Museum", splashLoad:"Initializing core model", splashEntering:"Entering",
+    obPhase:"Curation phase 01", obStep:"Step 1 of 1", obStepR:"Personalization",
+    obTitle:"Tailor this visit",
+    obLead:"Tell the curator what draws you in. The AI reorders the route, sets the depth of narration, and keeps adjusting as you walk.",
+    obWho:"Who are you visiting as", obPickOne:"Select one",
+    obDur:"Visit duration", obDurA:"Quick look", obDurB:"Full immersion",
+    obDepth:"Narration depth", obLangLbl:"Narration language",
+    obCta:"Enter the museum",
+    obFine1:"By continuing you accept the", obFine2:"Curatorial Privacy Terms", obFine3:". Your profile is inferred on-device and can be switched off anytime.",
+    museum:"The British Museum", guideLive:"Smart guide active",
+    whereNow:"Room 95 · Chinese ceramics", verdict:"Recognized · 97% confidence",
+    narrBoth:"Both the interface and the audio narration use this language.",
+    narrAudioOnly:(n)=>`Narration will be in ${n}. The interface is available in Chinese and English only.`,
+    repReady:"Visit report ready", repReadyS:(n,m)=>`${n} objects · ${m} min · tap to open`,
+    repDraft:"Visit report", repDraftS:(d,a)=>`Generated when the route is done · ${d}/${a} so far`,
+    dlNow:"Download now",
+    askTitle:"Start Asking", askSub:"Ask anything about the collection and get an answer on the spot.",
+    voiceListening:"Listening…", voiceLead:"Speak naturally — the <b>curator</b> follows",
+    bNarr:"Narration", bInscr:"Inscription", bTimeline:"Dating timeline", bProvenance:"Provenance",
+    bRoute:"Material origin", bMaterial:"Material section", bCompare:"Comparison", bQuestion:"A question", bNumbers:"Quick facts",
+    composedFor:(n)=>`The AI composed ${n} blocks for this object · tap for the reasoning`,
+    ruleNarr:"Narration: every object has one",
+    ruleInscr:"This object carries an inscription, and depth is standard or above",
+    ruleTime:"It is securely dated, and you chose the local deep-dive (or deep narration)",
+    ruleProv:"Its chain of ownership is documented and worth its own block",
+    ruleRoute:"International visitor: add where the material came from",
+    ruleMat:"Local deep-dive at standard depth or above: add the material section",
+    ruleCmp:"This object only makes sense against another one",
+    ruleQ:"Family mode: end on a question, not a conclusion",
+    ruleNum:"Key figures: every object has them",
+    readQuick:"30-second read", readDeep:"Full read",
+    rowFont:"Text size", rowFontS:"Scale the whole interface up",
+    rowOffline:"Offline mode", rowOfflineS:"Lower halls often have no signal",
+    offWarnP:"You are offline. Narration and Q&A need a connection — download this route first.",
+    offOkP:"You are offline. This route and its narration are downloaded; follow-up questions still need a connection.",
+    dlRoute:"Download this route for offline use", dlDone:"Downloaded — available offline",
+    thanks:"Noted",
+    flagTitle:"Report a problem", flagHint:"Pick the kind of problem. The Museum's Department of Asia reviews this narration.",
+    flagFact:"Factual error", flagSource:"Does not match the cited source", flagTone:"Inappropriate wording",
+    flagDoneT:"Submitted", flagDoneP:"The Museum will review within 48 hours. The narration is updated with the outcome.",
+    ticket:"Ticket", gotIt:"Got it",
+    redlineT:"That is outside what this guide will answer",
+    redlineP:"Valuation and authentication are specialist judgements. The AI guide does not make them, to avoid misleading you. The Museum's Department of Asia can help.",
+    pstNote:"My research notes", pstTrip:"My cultural journey", pstStory:"The stories we found", pstCard:"Today's finds",
+    permOff:(what)=>`Off · ${what}`,
+    camOff:"Camera is off", camOffHint:"Vision is unavailable — use one of these instead",
+    walkMin:(n)=>`${n} min walk`,
+    whyThis:"What is this based on?",
+    why1:"Room 91a footfall at 14:30 — 40% below average (museum crowd system)",
+    why2:"Your dwell time at ceramics and jade ranks in the top 20% (on-device behaviour)",
+    why3:"The detour adds 3 minutes of walking and still fits your budget",
+    divertDoneT:"Rerouted", undo:"Undo",
+    divertDismissed:"Suggestion dismissed. You can switch these off under Profile · Auto-reroute.",
+    divertOffP:"Auto-reroute is off. The AI will not reorder your route.",
+    divertNoData:"Behavioural data is off, so footfall and interest cannot be weighed — no reroute suggestions.",
+    rowDivert:"Auto-reroute", rowDivertS:"Let the AI reorder your route from live footfall",
+    captions:"Captions",
+    exploreT:"Exploration", exploreCover:"Route covered", exploreDepth:"Depth of engagement",
+    basedOn:"Based on:",
+    evSeen:(n)=>`${n} seen`, evAudio:(n)=>`${n} narrations finished`,
+    evAsk:(n)=>`${n} follow-ups`, evDeep:(n)=>`${n} deep reads`,
+    notMastery:"These count what you engaged with, not what you have mastered.",
+    radarOffT:"No interest map", radarOffP:"The interest map needs behavioural data, which you switched off under Profile · Privacy.",
+    routeFixed:"Fixed route",
+    obSkip:"Scan something first, personalize later →",
+    nudgeT:"Want a route built for you?", nudgeP:"Three questions, and the AI reorders the halls and sets the narration depth.",
+    nudgeGo:"Personalize", nudgeNo:"No thanks",
+    scanBusy:"Scanning…", scanBusyHint:"Matching against the collection image library",
+    scanHigh:"Recognized · 97% confidence", scanHighHint:"Record matched — tap to open the narration",
+    scanMid:"Unsure · 68% confidence", scanMidHint:"Could be one of these — pick one (your choice trains the model)",
+    scanLow:"Not recognized · too little light", scanLowHint:"Heavy glare off the case. Try another channel.",
+    noneOfThese:"None of these — scan again", useNfc:"Read NFC", useTag:"Enter label no.", retry:"Refocus",
+    tagTitle:"Enter the label number", tagHint:"Bottom-right of the case label, e.g. POR-0421", tagGo:"Open record",
+    notThis:"Not this one?",
+    inferredMark:"AI inference", keyArchive:"From the archive, verifiable", keyInferred:"AI inference, do not cite",
+    audioSubFor:(d,m)=>`${d} · about ${m} min`,
+    paceOver:(n)=>`About ${n} min over at this pace`,
+    paceOverP:(a,l)=>`You are lingering about 50% longer than planned. The rest needs ${a} min; ${l} min of budget remain.`,
+    paceDrop:"Drop the last stop",
+    paceOk:(n)=>`Comfortable — ${n} min to spare`,
+    paceOkP:(k,d)=>`${k} objects planned for your ${d}-minute budget.`,
+    paceDropped:(names)=>`Removed: ${names}.`,
+    hintScan:"Point the camera at an object — the AI identifies it and picks up the story",
+    hintNfc:"Tap the NFC label on the case to pull the full record in 0.3s",
+    hintLoc:"Indoor positioning is on — narration follows you, accurate to ~1.5m",
+    statSeen:"Seen", statMin:"Time in", statType:"Visitor type", statTypeV:"Explorer", nearby:"Nearby",
+    curNow:"In front of you", seeAll:"Open record", pillNow:"Current object",
+    upNext:"Up next", wholeRoute:"Full route ›",
+    divertTitle:"Smart diversion",
+    divertText:"Room 91a is 40% quieter than Room 33 right now. Move it to your next stop?",
+    divertDone:"Room 91a moved to your next stop. Route and timing updated.",
+    accept:"Accept", dismiss:"Not now",
+    matchTxt:"AI match · 97% confidence", catPorcelain:"Chinese ceramics", a1Loc:"Room 95",
+    a1Name:"The David Vases", a1Meta:"Yuan · dated 1351 · Room 95",
+    a1Dyn:"Yuan dynasty · dated 1351",
+    ctTitle:"Cultural translation", ctSub:"Swaps period terms for analogies you already hold",
+    audioTitle:"AI audio narration", audioSub:"Essential cut · about 3 min · curator voice",
+    quickFacts:"Quick facts", knowPoints:"Key points, distilled", autoGen:"Auto-generated",
+    related:"Related works", byInterest:"By interest", askAbout:"Ask the curator about this object",
+    src1:"Source: British Museum collection database · PDF B.613–614",
+    srcCT:"Cultural translation engine · analogy mode, not an archaeological claim",
+    chatPh:"Type a question, or hold the mic to speak…",
+    helpful:"Helpful", improve:"Needs work", readAloud:"Read aloud",
+    followUpLbl:"Suggested follow-ups",
+    routeTitle:"Personal route", routeOpt:"Live AI tuning", routeProg:"Progress",
+    minUsed:"Minutes used", minLeft:"Minutes left", stopsLeft:"Stops left",
+    aiNoteT:"Route updated from how you actually walked",
+    aiNoteP:"You lingered noticeably longer at ceramics. Room 95 moved up; Room 91a moved to the end.",
+    tabList:"Route list", tabMap:"Floor map",
+    routeTip:"Tap any object to mark it visited — the route and your report update with it.",
+    legDone:"Visited", legNow:"You are here", legNext:"Upcoming",
+    stDone:"Visited", stNow:"Current", stNext:"Upcoming",
+    autoGen2:"AI generated", repTitle:"Visit report", share:"Share",
+    repSeenL:"Objects seen", repMinL:"Minutes", repIntL:"Knowledge taps", repScoreL:"Experience",
+    repStyle:"Report voice", repStyleHint:"AI suggested", radarT:"Interest map", fromBehavior:"From dwell time",
+    radarNote:"Art and culture stand out. Next time, start with the Chinese paintings in Room 91a.",
+    repGain:"What you took away",
+    posterBrand:"The British Museum · Smart Guide", posterT:"My cultural journey", posterShare:"Share poster", posterClose:"Close",
+    profTitle:"Profile", profSub:"Settings and privacy", profName:"Museum Explorer",
+    profPersona:"Your AI profile", profLangSec:"Language & content", profPriv:"Privacy & permissions",
+    rowReport:"Visit report", rowReportS:"Stats and takeaways from this visit",
+    rowLang:"Narration language", rowLangS:"10 narration languages",
+    rowCT:"Cultural translation", rowCTS:"Period terms become cross-cultural analogies",
+    rowRate:"Narration speed", rowRateS:"Playback rate for audio",
+    trustT:"Transparent curation",
+    trustP:"Profiling runs on-device and behavioural data stays local by default. Every narration cites its source, and you can flag an error in one tap.",
+    restart:"Start a new visit",
+    nfcPill:"NFC label detected", nfcName:"Han Dynasty Jade Bi", nfcMeta:"Western Han · 202 BC – AD 8",
+    nfcDesc:"This ritual disc was excavated in the east wing. Tap to hear the ceremonial story that kept being rewritten around it.",
+    nfcCta:"Start audio guide", nfcDismiss:"Maybe later",
+    legend:"Interactive prototype: switch language, pick a visitor type, play narration, ask the curator, walk the route and generate the report.",
+    tabGuide:"Guide", tabMuseum:"Museum", tabRoute:"Route", tabChat:"Ask", tabReport:"Report", tabMe:"Profile",
+    ixSplash:"Splash", ixOnboard:"Personalize", ixGuide:"Guide home", ixDetail:"Object record",
+    ixChat:"Ask the curator", ixRoute:"Route & map", ixReport:"Visit report", ixProfile:"Profile & privacy",
+    minute:"min", hours:"h", required:"Required",
+    depthL:["Light","Standard","Deep"], rateL:["Normal","Faster","Fast"],
+    langName:"English",
+    reportDate:(m)=>`15 April · The British Museum · ${m} min`,
+    posterLine:(n,m)=>`${n} objects · ${m} minutes of close looking`,
+    durVal:(m)=>`${m} min`,
+    routeSub:(v,m,d)=>`${v} · ${m} min · ${d} narration`,
+    rateVal:(r)=>`${r}×`, rateRow:(l,r)=>`${l} ${r}×`
+  }
+};
+
+/* ============================================================
+   data
+   ============================================================ */
+const NARRATION=[
+  {id:"zh-CN", flag:"🇨🇳", name:"简体中文",  ui:"zh"},
+  {id:"en-US", flag:"🇺🇸", name:"English",   ui:"en"},
+  {id:"ja-JP", flag:"🇯🇵", name:"日本語"},
+  {id:"ko-KR", flag:"🇰🇷", name:"한국어"},
+  {id:"fr-FR", flag:"🇫🇷", name:"Français"},
+  {id:"de-DE", flag:"🇩🇪", name:"Deutsch"},
+  {id:"es-ES", flag:"🇪🇸", name:"Español"},
+  {id:"ru-RU", flag:"🇷🇺", name:"Русский"},
+  {id:"ar-SA", flag:"🇸🇦", name:"العربية"},
+  {id:"th-TH", flag:"🇹🇭", name:"ไทย"}
+];
+const VISITORS=[
+  {id:"intl", glyph:"🌏", zh:["国际游客","文化脉络与全球对照"], en:["International visitor","Global context and comparison"]},
+  {id:"local",glyph:"📖", zh:["国内深度","制度、工艺与细节考据"], en:["Local deep diver","Institutions, craft and detail"]},
+  {id:"family",glyph:"👨‍👩‍👧", zh:["亲子同行","故事化、互动、可提问"], en:["Family visit","Story-led, interactive, question-friendly"]}
+];
+const MODES=[
+  {id:"scan", icon:"i-scan", zh:"视觉识别", en:"Vision", hint:"hintScan"},
+  {id:"nfc",  icon:"i-nfc",  zh:"NFC 标签", en:"NFC",   hint:"hintNfc"},
+  {id:"loc",  icon:"i-pin",  zh:"位置感知", en:"Location", hint:"hintLoc"}
+];
+const A1_TAGS={zh:["#元代","#青花","#至正十一年","#断代标尺","#大维德基金会"],en:["#Yuan","#BlueAndWhite","#Dated1351","#Benchmark","#PercivalDavid"]};
+const INSIGHT_TABS=[
+  {id:"core", icon:"i-star", zh:"核心亮点", en:"Highlights"},
+  {id:"gen",  icon:"i-book", zh:"通识讲解", en:"Overview"},
+  {id:"deep", icon:"i-layers",zh:"深度扩展", en:"Deep dive"}
+];
+// 核心亮点按「身份 × 讲解深度」生成：身份换框架，深度决定给到第几段
+// ============ 内容图谱 ============
+// 每件展品声明它「有什么可讲」；编排器据此 + 访客身份 + 讲解深度决定页面由哪些模块构成。
+// 没有铭文的器物不会出现铭文块，没有纪年的不会出现时间轴 —— 版式因物而异，不是填空。
+const OBJECTS={
+  david:{
+    img:"src/projects/curator/dragon-vessel.jpg",
+    zh:{name:"大维德花瓶", dyn:"元代 · 至正十一年（1351）", cat:"中国陶瓷", room:"95 号厅"},
+    en:{name:"The David Vases", dyn:"Yuan · dated 1351", cat:"Chinese ceramics", room:"Room 95"},
+    tags:{zh:["#元代","#青花","#至正十一年","#断代标尺"],en:["#Yuan","#BlueAndWhite","#Dated1351","#Benchmark"]},
+    has:{inscription:1, timeline:1, route:1, material:1, numbers:1, question:1},
+    inscription:{
+      zh:["瓶颈铭文（节录）","信州路玉山县顺城乡德教里荆塘社奉圣弟子张文进喜舍香炉花瓶一副，祈保合家清吉、子女平安。至正十一年四月良辰谨记。"],
+      en:["Inscription round the neck (extract)","Zhang Wenjin, lay devotee of Jingtang parish, Yushan county, gives a censer and a pair of vases, praying for his family's peace. Recorded on an auspicious day, fourth month of 1351."]},
+    timeline:{zh:[["1351","供奉于玉山星源祖殿"],["1929","大维德爵士于北京购藏"],["1935","霍布森刊布铭文，断代确立"],["2009","大维德收藏入藏大英博物馆"]],
+              en:[["1351","Dedicated at the Xingyuan shrine, Yushan"],["1929","Bought by Sir Percival David in Peking"],["1935","Hobson publishes the inscription; dating settled"],["2009","The David collection enters the British Museum"]]},
+    route:{zh:[["波斯","钴料产地"],["海上航路","经印度洋与南海"],["景德镇","入窑烧造"],["玉山","供奉之地"]],
+           en:[["Persia","source of the cobalt"],["Sea routes","via the Indian Ocean and South China Sea"],["Jingdezhen","potted and fired"],["Yushan","where they were dedicated"]]},
+    material:{zh:[["釉层","透明青白釉"],["钴料","进口苏麻离青"],["胎体","高岭土瓷胎"]],
+              en:[["Glaze","clear qingbai glaze"],["Pigment","imported cobalt"],["Body","kaolin porcelain"]]},
+    numbers:{zh:[["通高","63.8 cm"],["纪年","1351"],["存世","成对"],["馆藏号","PDF B.613–614"]],
+             en:[["Height","63.8 cm"],["Dated","1351"],["Survival","a pair"],["Accession","PDF B.613–614"]]},
+    question:{zh:["想一想","一百只瓶子进窑，能同时烧出漂亮蓝色的有几只？"],
+              en:["Think about it","Out of a hundred pots fired, how many came out with a good blue?"]},
+    regions:{
+      zh:[["云龙纹",[24,14,54,26]],["器肩缠枝",[17,41,68,11]],["腹部主纹",[12,53,78,28]],["圈足",[29,82,44,10]]],
+      en:[["Dragon",[24,14,54,26]],["Shoulder scroll",[17,41,68,11]],["Main body decoration",[12,53,78,28]],["Foot ring",[29,82,44,10]]]}
+  },
+  cong:{
+    img:"src/projects/curator/cong-tube.jpg",
+    zh:{name:"良渚玉琮", dyn:"新石器 · 约公元前 3300–2300", cat:"中国玉器", room:"33 号厅"},
+    en:{name:"Liangzhu jade cong", dyn:"Neolithic · c. 3300–2300 BC", cat:"Chinese jade", room:"Room 33"},
+    tags:{zh:["#良渚","#礼器","#软玉","#无纪年"],en:["#Liangzhu","#Ritual","#Nephrite","#Undated"]},
+    has:{material:1, compare:1, numbers:1, question:1},
+    material:{zh:[["沁色","受沁白化的表层"],["玉质","透闪石软玉"],["工痕","管钻与线切割"]],
+              en:[["Alteration","whitened, weathered surface"],["Stone","tremolite nephrite"],["Tool marks","tubular drilling and string-cutting"]]},
+    compare:{zh:["琮与璧","外方内圆的琮被认为通天，扁圆的璧被认为礼地。两者常同出一墓，却没有任何文字说明用途——所有解释都是后世推测。"],
+             en:["Cong and bi","The square-and-round cong is read as addressing heaven, the flat disc bi as addressing earth. They are often found together — but no text from the period explains either. Every reading is later inference."]},
+    numbers:{zh:[["年代","约 4500 年前"],["材质","透闪石"],["节数","多节"],["展厅","33 号厅"]],
+             en:[["Age","c. 4,500 years"],["Stone","tremolite"],["Tiers","multiple"],["Gallery","Room 33"]]},
+    question:{zh:["想一想","没有文字的年代，我们怎么知道一件东西是做什么用的？"],
+              en:["Think about it","With no writing from that period, how do we work out what an object was for?"]},
+    regions:{zh:[["神人兽面纹",[31,24,38,52]],["射口",[8,36,20,32]]],
+             en:[["Mask motif",[31,24,38,52]],["Drilled aperture",[8,36,20,32]]]}
+  },
+  scroll:{
+    img:"src/projects/curator/mount-tai-scroll.jpg",
+    zh:{name:"女史箴图（唐摹本）", dyn:"唐摹 · 7–8 世纪", cat:"中国书画", room:"91a 号厅"},
+    en:{name:"The Admonitions Scroll", dyn:"Tang copy · 7th–8th century", cat:"Chinese painting", room:"Room 91a"},
+    tags:{zh:["#顾恺之","#唐摹本","#限时展出","#流传有序"],en:["#GuKaizhi","#TangCopy","#LimitedDisplay","#Provenance"]},
+    has:{inscription:1, provenance:1, compare:1, numbers:1, question:1},
+    inscription:{zh:["箴文（节录）","人咸知修其容，而莫知饰其性。"],
+                 en:["From the Admonitions (extract)","All know how to adorn the face, but none how to adorn the character."]},
+    provenance:{zh:[["4 世纪","顾恺之原作（已佚）"],["7–8 世纪","唐人摹本"],["12 世纪","宋徽宗内府"],["18 世纪","乾隆题跋钤印"],["1903","入藏大英博物馆"]],
+                en:[["4th c.","Gu Kaizhi's original (lost)"],["7th–8th c.","Tang-dynasty copy"],["12th c.","Emperor Huizong's collection"],["18th c.","Inscribed and sealed by Qianlong"],["1903","Enters the British Museum"]]},
+    compare:{zh:["摹本与原作","我们从未见过顾恺之的原作。这卷唐摹本是最接近它的证据——但摹写者的笔性、用色、甚至构图取舍，都已经是一层转译。"],
+             en:["Copy and original","Gu Kaizhi's original has never been seen by anyone alive. This Tang copy is the closest evidence we have — yet the copyist's hand, palette and choices are already a layer of translation."]},
+    numbers:{zh:[["尺寸","24.4 × 343.7 cm"],["年代","唐摹"],["展期","每年约 6 周"],["展厅","91a 号厅"]],
+             en:[["Size","24.4 × 343.7 cm"],["Date","Tang copy"],["On view","~6 weeks a year"],["Gallery","Room 91a"]]},
+    question:{zh:["想一想","一件复制品，为什么会比原作更有名？"],
+              en:["Think about it","Why can a copy end up more famous than the original?"]},
+    regions:{zh:[["画心",[28,26,44,50]],["天杆与轴",[11,15,78,9]]],
+             en:[["Painted surface",[28,26,44,50]],["Mount and roller",[11,15,78,9]]]}
+  }
+};
+const CORE={
+  local:{
+    zh:["这对瓶子的颈部刻着一行纪年铭文——<em>至正十一年</em>（1351）。它是全世界元青花断代的标尺。",
+        "在它被读通之前，学界普遍认为青花瓷始于明代。铭文写明了供奉人张文进、供奉的庙宇，以及确切年份，一举把成熟青花往前推了至少半个世纪。",
+        "象首耳、缠枝纹、云龙纹，都是元代祭器的规格。钴料自波斯经海路运抵景德镇，而 1351 年的胎、釉、火候都已完全成熟——说明这套工艺在此之前已经运转了相当一段时间。"],
+    en:["A line of dated inscription runs round the neck of these two vases — <em>the eleventh year of Zhizheng</em>, 1351. It is the benchmark against which all Yuan blue-and-white is dated.",
+        "Before it was read, blue-and-white was thought to be a Ming invention. The inscription names the donor, Zhang Wenjin, the temple he gave them to, and the exact year — pushing mature blue-and-white back by at least fifty years.",
+        "Elephant-head handles, scrolling peony, a coiling dragon: the specification of a Yuan altar set. The cobalt came from Persia by sea to Jingdezhen, and by 1351 the body, glaze and firing are already fully resolved — the technique had clearly been running for some time before this date."]
+  },
+  intl:{
+    zh:["你面前这对瓶子，改写了中国瓷器的编年史。它们身上刻着一个<em>确切的年份</em>：1351。",
+        "在此之前，西方收藏界把这类蓝白瓷都归为明代。这行铭文一出，整个元青花的序列被重新校准——今天全世界的元青花，都是拿它当尺子量出来的。",
+        "钴蓝来自波斯，器形脱胎于中原的祭器，最后由一位江西人供奉给家乡的道观。一件器物上叠着一条完整的贸易路线。"],
+    en:["The pair in front of you rewrote the chronology of Chinese porcelain. They carry <em>an exact date</em>: 1351.",
+        "Until they were read, Western collections filed this kind of blue-and-white as Ming. The inscription recalibrated the entire Yuan sequence — every Yuan blue-and-white object in the world is now measured against these two.",
+        "Persian cobalt, a vessel form descended from Chinese altar bronzes, given by a man from Jiangxi to his local Daoist temple. One object holding a whole trade route."]
+  },
+  family:{
+    zh:["这两只大瓶子的脖子上，刻着一行字。就是这行字，让全世界的学者改了主意。",
+        "字里写了一个年份：<em>1351 年</em>。在这之前，大家都以为这种蓝白色的瓷器要晚得多才出现。",
+        "猜猜是谁刻的？一个叫张文进的人。他把这对瓶子送给了家乡的一座庙。七百年过去了，他的名字还在上面。"],
+    en:["There is a line of writing round the neck of these two big vases. That line changed what scholars all over the world believed.",
+        "It gives a year: <em>1351</em>. Before it was read, everyone thought blue-and-white pots like these came much later.",
+        "Guess who wrote it? A man called Zhang Wenjin. He gave the pair to a temple in his home town. Seven hundred years later, his name is still there."]
+  }
+};
+const AUDIO_LEN=[90,180,360];          // 轻览 / 标准 / 深度
+const INSIGHT={
+  gen:{
+    zh:"元代景德镇集中了全国最好的窑工与进口钴料。青花瓷自此不再只是宫廷器物，也沿海上与陆上商路远销西亚与东非。这对瓶子原是道观的供器——一套五件的祭坛陈设中的两件，另有香炉等已失散。",
+    en:"Yuan-era Jingdezhen concentrated the empire's best kiln workers alongside imported cobalt. Blue-and-white stopped being a palace-only ware and travelled the sea and land routes to West Asia and East Africa. This pair were temple furnishings — two survivors of a five-piece altar set whose censer and other pieces are lost."
+  },
+  deep:{
+    zh:"铭文全文四十余字，记「信州路玉山县顺城乡德教里荆塘社奉圣弟子张文进喜舍香炉花瓶一副，祈保合家清吉、子女平安。至正十一年四月良辰谨记，星源祖殿胡净一元帅打供」。地名、社名、受奉神祇一应俱全——它不只是一件瓷器，也是一份基层信仰的档案。1929 年由大维德爵士购藏，1935 年经霍布森考证发表，元青花的断代自此确立。",
+    en:"The forty-odd characters name the province, county, village and shrine, the donor Zhang Wenjin, his prayer for his family, the date — the fourth month of 1351 — and the deity the set was dedicated to. It is not only a porcelain; it is a record of grassroots religion. Acquired by Sir Percival David in 1929 and published by R. L. Hobson in 1935, it settled the dating of Yuan blue-and-white for good."
+  },
+  ct:{
+    zh:"可以把它理解成考古里的<em>一枚带年号的钱币</em>。单看器物，你只能说「大概是这个时期」；但只要有一件带确切纪年的东西落进这堆材料里，整片时间就被重新校准了——前后所有没有年款的器物，都能围着它排出顺序。这对瓶子对中国陶瓷史，就是这样一枚钱币。",
+    en:"Think of it as <em>a coin with a date on it</em> turning up in a dig. Objects on their own only let you say 'roughly this period'. One securely dated thing lands in the pile and the whole timeline recalibrates — every undated piece before and after can now be ordered around it. For Chinese ceramics, these two vases are that coin."
+  }
+};
+const CANDIDATES=[
+  {img:"src/projects/curator/thumb-porcelain.jpg", zh:["大维德花瓶","元代 · 95 号厅"],   en:["The David Vases","Yuan · Room 95"], p:68},
+  {img:"src/projects/curator/dragon-vessel.jpg",   zh:["青花缠枝牡丹瓶","元代 · 95 号厅"], en:["Peony-scroll vase","Yuan · Room 95"], p:19},
+  {img:"src/projects/curator/thumb-ding.jpg",      zh:["青花云龙纹罐","明早期 · 95 号厅"], en:["Dragon jar","Early Ming · Room 95"], p:9}
+];
+const FACTS=[
+  {zh:["材质","景德镇青花瓷"],en:["Material","Jingdezhen blue-and-white"]},
+  {zh:["纪年","至正十一年（1351）"],en:["Dated","1351 (Zhizheng 11)"]},
+  {zh:["通高","63.8 厘米"],en:["Height","63.8 cm"]},
+  {zh:["馆藏号","大维德基金会 PDF B.613–614"],en:["Accession","PDF B.613–614, Percival David"]}
+];
+const KNOW=[
+  {e:"🏺",zh:["窑口","景德镇"],en:["Kiln","Jingdezhen"]},
+  {e:"🌍",zh:["钴料来源","波斯进口"],en:["Cobalt source","Imported, Persia"]},
+  {e:"📜",zh:["断代地位","元青花基准器"],en:["Status","The dating benchmark"]},
+  {e:"⭐",zh:["存世","成对完整"],en:["Survival","An intact pair"]}
+];
+const RELATED=[
+  {img:"src/projects/curator/bronze-vessel.jpg", zh:["商代","青铜礼器"],en:["Shang dynasty","Bronze ritual vessel"]},
+  {img:"src/projects/curator/orchid-scroll.jpg", zh:["唐代","敦煌写经"],en:["Tang dynasty","Dunhuang manuscript"]},
+  {img:"src/projects/curator/mist-peaks.jpg",    zh:["宋代","山水册页"],en:["Song dynasty","Landscape album leaf"]},
+  {img:"src/projects/curator/jade-dragon-disc.jpg",zh:["汉代","玉璧"],en:["Han dynasty","Jade bi disc"]}
+];
+const NEARBY=[
+  {obj:"david", img:"src/projects/curator/thumb-porcelain.jpg",  zh:["大维德花瓶","95 号厅"],       en:["The David Vases","Room 95"]},
+  {obj:"cong",  img:"src/projects/curator/cong-tube.jpg",        zh:["良渚玉琮","33 号厅"],         en:["Liangzhu jade cong","Room 33"]},
+  {obj:"david", img:"src/projects/curator/jade-dragon-disc.jpg", zh:["汉代玉璧","33 号厅"],         en:["Han jade bi disc","Room 33"]},
+  {obj:"scroll",img:"src/projects/curator/mount-tai-scroll.jpg", zh:["女史箴图（唐摹本）","91a 号厅"],en:["Admonitions Scroll","Room 91a"]}
+];
+const WAYS={zh:["在你左前方","穿过大中庭","右手边第二展柜","上到 5 层"],
+             en:["ahead on your left","across the Great Court","second case on your right","up to level 5"]};
+const STATS=[
+  {icon:"i-eye",   key:"statSeen", val:()=>String(planned().filter(x=>x.state==="done").length)},
+  {icon:"i-clock", key:"statMin",  val:()=>LANG==="zh" ? minsUsed()+"分钟" : minsUsed()+" min"},
+  {icon:"i-star",  key:"statType", val:()=>t("statTypeV")}
+];
+const STOPS=[
+  {id:1,obj:"cong",view:8,walk:3,hall:{zh:"33 号厅",en:"Room 33"},img:"src/projects/curator/cong-tube.jpg", state:"done",
+   zh:["良渚玉琮","中国与南亚馆 · 33 号厅","参观约 8 分 · 步行 3 分",["必看 · 新石器礼器"]],
+   en:["Liangzhu jade cong","China & South Asia · Room 33","~8 min · 3 min walk",["Must-see · Neolithic ritual"]]},
+  {id:2,view:7,walk:2,hall:{zh:"33 号厅",en:"Room 33"},img:"src/projects/curator/bronze-vessel.jpg", state:"done",
+   zh:["商代青铜礼器","中国与南亚馆 · 33 号厅","参观约 7 分 · 步行 2 分",["推荐 · 礼制源头"]],
+   en:["Shang bronze vessel","China & South Asia · Room 33","~7 min · 2 min walk",["Recommended · Ritual origins"]]},
+  {id:3,obj:"david",view:10,walk:5,hall:{zh:"95 号厅",en:"Room 95"},img:"src/projects/curator/dragon-vessel.jpg", state:"now",
+   zh:["大维德花瓶","中国陶瓷馆 · 95 号厅","参观约 10 分 · 步行 5 分",["必看 · 断代标尺"]],
+   en:["The David Vases","Chinese ceramics · Room 95","~10 min · 5 min walk",["Must-see · The benchmark"]]},
+  {id:4,view:6,walk:4,hall:{zh:"33 号厅",en:"Room 33"},img:"src/projects/curator/jade-dragon-disc.jpg", state:"next",
+   zh:["汉代玉璧","中国与南亚馆 · 33 号厅","参观约 6 分 · 步行 4 分",["AI 推荐 · 兴趣匹配"]],
+   en:["Han jade bi disc","China & South Asia · Room 33","~6 min · 4 min walk",["AI pick · Matches you"]]},
+  {id:5,obj:"scroll",view:9,walk:6,hall:{zh:"91a 号厅",en:"Room 91a"},img:"src/projects/curator/mount-tai-scroll.jpg", state:"next",
+   zh:["女史箴图（唐摹本）","中国书画馆 · 91a 号厅","参观约 9 分 · 步行 6 分",["行程末段 · 限时展出"]],
+   en:["Admonitions Scroll","Chinese paintings · Room 91a","~9 min · 6 min walk",["End of route · Limited display"]]}
+];
+const STYLES=[
+  {id:"note",e:"📖",rec:false,zh:["研究笔记","适合深度爱好者"],en:["Research notes","For the deep diver"]},
+  {id:"trip",e:"🧭",rec:true, zh:["文化之旅","适合国际游客"],en:["Cultural journey","For international visitors"]},
+  {id:"story",e:"💛",rec:false,zh:["故事记录","适合亲子参观"],en:["Story log","For family visits"]},
+  {id:"card",e:"📷",rec:false,zh:["打卡图鉴","适合快速分享"],en:["Photo index","For quick sharing"]}
+];
+const GAINS=[
+  {e:"📜",zh:["纪年器的断代价值","理解了一件有确切年款的器物如何校准整片时间序列"],en:["Why dated objects matter","How one securely dated object recalibrates a whole chronology"]},
+  {e:"🌏",zh:["海上贸易与钴料","看到波斯钴料经海路进入景德镇的路径"],en:["Sea routes and cobalt","How Persian cobalt reached Jingdezhen by sea"]},
+  {e:"🏛",zh:["馆藏的形成","了解大维德爵士的收藏如何进入大英博物馆"],en:["How a collection forms","How Sir Percival David's collection came to the Museum"]}
+];
+const PERMS=[
+  {id:"loc", icon:"i-pin",   on:true, req:true, zh:["位置权限","室内精准定位","附近推荐不再显示距离与方向"],en:["Location","Precise indoor positioning","Nearby loses distance and direction"]},
+  {id:"cam", icon:"i-camera",on:true, req:true, zh:["摄像头权限","展品视觉识别","视觉识别不可用，只能用 NFC 或展签号"],en:["Camera","Visual object recognition","Vision is off — NFC or label number only"]},
+  {id:"data",icon:"i-bar",   on:true, req:false,zh:["行为数据收集","停留时长与互动分析","路线不再按停留重排，报告不再生成兴趣图谱"],en:["Behavioural data","Dwell time and interaction analysis","No dwell-based reordering, no interest map in the report"]},
+  {id:"mem", icon:"i-sparkle",on:true,req:false,zh:["AI 记忆","记住兴趣，跨次参观延续","画像只在本次有效，下次从零开始"],en:["AI memory","Remembers interests across visits","Profile resets after this visit"]}
+];
+const RADAR={
+  zh:["艺术","科技","文化","民俗","历史"],
+  en:["Art","Tech","Culture","Folk","History"],
+  v:[0.92,0.48,0.86,0.55,0.70]
+};
+const SOURCES={
+  1:{zh:"大英博物馆馆藏档案 · 大维德基金会中国陶瓷", en:"British Museum collection archive · Percival David Collection"},
+  2:{zh:"东方陶瓷学会 · 元青花断代研究（1935 起）",   en:"Oriental Ceramic Society · dating Yuan blue-and-white (from 1935)"}
+};
+// 讲解模型可选 —— 深度与响应速度的取舍对用户是可见的
+const MODELS=[
+  {id:"opus",   name:"Claude Opus 5",   zh:["深度考据","最细的工艺与文献推理，响应稍慢"], en:["Deep research","Finest craft and archive reasoning, slower"]},
+  {id:"sonnet", name:"Claude Sonnet 5", zh:["均衡","讲解质量与速度兼顾（默认）"],       en:["Balanced","Quality and speed, the default"]},
+  {id:"haiku",  name:"Claude Haiku 4.5",zh:["现场速答","站在展柜前最快拿到答案"],       en:["On-the-spot","Fastest answer while you stand at the case"]}
+];
+const ASK_ENTRIES=[
+  {id:"suggest", icon:"i-sparkle", zh:["推荐问题","先从策展人挑好的问题问起"], en:["Suggested questions","Start from what the curator would ask"]},
+  {id:"compare", icon:"i-layers",  zh:["展品对比","把两件放在一起看差别"],     en:["Compare objects","See two pieces side by side"]},
+  {id:"translate",icon:"i-globe",  zh:["文化转译","换成你熟悉的类比来讲"],     en:["Cultural translation","Retold through analogies you hold"]},
+  {id:"era",     icon:"i-clock",   zh:["时代脉络","同一时期还发生了什么"],     en:["The era around it","What else was happening then"]}
+];
+const CHAT_SEED={
+  q:{zh:"这对瓶子为什么被称为元青花的断代标尺？",en:"Why are these two vases called the benchmark for dating Yuan blue-and-white?"},
+  a:{zh:[
+      {k:"archive", s:1, t:"瓶颈铭文载明供奉人张文进、供奉地点信州路玉山县星源祖殿，以及至正十一年四月的确切日期。这是已知唯一一对带纪年的元代青花供器。"},
+      {k:"archive", s:2, t:"1935 年霍布森据此铭文发表断代结论之前，西方收藏界普遍将同类器物归入明代。"},
+      {k:"inferred", t:"因此它成了一把尺子：任何没有年款的元青花，都可以拿它的胎、釉、钴料发色和纹饰去比对定位。"}
+     ],
+     en:[
+      {k:"archive", s:1, t:"The inscription round the neck names the donor Zhang Wenjin, the shrine in Yushan county, and an exact date in the fourth month of 1351. It is the only known dated pair of Yuan blue-and-white altar vases."},
+      {k:"archive", s:2, t:"Until R. L. Hobson published his reading in 1935, Western collections filed comparable pieces as Ming."},
+      {k:"inferred", t:"So they became a ruler: any undated Yuan blue-and-white can be placed by comparing its body, glaze, cobalt tone and decoration against these two."}
+     ]},
+  fu:{zh:["铭文原文写了什么？","为什么之前会被认成明代？","这对瓶子是怎么到大英博物馆的？"],
+      en:["What does the inscription actually say?","Why was it mistaken for Ming?","How did the pair reach the British Museum?"]}
+};
+const CHAT_MORE={
+  zh:{a:[
+      {k:"archive", s:1, t:"铭文四十余字，记「信州路玉山县顺城乡德教里荆塘社奉圣弟子张文进喜舍香炉花瓶一副，祈保合家清吉、子女平安。至正十一年四月良辰谨记，星源祖殿胡净一元帅打供」。"},
+      {k:"inferred", t:"值得注意的是，它记的是一副五件祭坛陈设——香炉与另外几件已经失散，今天只剩这一对花瓶。"},
+      {k:"inferred", t:"张文进不是官员也不是窑主，只是一名地方信众。这类基层供奉的器物能烧到这个水准，反过来说明当时景德镇的产能与工艺已相当普及。"}
+     ],
+     src:"",
+     fu:["那香炉后来找到了吗？","元代普通人也能订制青花吗？","跟同期波斯陶器比一比"]},
+  en:{a:[
+      {k:"archive", s:1, t:"The forty-odd characters record that Zhang Wenjin, a lay devotee of Jingtang parish in Yushan county, gave a censer and a pair of vases, praying for his family's safety, in the fourth month of 1351, dedicated at the Xingyuan shrine."},
+      {k:"inferred", t:"Note that it records a five-piece altar set — the censer and the other pieces are lost; only the two vases survive."},
+      {k:"inferred", t:"Zhang was neither an official nor a kiln owner, just a local devotee. That someone like him could commission work of this quality says a lot about how widely Jingdezhen's output had spread by 1351."}
+     ],
+     src:"",
+     fu:["Was the censer ever found?","Could ordinary people commission blue-and-white?","Compare it with Persian wares of the period"]}
+};
+
+/* ============================================================
+   state
+   ============================================================ */
+let LANG="zh";
+const S={
+  screen:"splash", visitor:"local", dur:90, depth:1, rate:0,
+  ct:false, playing:false, pos:0, insight:"core", mode:"scan", scan:"high", pick:0,
+  narration:"zh-CN", model:"sonnet", modelOpen:false, chatStarted:false, voice:false, voiceSec:0, onboarded:true, autoDivert:true, divertState:"open", readMode:"quick", fontStep:0, offline:false, downloaded:false,
+  metrics:{audioDone:0, asks:0, deepRead:0, corrections:0},
+  stops:STOPS.map(s=>({...s})), style:"trip", perms:{}, chatStep:0, diverted:false
+};
+PERMS.forEach(p=>S.perms[p.id]=p.on);
+
+const can = k => !!S.perms[k];      // 权限直接决定功能是否可用，不是装饰
+const $=s=>document.querySelector(s);
+const $$=s=>[...document.querySelectorAll(s)];
+const t=k=>T[LANG][k];
+const L=o=>o[LANG];
+
+/* ============================================================
+   navigation
+   ============================================================ */
+const SCREENS=["splash","onboard","guide","detail","chat","route","report","profile"];
+const TABS=[
+  {id:"guide",  icon:"i-museum",  key:"tabGuide"},
+  {id:"route",  icon:"i-map",     key:"tabRoute"},
+  {id:"chat",   icon:"i-blob",    key:"tabChat"},
+  {id:"profile",icon:"i-user",    key:"tabMe"}
+];
+function go(id){
+  const wasElsewhere = S.screen!==id;
+  S.screen=id;
+  if(id==="splash"){ const lw=$("#loadWrap"); if(lw) lw.hidden=true; }
+  SCREENS.forEach(s=>{const el=$("#s-"+s); if(el) el.hidden = s!==id;});
+  const el=$("#s-"+id); if(el) el.scrollTop=0;
+  const chrome = (id!=="splash" && id!=="onboard");
+  $("#tabbar").style.display = chrome ? "grid" : "none";
+  $("#fab").hidden = !(id==="guide" || id==="route" || id==="detail");
+  const tabFor={detail:"guide", report:"route"};
+  $$("#tabbar button").forEach(b=>b.setAttribute("aria-current", String(b.dataset.id===id || b.dataset.id===tabFor[id])));
+}
+
+/* ============================================================
+   render helpers
+   ============================================================ */
+function icon(id,size,cls){return `<svg class="ic${cls?" "+cls:""}" style="width:${size||16}px;height:${size||16}px"><use href="#${id}"/></svg>`}
+
+function renderTabbar(){
+  $("#tabbar").innerHTML = TABS.map(x=>
+    `<button data-id="${x.id}" onclick="go('${x.id}')">${icon(x.icon,20,x.icon==="i-blob"?"mark":"")}<span>${t(x.key)}</span></button>`).join("");
+}
+function renderVisitors(){
+  $("#visitorOpts").innerHTML = VISITORS.map(v=>`
+    <button class="opt" aria-pressed="${S.visitor===v.id}" onclick="pickVisitor('${v.id}')">
+      <span class="glyph">${v.glyph}</span>
+      <span style="flex:1"><b>${L(v)[0]}</b><span>${L(v)[1]}</span></span>
+      <span class="check">${icon("i-check",12)}</span>
+    </button>`).join("");
+}
+function pickVisitor(id){
+  S.visitor=id;
+  if(id==="intl" && !S.ct){ S.ct=true; $("#ctSw").setAttribute("aria-pressed","true"); $("#ctSw2").setAttribute("aria-pressed","true"); }
+  renderVisitors(); renderGenerated(); renderProfile();
+}
+
+function renderDepthSeg(){
+  $("#depthSeg").innerHTML = t("depthL").map((d,i)=>
+    `<button aria-pressed="${S.depth===i}" onclick="setDepth(${i})">${d}</button>`).join("");
+  $("#depthVal").textContent = t("depthL")[S.depth];
+}
+function setDepth(i){S.depth=i;renderDepthSeg();S.pos=0;renderGenerated();renderWave();}
+
+const SCAN_NEXT={high:"mid", mid:"low", low:"high"};
+function rescan(){
+  if(S.scan==="scanning") return;
+  const next=SCAN_NEXT[S.scan];
+  S.scan="scanning"; renderScan();
+  setTimeout(()=>{ S.scan=next; renderScan(); }, 1100);
+}
+function renderScan(){
+  setTimeout(renderNudge,0);
+  if(!can("cam")){
+    const b=$("#scanVerdict"), bd=$("#scanBody"); $("#finder").dataset.state="low";
+    b.innerHTML=`${icon("i-camera",12)}<span>${t("camOff")}</span>`;
+    bd.innerHTML=`<div class="degrade low"><div class="dg-head">${icon("i-camera",14)}<span>${t("camOffHint")}</span></div>
+      <div class="dg-row" style="grid-template-columns:repeat(2,1fr)">
+        <button class="dg-btn" onclick="setMode('nfc')">${icon("i-nfc",16)}<span>${t("useNfc")}</span></button>
+        <button class="dg-btn" onclick="openTagInput()">${icon("i-doc",16)}<span>${t("useTag")}</span></button>
+      </div></div>`;
+    return;
+  }
+  const st=S.scan;
+  const badge=$("#scanVerdict"), body=$("#scanBody"), finder=$("#finder");
+  finder.dataset.state=st;
+  const V={
+    scanning:["i-scan",  t("scanBusy")],
+    high:    ["i-sparkle",t("scanHigh")],
+    mid:     ["i-layers", t("scanMid")],
+    low:     ["i-eye",    t("scanLow")]
+  }[st];
+  badge.innerHTML = `${icon(V[0],12)}<span>${V[1]}</span>`;
+
+  if(st==="scanning"){ body.innerHTML = `<div class="hintbar"><span class="typing"><i></i><i></i><i></i></span><span>${t("scanBusyHint")}</span></div>`; return; }
+
+  if(st==="high"){
+    body.innerHTML = `<button class="hintbar as-action" onclick="go('detail')">
+      ${icon("i-sparkle",15)}
+      <span><b>${t("a1Name")}</b><br>${t("scanHighHint")}</span>
+      ${icon("i-arrow",15)}</button>`;
+    return;
+  }
+  if(st==="mid"){
+    body.innerHTML = `<div class="degrade">
+      <div class="dg-head">${icon("i-layers",14)}<span>${t("scanMidHint")}</span></div>
+      ${CANDIDATES.map((c,i)=>`<button class="cand" onclick="pickCandidate(${i})">
+          <img src="${c.img}" alt="">
+          <span class="meta"><b>${L(c)[0]}</b><span>${L(c)[1]}</span></span>
+          <span class="pct">${c.p}%</span>
+        </button>`).join("")}
+      <button class="dg-alt" onclick="rescan()">${t("noneOfThese")}</button>
+    </div>`;
+    return;
+  }
+  // low confidence — stop guessing, hand over to the other two channels
+  body.innerHTML = `<div class="degrade low">
+    <div class="dg-head">${icon("i-eye",14)}<span>${t("scanLowHint")}</span></div>
+    <div class="dg-row">
+      <button class="dg-btn" onclick="setMode('nfc')">${icon("i-nfc",16)}<span>${t("useNfc")}</span></button>
+      <button class="dg-btn" onclick="openTagInput()">${icon("i-doc",16)}<span>${t("useTag")}</span></button>
+      <button class="dg-btn" onclick="rescan()">${icon("i-refresh",16)}<span>${t("retry")}</span></button>
+    </div>
+  </div>`;
+}
+function pickCandidate(i){ S.pick=i; S.metrics.corrections++; S.scan="high"; renderScan(); openObj("david"); }
+function openTagInput(){
+  if($("#tagSheet")) return;
+  const el=document.createElement("div");
+  el.className="sheet-bg"; el.id="tagSheet";
+  el.innerHTML=`<div class="sheet">
+    <span class="pill">${icon("i-doc",12)}${t("tagTitle")}</span>
+    <p style="margin:16px 0 12px">${t("tagHint")}</p>
+    <input id="tagNum" class="taginput" inputmode="numeric" placeholder="POR-0421">
+    <button class="btn" style="margin-top:16px" onclick="closeTag();S.scan='high';renderScan();go('detail')">${t("tagGo")}</button>
+    <button class="dismiss" onclick="closeTag()">${t("nfcDismiss")}</button>
+  </div>`;
+  el.addEventListener("click",e=>{ if(e.target===el) closeTag(); });
+  $("#viewport").appendChild(el);
+}
+function closeTag(){ const e=$("#tagSheet"); if(e) e.remove(); }
+function modeOK(id){ return id==="scan" ? can("cam") : id==="loc" ? can("loc") : true; }
+function renderModes(){
+  $("#modes").innerHTML = MODES.map(m=>{
+    const ok=modeOK(m.id);
+    return `<button class="mode" ${ok?"":"disabled"} aria-pressed="${S.mode===m.id&&ok}" onclick="setMode('${m.id}')">${icon(m.icon,14)}<span>${L(m)}</span></button>`;
+  }).join("");
+
+}
+function setMode(id){
+  S.mode=id; renderModes();
+  if(id==="nfc"){ S.scan="high"; renderScan(); setTimeout(openNfc,420); }
+  else rescan();
+}
+
+function renderStats(){
+  $("#statGrid").innerHTML = STATS.map(x=>
+    `<div class="stat"><span class="top">${icon(x.icon,16)}<b>${x.val()}</b></span><span>${t(x.key)}</span></div>`).join("");
+}
+function renderNearby(){
+  const mins=[2,4,6,9];
+  $("#nearbyRail").innerHTML = NEARBY.map((n,i)=>
+    `<button class="nearby" onclick="openObj('${n.obj}')">
+       <img src="${n.img}" alt="">
+       <span class="t"><b>${L(n)[0]}</b>
+         <span>${ can("loc")
+            ? `${icon("i-pin",11)}${t("walkMin")(mins[i])} · ${WAYS[LANG][i]}`
+            : L(n)[1] }</span>
+       </span>
+     </button>`).join("");
+}
+function renderTags(){
+  $("#a1Tags").innerHTML = A1_TAGS[LANG].map(x=>`<span class="tag">${x}</span>`).join("");
+}
+function coreParas(){
+  const set=(CORE[S.visitor]||CORE.local)[LANG];
+  return set.slice(0, S.depth+1);            // 轻览 1 段 / 标准 2 段 / 深度 3 段
+}
+function audioLen(){ return AUDIO_LEN[S.depth]; }
+function fmtTime(sec){ return Math.floor(sec/60)+":"+String(Math.floor(sec%60)).padStart(2,"0"); }
+// ============ 编排器 ============
+// 输入：展品的内容图谱 × 访客身份 × 讲解深度 → 输出：模块序列 + 命中的规则
+function curObj(){ return OBJECTS[S.obj] || OBJECTS.david; }
+function openObj(id){
+  if(OBJECTS[id]) S.obj=id;
+  S.pos=0; S.playing=false; S.region=-1; S.insight="core";
+  renderObjHead(); renderGenerated(); renderWave(); renderGrounding(-1);
+  go("detail");
+}
+function renderObjHead(){
+  const o=curObj(), d=L(o);
+  const set=(id,v)=>{ const el=$(id); if(el) el.textContent=v; };
+  const img=$("#heroImg"); if(img) img.src=o.img;
+  set("#objCat",d.cat); set("#objRoom",d.room); set("#objName",d.name); set("#objDyn",d.dyn);
+  const tg=$("#a1Tags"); if(tg) tg.innerHTML=o.tags[LANG].map(x=>`<span class="tag">${x}</span>`).join("");
+}
+function compose(){
+  const o=curObj(), v=S.visitor, d=S.depth, has=o.has, out=[], why=[];
+  const add=(b,rule)=>{ out.push(b); why.push(rule); };
+  add("narration","ruleNarr");
+  if(has.inscription && d>=1)                 add("inscription","ruleInscr");
+  if(has.timeline && (v==="local" || d===2))  add("timeline","ruleTime");
+  if(has.provenance)                          add("provenance","ruleProv");
+  if(has.route && v==="intl")                 add("route","ruleRoute");
+  if(has.material && v==="local" && d>=1)     add("material","ruleMat");
+  if(has.compare && v!=="family")             add("compare","ruleCmp");
+  if(has.question && v==="family")            add("question","ruleQ");
+  if(has.numbers)                             add("numbers","ruleNum");
+  return {blocks:out, why};
+}
+const BLOCK={
+  narration:(o)=>`<div class="sec"><div class="tabs" role="tablist" id="insightTabs"></div>
+      <div class="insight"><p class="body" id="insightBody"></p>
+        <div class="source">${icon("i-doc",13)}<span id="insightSrc"></span></div></div></div>`,
+  inscription:(o)=>{const x=L(o.inscription);
+    return `<div class="sec"><div class="gblock quote"><span class="gb-k">${x[0]}</span><p>${x[1]}</p></div></div>`;},
+  timeline:(o)=>`<div class="sec"><h3 class="h2">${t("bTimeline")}</h3>
+      <div class="gblock"><ol class="tl">${L(o.timeline).map(r=>`<li><b>${r[0]}</b><span>${r[1]}</span></li>`).join("")}</ol></div></div>`,
+  provenance:(o)=>`<div class="sec"><h3 class="h2">${t("bProvenance")}</h3>
+      <div class="gblock"><ol class="tl prov">${L(o.provenance).map(r=>`<li><b>${r[0]}</b><span>${r[1]}</span></li>`).join("")}</ol></div></div>`,
+  route:(o)=>`<div class="sec"><h3 class="h2">${t("bRoute")}</h3>
+      <div class="gblock"><div class="routeline">${L(o.route).map((r,i,arr)=>
+        `<span class="rl-node"><b>${r[0]}</b><span>${r[1]}</span></span>${i<arr.length-1?'<span class="rl-arrow">→</span>':''}`).join("")}</div></div></div>`,
+  material:(o)=>`<div class="sec"><h3 class="h2">${t("bMaterial")}</h3>
+      <div class="gblock"><div class="strata">${L(o.material).map((r,i)=>
+        `<div class="st" style="--i:${i}"><span class="st-bar"></span><b>${r[0]}</b><span>${r[1]}</span></div>`).join("")}</div></div></div>`,
+  compare:(o)=>{const x=L(o.compare);
+    return `<div class="sec"><h3 class="h2">${x[0]}</h3><div class="gblock"><p class="body">${x[1]}</p></div></div>`;},
+  question:(o)=>{const x=L(o.question);
+    return `<div class="sec"><div class="gblock ask"><span class="gb-k">${x[0]}</span><p>${x[1]}</p></div></div>`;},
+  numbers:(o)=>`<div class="sec"><h3 class="h2">${t("quickFacts")}</h3>
+      <div class="facts">${L(o.numbers).map(r=>`<div class="fact"><span>${r[0]}</span><b>${r[1]}</b></div>`).join("")}</div></div>`
+};
+function renderGenerated(){
+  const box=$("#genBlocks"); if(!box) return;
+  const o=curObj(), c=compose();
+  const names={narration:"bNarr",inscription:"bInscr",timeline:"bTimeline",provenance:"bProvenance",
+               route:"bRoute",material:"bMaterial",compare:"bCompare",question:"bQuestion",numbers:"bNumbers"};
+  $("#composeBar").innerHTML = `
+    <details class="composed">
+      <summary>${icon("i-layers",14)}<span>${t("composedFor")(c.blocks.length)}</span></summary>
+      <div class="cmp-list">${c.blocks.map(b=>`<span class="cmp-chip">${t(names[b])}</span>`).join("")}</div>
+      <ul class="cmp-why">${c.why.map(w=>`<li>${t(w)}</li>`).join("")}</ul>
+    </details>`;
+  box.innerHTML = c.blocks.map(b=>BLOCK[b](o)).join("");
+  renderInsightTabs();
+}
+function renderInsightTabs(){
+  const tabs=[...INSIGHT_TABS];
+  if(S.ct) tabs.push({id:"ct",icon:"i-globe",zh:"文化转译",en:"Translation"});
+  $("#insightTabs").innerHTML = tabs.map(x=>
+    `<button role="tab" aria-selected="${S.insight===x.id}" onclick="setInsight('${x.id}')">${icon(x.icon,14)}<span>${L(x)}</span></button>`).join("");
+  const paras = S.readMode==="quick" ? coreParas().slice(0,1) : coreParas();
+  $("#insightBody").innerHTML = S.insight==="core"
+    ? paras.map(x=>`<span class="para">${x}</span>`).join("")
+    : L(INSIGHT[S.insight]||INSIGHT.gen);
+  $("#insightSrc").innerHTML = S.insight==="ct"
+    ? t("srcCT")
+    : `${t("src1")} · <b style="color:var(--jade-500)">${t("depthL")[S.depth]}</b> · ${L(VISITORS.find(v=>v.id===S.visitor))[0]}`;
+}
+function setRead(m){
+  S.readMode=m;
+  $$("#readSeg button").forEach((b,i)=>b.setAttribute("aria-pressed",String((i===0)===(m==="quick"))));
+  const deep = m==="deep";
+  ["ctSec","relSec","askSec"].forEach(id=>{ const el=$("#"+id); if(el) el.hidden=!deep; });
+  const it=$("#insightTabs"); if(it) it.hidden=!deep;
+  if(!deep) S.insight="core";
+  renderInsightTabs();
+}
+function setInsight(id){ if(id!=="core"&&S.insight!==id) S.metrics.deepRead++; S.insight=id; renderInsightTabs(); }
+function toggleCT(){
+  S.ct=!S.ct;
+  $("#ctSw").setAttribute("aria-pressed",String(S.ct));
+  $("#ctSw2").setAttribute("aria-pressed",String(S.ct));
+  S.insight = S.ct ? "ct" : "core";
+  renderInsightTabs();
+}
+function renderFacts(){
+  $("#factGrid").innerHTML = FACTS.map(f=>`<div class="fact"><span>${L(f)[0]}</span><b>${L(f)[1]}</b></div>`).join("");
+}
+function renderKnow(){
+  $("#knowGrid").innerHTML = KNOW.map(k=>`<div class="know"><div class="emoji">${k.e}</div><span>${L(k)[0]}</span><b>${L(k)[1]}</b></div>`).join("");
+}
+function renderRelated(){
+  $("#relGrid").innerHTML = RELATED.map(r=>
+    `<div class="rel"><img src="${r.img}" alt=""><span>${L(r)[0]}</span><b>${L(r)[1]}</b></div>`).join("");
+}
+
+/* ---------- audio player ---------- */
+const WAVE_N=34;
+const HEIGHTS=[];
+for(let i=0;i<WAVE_N;i++){
+  const base=Math.sin(i*0.55)*0.32+Math.sin(i*1.9)*0.18+0.55;
+  HEIGHTS.push(Math.max(0.18,Math.min(1,base)));
+}
+function renderWave(){
+  const total=audioLen();
+  if(S.pos>total) S.pos=total;
+  const done=Math.round(S.pos/total*WAVE_N);
+  $("#wave").innerHTML = HEIGHTS.map((h,i)=>
+    `<i class="${i<done?'on':''}" style="height:${(h*100).toFixed(0)}%"></i>`).join("");
+  $("#wave").classList.toggle("playing",S.playing);
+  $("#tNow").textContent=fmtTime(S.pos);
+  $("#tTotal").textContent=fmtTime(total);
+  $("#audioSub").textContent=t("audioSubFor")(t("depthL")[S.depth], Math.round(total/60));
+  renderTranscript(total);
+  $("#playIcon").innerHTML=`<use href="#${S.playing?"i-pause":"i-play"}"/>`;
+}
+function renderGrounding(idx){
+  const o=curObj(), regs=L(o.regions)||[], box=$("#grounding");
+  if(!box) return;
+  box.innerHTML = regs.map((r,i)=>{
+    const [x,y,w,h]=r[1];
+    return `<button class="rgn ${i===idx?'on':''}" style="left:${x}%;top:${y}%;width:${w}%;height:${h}%"
+      onclick="focusRegion(${i})"><span>${r[0]}</span></button>`;
+  }).join("");
+}
+function focusRegion(i){
+  S.region=i; renderGrounding(i);
+  const lines=$$("#transcript p"); lines.forEach((p,k)=>p.classList.toggle("on", k===i));
+}
+function renderTranscript(total){
+  const lines=coreParas().map(x=>x.replace(/<[^>]+>/g,""));
+  const seg=total/lines.length, cur=Math.min(lines.length-1, Math.floor(S.pos/seg));
+  $("#transcript").innerHTML = lines.map((x,i)=>
+    `<p class="${i===cur&&S.pos>0?'on':''}" onclick="focusRegion(${i})"><span class="ts">${fmtTime(i*seg)}</span>${x}</p>`).join("");
+  if(S.pos>0) renderGrounding(cur);   // 讲到哪，图上就圈到哪
+}
+let audioTimer=null;
+function togglePlay(){
+  S.playing=!S.playing;
+  clearInterval(audioTimer);
+  if(S.playing){
+    audioTimer=setInterval(()=>{
+      S.pos+=[1,1.25,1.5][S.rate];
+      if(S.pos>=audioLen()){S.pos=audioLen();S.playing=false;S.metrics.audioDone++;clearInterval(audioTimer);}
+      renderWave();
+    },260);
+  }
+  renderWave();
+}
+function cycleRate(){
+  S.rate=(S.rate+1)%3;
+  const r=[1,1.25,1.5][S.rate];
+  $("#rateBtn").textContent=t("rateVal")(r.toFixed(r===1?1:2).replace(/0$/,""));
+  $("#rowRateVal").textContent=t("rateRow")(t("rateL")[S.rate], r);
+}
+
+/* ---------- chat ---------- */
+function bubbleMe(txt){return `<div class="bubble-me">${txt}</div>`}
+function provenanceKey(){
+  return `<div class="provkey">
+    <span><i></i>${t("keyArchive")}</span>
+    <span><i class="sw-ai"></i>${t("keyInferred")}</span>
+  </div>`;
+}
+function bubbleAi(paras){
+  const used=[...new Set(paras.filter(p=>p.k==="archive"&&p.s).map(p=>p.s))];
+  const body=paras.map(p=> p.k==="archive"
+      ? `<p class="from-archive">${p.t}<sup class="cite">[${p.s}]</sup></p>`
+      : `<p class="from-ai">${p.t}<span class="aimark">${t("inferredMark")}</span></p>`).join("");
+  return `<div class="bubble-ai"><span class="av">${icon("i-blob",19,"mark")}</span>
+    <div class="body-wrap">
+      ${body}
+      <div class="meta-row">
+        ${used.map(n=>`<span class="srcchip">${icon("i-doc",11)}<b>[${n}]</b> ${L(SOURCES[n])}</span>`).join("")}
+      </div>
+      <div class="acts">
+        <button onclick="thank(this)">${icon("i-heart",12)}${t("helpful")}</button>
+        <button onclick="openFlag()">${icon("i-refresh",12)}${t("improve")}</button>
+        <button>${icon("i-volume",12)}${t("readAloud")}</button>
+      </div>
+    </div></div>`;
+}
+function followups(list){
+  return `<div class="followups"><span class="eyebrow mute" style="padding-left:2px">${t("followUpLbl")}</span>
+    ${list.map(q=>`<button onclick="askMore(this,'${encodeURIComponent(q)}')"><span>${q}</span>${icon("i-arrow",13)}</button>`).join("")}</div>`;
+}
+function curModel(){ return MODELS.find(m=>m.id===S.model) || MODELS[1]; }
+function renderModel(){
+  const chip=$("#modelName"); if(chip) chip.textContent=curModel().name;
+  const menu=$("#modelMenu"); if(!menu) return;
+  menu.hidden=!S.modelOpen;
+  const ch=$("#modelChip"); if(ch) ch.setAttribute("aria-expanded",String(S.modelOpen));
+  if(!S.modelOpen) return;
+  menu.innerHTML = MODELS.map(m=>`
+    <button class="mrow ${m.id===S.model?"on":""}" onclick="pickModel('${m.id}')">
+      <span class="mr-t"><b>${m.name}</b><span>${L(m)[0]} · ${L(m)[1]}</span></span>
+      ${m.id===S.model ? icon("i-check",16) : ""}
+    </button>`).join("");
+}
+function toggleModelMenu(){ S.modelOpen=!S.modelOpen; renderModel(); }
+function pickModel(id){ S.model=id; S.modelOpen=false; renderModel(); }
+function renderAskHome(){
+  const box=$("#askHome"); if(!box) return;
+  box.hidden = S.chatStarted;
+  if(box.hidden) return;
+  box.innerHTML = `
+    <h2 class="ask-t">${t("askTitle")}</h2>
+    <p class="ask-s">${t("askSub")}</p>
+    <div class="ask-list">
+      ${ASK_ENTRIES.map(e=>`<button class="ask-line" onclick="startAsk('${e.id}')">
+          <b>${L(e)[0]}</b><span>${L(e)[1]}</span>
+        </button>`).join("")}
+    </div>`;
+}
+function startAsk(id){
+  if(id==="translate" && !S.ct){ S.ct=true; $("#ctSw").setAttribute("aria-pressed","true"); $("#ctSw2").setAttribute("aria-pressed","true"); renderInsightTabs(); }
+  S.chatStarted=true;
+  renderAskHome(); renderChat();
+  setTimeout(()=>{ $("#s-chat").scrollTop=$("#s-chat").scrollHeight; },0);
+}
+function renderChat(){
+  if(!S.chatStarted){ $("#chatWrap").innerHTML=""; return; }
+  const w=$("#chatWrap");
+  let html = bubbleMe(L(CHAT_SEED.q)) + bubbleAi(L(CHAT_SEED.a)) + provenanceKey();
+  html += `<div class="visualcard"><img src="src/projects/curator/liu-sheng-suit.jpg" alt="">
+    <div class="cap"><span class="eyebrow">${LANG==='zh'?'关联影像':'Contextual visual'}</span>
+    <b style="display:block;font-size:13.5px;margin-top:4px;color:var(--ink)">${LANG==='zh'?'瓶颈纪年铭文拓片（局部）':'Rubbing of the dated inscription (detail)'}</b></div></div>`;
+  if(S.chatStep>=1){
+    const m=CHAT_MORE[LANG];
+    html += bubbleMe(S.lastQ||L(CHAT_SEED.fu)[0]) + bubbleAi(m.a) + provenanceKey();
+    html += followups(m.fu);
+  } else {
+    html += followups(L(CHAT_SEED.fu));
+  }
+  w.innerHTML=html;
+}
+function askMore(btn,q){
+  S.chatStarted=true; renderAskHome();
+  S.metrics.asks++;
+  S.lastQ=decodeURIComponent(q);
+  const w=$("#chatWrap");
+  btn.closest(".followups").remove();
+  w.insertAdjacentHTML("beforeend", bubbleMe(S.lastQ));
+  w.insertAdjacentHTML("beforeend",
+    `<div class="bubble-ai" id="tmpTyping"><span class="av">${icon("i-blob",19,"mark")}</span>
+     <div class="body-wrap"><span class="typing"><i></i><i></i><i></i></span></div></div>`);
+  $("#s-chat").scrollTop=$("#s-chat").scrollHeight;
+  setTimeout(()=>{ S.chatStep=1; renderChat(); $("#s-chat").scrollTop=$("#s-chat").scrollHeight; },900);
+}
+const REDLINE=/值多少|多少钱|估价|市价|拍卖|真假|真伪|鉴定|worth|price|valuation|authentic|fake|apprais/i;
+function sendTyped(){
+  const inp=$("#chatInput");
+  const v=inp.value.trim();
+  if(!v) return;
+  inp.value="";
+  if(REDLINE.test(v)){
+    const w=$("#chatWrap");
+    w.insertAdjacentHTML("beforeend", bubbleMe(v));
+    w.insertAdjacentHTML("beforeend",
+      `<div class="bubble-ai"><span class="av">${icon("i-blob",19,"mark")}</span>
+        <div class="body-wrap redline">
+          <div class="rl-t">${icon("i-shield",14)}<span>${t("redlineT")}</span></div>
+          <p>${t("redlineP")}</p>
+        </div></div>`);
+    $("#s-chat").scrollTop=$("#s-chat").scrollHeight;
+    return;
+  }
+  const fake=document.createElement("div");
+  fake.className="followups";
+  $("#chatWrap").appendChild(fake);
+  askMore(fake.appendChild(document.createElement("button")), encodeURIComponent(v));
+}
+function thank(btn){ btn.innerHTML=`${icon("i-check",12)}${t("thanks")}`; btn.disabled=true; }
+const FLAGS=["flagFact","flagSource","flagTone"];
+function openFlag(){
+  if($("#flagSheet")) return;
+  const el=document.createElement("div");
+  el.className="sheet-bg"; el.id="flagSheet";
+  el.innerHTML=`<div class="sheet">
+    <span class="pill">${icon("i-shield",12)}${t("flagTitle")}</span>
+    <p style="margin:16px 0 12px">${t("flagHint")}</p>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      ${FLAGS.map(k=>`<button class="btn quiet" onclick="submitFlag()">${t(k)}</button>`).join("")}
+    </div>
+    <button class="dismiss" onclick="closeFlag()">${t("nfcDismiss")}</button>
+  </div>`;
+  el.addEventListener("click",e=>{ if(e.target===el) closeFlag(); });
+  $("#viewport").appendChild(el);
+}
+function submitFlag(){
+  const id="NM-"+Math.floor(1000+Math.random()*9000);
+  $("#flagSheet .sheet").innerHTML=`<span class="pill">${icon("i-check",12)}${t("flagDoneT")}</span>
+    <p style="margin:16px 0 4px">${t("flagDoneP")}</p>
+    <p style="font-weight:700;color:var(--jade-500);margin:0 0 4px">${t("ticket")} ${id}</p>
+    <button class="btn" style="margin-top:12px" onclick="closeFlag()">${t("gotIt")}</button>`;
+}
+function closeFlag(){ const e=$("#flagSheet"); if(e) e.remove(); }
+function resetChat(){S.chatStep=0;S.lastQ=null;S.chatStarted=false;renderAskHome();renderChat();}
+
+/* ---------- route ---------- */
+// 预算决定排几件：每站按「参观 + 步行」的真实耗时累加，塞不下就不进计划
+const DWELL=1.5;                      // 观测：用户在感兴趣的展品前平均比计划多停留 50%
+function planSize(){
+  let acc=0, n=0;
+  for(const x of S.stops){ const c=x.view+x.walk; if(n>=2 && acc+c>S.dur) break; acc+=c; n++; }
+  return Math.max(1, n);
+}
+function planned(){ return S.stops.slice(0, planSize()); }
+function cost(x){ return x.view + x.walk; }
+function minsUsed(){ return Math.round(planned().filter(x=>x.state==="done").reduce((n,x)=>n+cost(x),0)*DWELL); }
+function minsAhead(){ return planned().filter(x=>x.state!=="done").reduce((n,x)=>n+cost(x),0); }
+function overBy(){ return minsUsed()+minsAhead()-S.dur; }
+function dropLast(){
+  const list=planned().filter(x=>x.state!=="done");
+  if(!list.length) return;
+  const victim=list[list.length-1];
+  S.stops=S.stops.filter(x=>x.id!==victim.id);
+  S.dropped=(S.dropped||[]).concat(L(victim)[0]);
+  renderRoute();
+}
+function renderRoute(){
+  const plan=planned();
+  const done=plan.filter(s=>s.state==="done").length;
+  const total=plan.length;
+  $("#progLabel").textContent=`${done} / ${total}`;
+  $("#progBar").style.width=(total?done/total*100:0)+"%";
+  const used=minsUsed();
+  $("#numUsed").textContent=used;
+  $("#numLeft").textContent=Math.max(0,S.dur-used);
+  $("#numStops").textContent=total-done;
+  renderPacing(); renderDivert(); renderReportEntry();
+  const badge=$("#routeOptBadge");
+  if(badge) badge.innerHTML = can("data")
+    ? `<i></i><span>${t("routeOpt")}</span>`
+    : `<span>${t("routeFixed")}</span>`;
+  const stateL={done:t("stDone"),now:t("stNow"),next:t("stNext")};
+  $("#routeList").innerHTML = plan.map(s=>{
+    const d=L(s);
+    return `<button class="stop" data-state="${s.state}" onclick="${s.obj?`openObj('${s.obj}')`:`toggleStop(${s.id})`}">
+      <span class="dot">${icon("i-check",11)}</span>
+      <img src="${s.img}" alt="">
+      <span class="meta">
+        <span class="state">${stateL[s.state]}</span>
+        <b>${d[0]}</b><span class="sub">${d[1]}</span><span class="sub">${d[2]}</span>
+        <span class="badges">${d[3].map(b=>`<span class="bdg">${b}</span>`).join("")}</span>
+      </span></button>`;
+  }).join("");
+  const v=VISITORS.find(x=>x.id===S.visitor);
+  $("#routeSub").textContent = t("routeSub")(L(v)[0], S.dur, t("depthL")[S.depth]);
+  renderMap();
+  renderGain();
+  syncReport();
+}
+function toggleStop(id){
+  const s=S.stops.find(x=>x.id===id);
+  if(s.state==="done"){s.state="next";}
+  else {
+    s.state="done";
+    const nxt=S.stops.find(x=>x.state==="next");
+    S.stops.forEach(x=>{if(x.state==="now")x.state="next";});
+    if(nxt) nxt.state="now";
+  }
+  renderRoute();
+}
+function renderReportEntry(){
+  const box=$("#reportEntry"); if(!box) return;
+  const plan=planned(), done=plan.filter(x=>x.state==="done").length, all=done===plan.length && plan.length>0;
+  box.innerHTML = all
+    ? `<button class="reportcard done" onclick="go('report')">
+         <span class="rc-ic">${icon("i-doc",20)}</span>
+         <span class="rc-t"><b>${t("repReady")}</b><span>${t("repReadyS")(done,minsUsed())}</span></span>
+         ${icon("i-arrow",16)}
+       </button>`
+    : `<button class="reportcard" onclick="go('report')">
+         <span class="rc-ic">${icon("i-doc",20)}</span>
+         <span class="rc-t"><b>${t("repDraft")}</b><span>${t("repDraftS")(done,plan.length)}</span></span>
+         ${icon("i-arrow",16)}
+       </button>`;
+}
+function renderPacing(){
+  const box=$("#pacing"); if(!box) return;   // 卡片已移除；逻辑保留供报告与路线规划使用
+  const over=overBy(), left=S.dur-minsUsed(), ahead=minsAhead();
+  if(over>0){
+    box.hidden=false; box.dataset.tone="warn";
+    box.innerHTML=`<div class="pace-t">${icon("i-clock",15)}<span>${t("paceOver")(over)}</span></div>
+      <p>${t("paceOverP")(ahead,Math.max(0,left))}</p>
+      <button class="btn sm" onclick="dropLast()">${t("paceDrop")}</button>`;
+  } else {
+    box.hidden=false; box.dataset.tone="ok";
+    box.innerHTML=`<div class="pace-t">${icon("i-check",15)}<span>${t("paceOk")(Math.max(0,-over))}</span></div>
+      <p>${t("paceOkP")(planSize(),S.dur)}${(S.dropped&&S.dropped.length)?" "+t("paceDropped")(S.dropped.join("、")):""}</p>`;
+  }
+}
+function renderMap(){
+  // plate = the rendered floor plan from the source design; overlay = localized, state-driven
+  const st = id => (planned().find(x=>x.id===id)||{}).state || "next";
+  const halls = [
+    {x:37.2, y:83.2, w:27.8, h:9.8, zh:"大中庭",  en:"Great Court"},
+    {x:47.2, y:55.8, w:27.8, h:9.8, zh:"33 号厅", en:"Room 33"},
+    {x:64.3, y:29.8, w:36.9, h:10.6, zh:"95 号厅", en:"Room 95"}
+  ];
+  const dots = [
+    {x:13.2, y:67.6, state:"done"},
+    {x:80.3, y:38.3, state:st(2)},
+    {x:92.5, y:31.0, state:st(3)}
+  ];
+  $("#mapBox").innerHTML = `<div class="plan">
+    <img src="src/projects/curator/floorplan.jpg" alt="${LANG==='zh'?'大英博物馆中国馆平面':'The British Museum, China galleries plan'}">
+    ${halls.map(h=>`<span class="plan-chip" style="left:${h.x}%;top:${h.y}%;width:${h.w}%;height:${h.h}%">${L(h)}</span>`).join("")}
+    ${dots.map(d=>`<span class="plan-dot" data-state="${d.state}"></span>`.replace('class="plan-dot"',`class="plan-dot" style="left:${d.x}%;top:${d.y}%"`)).join("")}
+    <span class="plan-legend">${LANG==='zh'?'大英博物馆 · AI 优化动线':'The British Museum · AI-optimized path'}</span>
+  </div>`;
+}
+// 不再声称「掌握」——只报可数的接触行为，并把依据摊开
+function evidence(){
+  const m=S.metrics, seen=planned().filter(x=>x.state==="done").length;
+  return [
+    {n:seen,        k:"evSeen",  w:10},
+    {n:m.audioDone, k:"evAudio", w:15},
+    {n:m.asks,      k:"evAsk",   w:20},
+    {n:m.deepRead,  k:"evDeep",  w:10}
+  ];
+}
+function renderGain(){
+  const ev=evidence();
+  const score=Math.min(100, ev.reduce((a,x)=>a+x.n*x.w,0));
+  const plan=Math.max(1,planned().length);
+  const cover=Math.round(planned().filter(x=>x.state==="done").length/plan*100);
+  $("#gainCard").innerHTML = `
+    <h4>${t("exploreT")}</h4>
+    <div class="gainrow">
+      <div class="top"><span>${t("exploreCover")}</span><b>${cover}%</b></div>
+      <div class="track"><i style="width:${cover}%"></i></div>
+    </div>
+    <div class="gainrow">
+      <div class="top"><span>${t("exploreDepth")}</span><b>${score}%</b></div>
+      <div class="track"><i style="width:${score}%"></i></div>
+    </div>
+    <p class="quote"><b>${t("basedOn")}</b> ${ev.map(x=>t(x.k)(x.n)).join(" · ")}
+      <br>${t("notMastery")}</p>`;
+}
+function routeTab(which){
+  $$("#routeSeg button").forEach((b,i)=>b.setAttribute("aria-pressed",String((i===0)===(which==="list"))));
+  $("#routeListPane").hidden = which!=="list";
+  $("#routeMapPane").hidden = which==="list";
+}
+
+/* ---------- report ---------- */
+function renderStyles(){
+  $("#styleGrid").innerHTML = STYLES.map(s=>`
+    <button class="style" aria-pressed="${S.style===s.id}" onclick="S.style='${s.id}';renderStyles();if($('#posterSheet')){closePoster();openPoster();}">
+      ${s.rec?`<span class="rec">${LANG==='zh'?'推荐':'Suggested'}</span>`:''}
+      <div class="emoji">${s.e}</div><b>${L(s)[0]}</b><span>${L(s)[1]}</span>
+    </button>`).join("");
+}
+function renderGains(){
+  $("#gainList").innerHTML = GAINS.map(g=>
+    `<div class="gain"><span class="emoji">${g.e}</span><div><b>${L(g)[0]}</b><p>${L(g)[1]}</p></div></div>`).join("");
+}
+function renderRadar(){
+  if(!can("data")){
+    $("#radarBox").innerHTML=`<div class="noradar">${icon("i-bar",20)}
+      <b>${t("radarOffT")}</b><p>${t("radarOffP")}</p></div>`;
+    return;
+  }
+  const n=RADAR.v.length, cx=50, cy=48, R=32;
+  const ang=i=>(-Math.PI/2)+i*2*Math.PI/n;
+  const pt=(i,r)=>[cx+Math.cos(ang(i))*R*r, cy+Math.sin(ang(i))*R*r];
+  let rings="";
+  [0.25,0.5,0.75,1].forEach(r=>{
+    const p=RADAR.v.map((_,i)=>pt(i,r).map(v=>v.toFixed(1)).join(",")).join(" ");
+    rings+=`<polygon points="${p}" fill="none" stroke="var(--line)" stroke-width="0.6"/>`;
+  });
+  let spokes=RADAR.v.map((_,i)=>{const p=pt(i,1);return `<line x1="${cx}" y1="${cy}" x2="${p[0].toFixed(1)}" y2="${p[1].toFixed(1)}" stroke="var(--line)" stroke-width="0.5"/>`}).join("");
+  const poly=RADAR.v.map((v,i)=>pt(i,v).map(x=>x.toFixed(1)).join(",")).join(" ");
+  const dots=RADAR.v.map((v,i)=>{const p=pt(i,v);return `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="1.6" fill="var(--jade-500)"/>`}).join("");
+  const labels=RADAR[LANG].map((lb,i)=>{
+    const p=pt(i,1.28); const a=ang(i);
+    const anchor = Math.abs(Math.cos(a))<0.3 ? "middle" : (Math.cos(a)>0?"start":"end");
+    return `<text x="${p[0].toFixed(1)}" y="${(p[1]+1.2).toFixed(1)}" text-anchor="${anchor}" font-size="4" fill="var(--ink-2)" font-weight="600">${lb}</text>`;
+  }).join("");
+  const vals=RADAR.v.map((v,i)=>{const p=pt(i,v);return `<text x="${(p[0]+ (Math.cos(ang(i))>0?3:-3)).toFixed(1)}" y="${(p[1]-2.4).toFixed(1)}" text-anchor="middle" font-size="3.2" fill="var(--jade-500)" font-weight="700">${Math.round(v*100)}</text>`}).join("");
+  $("#radarBox").innerHTML=`<svg viewBox="0 0 100 100" style="width:100%;max-width:280px;display:block;margin:4px auto 0" role="img" aria-label="interest radar">
+    ${rings}${spokes}
+    <polygon points="${poly}" fill="var(--jade-500)" fill-opacity="0.22" stroke="var(--jade-500)" stroke-width="1.2" stroke-linejoin="round"/>
+    ${dots}${vals}${labels}</svg>`;
+}
+function syncReport(){
+  const done=planned().filter(s=>s.state==="done").length;
+  const mins=minsUsed();
+  $("#repSeen").textContent=done;
+  $("#repMin").textContent=mins;
+  $("#repInt").textContent=S.metrics.audioDone+S.metrics.asks+S.metrics.deepRead+S.metrics.corrections;
+  renderStats();
+  $("#repDate").textContent=t("reportDate")(S.dur);
+}
+const POSTER_SKIN={
+  note: {bg:"linear-gradient(150deg,#121C17,#080F0B)", accent:"#7FA891", key:"pstNote"},
+  trip: {bg:"linear-gradient(150deg,#16231C,#0E1A14)", accent:"#4E9068", key:"pstTrip"},
+  story:{bg:"linear-gradient(150deg,#132620,#0A1611)", accent:"#6BBF8E", key:"pstStory"},
+  card: {bg:"linear-gradient(150deg,#0F1E18,#07120D)", accent:"#9FCBB4", key:"pstCard"}
+};
+function openPoster(){
+  if($("#posterSheet")) return;
+  const skin=POSTER_SKIN[S.style]||POSTER_SKIN.trip;
+  const done=planned().filter(x=>x.state==="done").length, mins=minsUsed();
+  const shots=["src/projects/curator/dragon-vessel.jpg","src/projects/curator/thumb-ding.jpg","src/projects/curator/jade-dragon-disc.jpg","src/projects/curator/mount-tai-scroll.jpg"];
+  const el=document.createElement("div");
+  el.className="sheet-bg"; el.id="posterSheet";
+  el.innerHTML=`<div class="postersheet">
+    <div class="poster" style="background:${skin.bg};border-color:${skin.accent}44">
+      <div class="brand" style="color:${skin.accent}">${icon("i-sparkle",14)}<span>${t("posterBrand")}</span></div>
+      <div class="mosaic">${shots.map(src=>`<img src="${src}" alt="">`).join("")}</div>
+      <h4>${t(skin.key)}</h4>
+      <p>${t("posterLine")(done,mins)}</p>
+      <div class="row">
+        <button class="gold" style="background:${skin.accent}">${icon("i-share",16)}<span>${t("posterShare")}</span></button>
+        <button class="icn" aria-label="save">${icon("i-download",16)}</button>
+      </div>
+    </div>
+    <button class="dismiss" onclick="closePoster()">${t("posterClose")}</button>
+  </div>`;
+  el.addEventListener("click",e=>{ if(e.target===el) closePoster(); });
+  $("#viewport").appendChild(el);
+}
+function closePoster(){ const e=$("#posterSheet"); if(e) e.remove(); }
+
+/* ---------- profile ---------- */
+function renderProfile(){
+  const v=VISITORS.find(x=>x.id===S.visitor);
+  $("#profTags").innerHTML=[L(v)[0], t("depthL")[S.depth], t("langName")].map(x=>`<span>${x}</span>`).join("");
+  const rows=[
+    {zh:["参观类型",L(v)[0]],en:["Visitor type",L(v)[0]]},
+    {zh:["偏好语言",t("langName")],en:["Language",t("langName")]},
+    {zh:["时间预算",`${S.dur} ${t("minute")}`],en:["Time budget",`${S.dur} ${t("minute")}`]},
+    {zh:["讲解深度",t("depthL")[S.depth]],en:["Depth",t("depthL")[S.depth]]}
+  ];
+  $("#personaGrid").innerHTML = rows.map(r=>`<div><span>${L(r)[0]}</span><b>${L(r)[1]}</b></div>`).join("");
+  renderNarration();
+  $("#permRows").innerHTML = PERMS.map(p=>`
+    <div class="row-item">
+      <span class="glyph">${icon(p.icon,15)}</span>
+      <span class="txt"><b>${L(p)[0]}${p.req?`<span class="req">${t("required")}</span>`:""}</b>
+        <span>${S.perms[p.id] ? L(p)[1] : `<span class="lost">${icon("i-eye",11)}${t("permOff")(L(p)[2])}</span>`}</span></span>
+      <button class="sw" aria-pressed="${S.perms[p.id]}" onclick="togglePerm('${p.id}',this)"><i></i></button>
+    </div>`).join("");
+}
+const FONT_STEPS=[1, 1.15, 1.3];
+function renderFontSeg(){
+  const box=$("#fontSeg"); if(!box) return;
+  box.innerHTML = ["A","A","A"].map((x,i)=>
+    `<button aria-pressed="${S.fontStep===i}" style="font-size:${11+i*3}px;font-weight:700;padding:6px 10px" onclick="setFont(${i})">${x}</button>`).join("");
+}
+function setFont(i){
+  S.fontStep=i;
+  document.documentElement.style.setProperty("--a11y-zoom", FONT_STEPS[i]);
+  renderFontSeg();
+}
+// 离线不是「不能用」，是「哪些还能用」要说清楚
+function toggleOffline(btn){
+  S.offline=!S.offline;
+  btn.setAttribute("aria-pressed",String(S.offline));
+  renderOffline(); renderScan(); renderChat(); renderRoute();
+}
+function renderOffline(){
+  const bars=$$(".offbar");
+  bars.forEach(b=>{
+    b.hidden=!S.offline;
+    if(S.offline) b.innerHTML = S.downloaded
+      ? `${icon("i-check",14)}<span>${t("offOkP")}</span>`
+      : `${icon("i-download",14)}<span>${t("offWarnP")}</span>
+         <button class="offdl" onclick="downloadRoute()">${t("dlNow")}</button>`;
+  });
+}
+function downloadRoute(){ S.downloaded=true; renderOffline(); }
+function toggleAutoDivert(btn){
+  S.autoDivert=!S.autoDivert;
+  btn.setAttribute("aria-pressed",String(S.autoDivert));
+  renderRoute();
+}
+function togglePerm(id,btn){
+  S.perms[id]=!S.perms[id];
+  btn.setAttribute("aria-pressed",String(S.perms[id]));
+  // 关掉之后要立刻看得到失去了什么
+  if(id==="cam" && !S.perms.cam && S.mode==="scan"){ S.mode="nfc"; S.scan="high"; }
+  if(id==="loc" && !S.perms.loc && S.mode==="loc"){ S.mode = can("cam") ? "scan" : "nfc"; }
+  renderModes(); renderScan(); renderNearby(); renderProfile();
+  renderRoute(); renderRadar(); renderGain(); syncReport();
+}
+
+/* ---------- NFC sheet ---------- */
+function openNfc(){
+  if($("#nfcSheet")) return;
+  const el=document.createElement("div");
+  el.className="sheet-bg"; el.id="nfcSheet";
+  el.innerHTML=`<div class="sheet">
+    <span class="pill">${icon("i-nfc",12)}${t("nfcPill")}</span>
+    <img src="src/projects/curator/jade-bi.jpg" alt="">
+    <h3>${t("nfcName")}</h3>
+    <div class="sub">${t("nfcMeta")}</div>
+    <p>${t("nfcDesc")}</p>
+    <button class="btn" onclick="closeNfc();go('detail')">${icon("i-play",15,"solid")}${t("nfcCta")}</button>
+    <button class="dismiss" onclick="closeNfc()">${t("nfcDismiss")}</button>
+  </div>`;
+  el.addEventListener("click",e=>{if(e.target===el)closeNfc()});
+  $("#viewport").appendChild(el);
+}
+// 流体光球：多层椭圆光带叠加（additive），随语音幅度起伏
+let orbRAF=null, orbAmp=0.4, orbTarget=0.4, orbBars=null;
+// 有机叶瓣路径：圆周取点 + Catmull-Rom 平滑，得到 squircle 那种柔边轮廓
+function blobPath(ctx,cx,cy,r,lobes,wob,phase){
+  const N=lobes*4, P=[];
+  for(let i=0;i<N;i++){
+    const ang=i/N*Math.PI*2;
+    const rr=r*(1 + wob*Math.sin(ang*lobes + phase) + wob*0.35*Math.sin(ang*(lobes+2) - phase*0.7));
+    P.push([cx+Math.cos(ang)*rr, cy+Math.sin(ang)*rr]);
+  }
+  ctx.beginPath(); ctx.moveTo(P[0][0],P[0][1]);
+  for(let i=0;i<N;i++){
+    const p0=P[(i-1+N)%N], p1=P[i], p2=P[(i+1)%N], p3=P[(i+2)%N];
+    ctx.bezierCurveTo(p1[0]+(p2[0]-p0[0])/6, p1[1]+(p2[1]-p0[1])/6,
+                      p2[0]-(p3[0]-p1[0])/6, p2[1]-(p3[1]-p1[1])/6, p2[0], p2[1]);
+  }
+  ctx.closePath();
+}
+// 三片错开的外叶瓣 + 一个饱和内核；偏移要够大，叠压处才看得见边缘
+const BLOBS=[
+  {r:0.99, lobes:4, wob:0.030, dx:-0.11, dy:-0.05, sp: 0.000390, ph:0.0, c0:"#A9EFD4", c1:"#54C79F", a:0.60, blur:3},
+  {r:0.97, lobes:4, wob:0.028, dx: 0.11, dy:-0.03, sp:-0.000470, ph:1.7, c0:"#8BE6C6", c1:"#39B089", a:0.56, blur:3},
+  {r:0.96, lobes:4, wob:0.034, dx: 0.02, dy: 0.12, sp: 0.000560, ph:3.3, c0:"#7CDFAF", c1:"#2E9A6E", a:0.54, blur:3},
+  {r:0.60, lobes:4, wob:0.022, dx: 0.00, dy: 0.00, sp:-0.000300, ph:5.0, c0:"#5FD79A", c1:"#25704A", a:0.92, blur:0}
+];
+function startOrb(){
+  const cv=$("#orbCanvas"); if(!cv) return;
+  const dpr=Math.min(2, window.devicePixelRatio||1);
+  const size=cv.clientWidth||220;
+  cv.width=size*dpr; cv.height=size*dpr;
+  const ctx=cv.getContext("2d");
+  ctx.scale(dpr,dpr);
+  const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const draw=(now)=>{
+    const t=now||0;
+    // 连续包络：三层慢正弦叠加，再和重度平滑的语音能量混合 —— 全程无跳变
+    const s1=0.5+0.5*Math.sin(t*0.00052);
+    const s2=0.5+0.5*Math.sin(t*0.00117+1.7);
+    const s3=0.5+0.5*Math.sin(t*0.00249+3.1);
+    const wave=0.46*s1+0.34*s2+0.20*s3;
+    orbAmp += (orbTarget-orbAmp)*0.015;            // 语音能量走得很慢
+    const a=Math.min(1, 0.30 + 0.46*wave + 0.24*orbAmp);
+    const W=size, H=size, cx=W/2, cy=H/2;
+
+    if(orbBars){
+      for(let i=0;i<orbBars.length;i++){
+        const ph=i*0.72;
+        const v=0.22 + 0.78*Math.abs(Math.sin(t*0.0026+ph)*0.62 + Math.sin(t*0.0041+ph*1.6)*0.38)*a;
+        orbBars[i].style.transform=`scaleY(${v.toFixed(3)})`;
+      }
+    }
+    const base=W/2*0.62*(0.975+a*0.035);
+    ctx.clearRect(0,0,W,H);
+
+    const halo=ctx.createRadialGradient(cx,cy,base*0.7, cx,cy,base*1.55);
+    halo.addColorStop(0,`rgba(127,224,168,${(0.12+a*0.10).toFixed(3)})`);
+    halo.addColorStop(1,"rgba(127,224,168,0)");
+    ctx.fillStyle=halo; ctx.fillRect(0,0,W,H);
+
+    BLOBS.forEach((b,i)=>{
+      const rot=t*b.sp + b.ph;
+      const drift=base*0.055*(1+a*0.35);
+      ctx.save();
+      ctx.translate(cx + base*b.dx + Math.cos(t*0.00078+i*2.1)*drift,
+                    cy + base*b.dy + Math.sin(t*0.00067+i*1.7)*drift);
+      ctx.rotate(rot);
+      if(b.blur) ctx.filter=`blur(${(b.blur*(1+a*0.15)).toFixed(2)}px)`;
+      const g=ctx.createLinearGradient(-base,-base, base, base);
+      g.addColorStop(0, b.c0); g.addColorStop(1, b.c1);
+      ctx.fillStyle=g;
+      ctx.globalAlpha=b.a*(0.88+a*0.12);
+      blobPath(ctx,0,0, base*b.r, b.lobes, b.wob*(1.5+a*0.7), rot*1.6 + t*0.00062);
+      ctx.fill();
+      ctx.restore();
+    });
+    ctx.filter="none"; ctx.globalAlpha=1;
+
+    const sheen=ctx.createRadialGradient(cx-base*0.34, cy-base*0.4, 0, cx-base*0.34, cy-base*0.4, base*1.05);
+    sheen.addColorStop(0,`rgba(255,255,255,${(0.20+a*0.08).toFixed(3)})`);
+    sheen.addColorStop(1,"rgba(255,255,255,0)");
+    ctx.fillStyle=sheen; ctx.fillRect(0,0,W,H);
+
+    if(!reduce) orbRAF=requestAnimationFrame(draw);
+  };
+  cancelAnimationFrame(orbRAF);
+  orbRAF=requestAnimationFrame(draw);
+}
+function stopOrb(){ cancelAnimationFrame(orbRAF); orbRAF=null; orbBars=null; }
+function openVoice(){
+  if($("#voiceSheet")) return;
+  S.voiceSec=0;
+  const el=document.createElement("div");
+  el.className="voicebg"; el.id="voiceSheet"; orbAmp=0.45; orbTarget=0.5;
+  el.innerHTML=`
+    <div class="v-head">${t("voiceListening")}</div>
+    <div class="orb"><canvas id="orbCanvas"></canvas></div>
+    <p class="v-lead">${t("voiceLead")}</p>
+    <div class="v-wave">${Array.from({length:9},(_,i)=>`<i style="animation-delay:${i*90}ms"></i>`).join("")}</div>
+    <button class="v-mic" onclick="voiceDone()" aria-label="mic">${icon("i-mic",30)}</button>
+    <div class="v-ctl">
+      <button class="v-small" onclick="closeVoice()" aria-label="cancel">${icon("i-close",16)}</button>
+      <span class="v-timer" id="voiceTimer">00:00</span>
+      <button class="v-small ok" onclick="voiceDone()" aria-label="confirm">${icon("i-check",16)}</button>
+    </div>`;
+  $("#viewport").appendChild(el);
+  orbBars=[...el.querySelectorAll(".v-wave i")];
+  startOrb();
+  clearInterval(S.ampTimer);
+  S.ampTimer=setInterval(()=>{
+    if(!$("#voiceSheet")){ clearInterval(S.ampTimer); return; }
+    orbTarget = 0.35 + Math.random()*0.55;          // 语音能量，缓慢换挡
+  }, 700);
+  clearInterval(S.voiceTimer);
+  S.voiceTimer=setInterval(()=>{
+    S.voiceSec++;
+    const tm=$("#voiceTimer"); if(!tm){ clearInterval(S.voiceTimer); return; }
+    tm.textContent=String(Math.floor(S.voiceSec/60)).padStart(2,"0")+":"+String(S.voiceSec%60).padStart(2,"0");
+  },1000);
+}
+function closeVoice(){ clearInterval(S.voiceTimer); clearInterval(S.ampTimer); stopOrb(); const e=$("#voiceSheet"); if(e) e.remove(); }
+function voiceDone(){
+  closeVoice();
+  const holder=document.createElement("div"); holder.className="followups";
+  $("#chatWrap").appendChild(holder);
+  askMore(holder.appendChild(document.createElement("button")), encodeURIComponent(L(CHAT_SEED.q)));
+}
+function closeNfc(){const e=$("#nfcSheet"); if(e)e.remove();}
+
+/* ---------- onboarding ---------- */
+function finishOnboard(){
+  S.onboarded=true;
+  renderRoute(); renderProfile(); renderChat(); renderNudge();
+  go("guide");
+}
+function skipOnboard(){
+  S.onboarded=false;
+  renderRoute(); renderProfile(); renderChat(); renderNudge();
+  go("guide");
+}
+// 定制的邀请放在识别成功之后 —— 那时它才有上下文
+function renderNudge(){
+  const box=$("#nudge"); if(!box) return;
+  box.hidden = S.onboarded || S.scan!=="high";
+  if(box.hidden) return;
+  box.innerHTML=`<div class="nudge-t">${icon("i-sparkle",15)}<span>${t("nudgeT")}</span></div>
+    <p>${t("nudgeP")}</p>
+    <div class="row">
+      <button class="btn sm" onclick="go('onboard')">${t("nudgeGo")}</button>
+      <button class="btn sm quiet" onclick="S.onboarded=true;renderNudge()">${t("nudgeNo")}</button>
+    </div>`;
+}
+function renderDivert(){
+  const box=$("#divertCard"); if(!box) return;
+  if(!S.autoDivert || !can("data")){
+    box.innerHTML=`<div class="ttl">${icon("i-bulb",16)}<span>${t("divertTitle")}</span></div>
+      <p>${S.autoDivert ? t("divertNoData") : t("divertOffP")}</p>`;
+    return;
+  }
+  if(S.divertState==="done"){
+    box.innerHTML=`<div class="ttl">${icon("i-check",16)}<span>${t("divertDoneT")}</span></div>
+      <p>${t("divertDone")}</p>
+      <div class="row"><button class="btn sm quiet" onclick="undoDivert()">${icon("i-refresh",14)}<span>${t("undo")}</span></button></div>`;
+    return;
+  }
+  if(S.divertState==="dismissed"){
+    box.innerHTML=`<div class="ttl">${icon("i-bulb",16)}<span>${t("divertTitle")}</span></div>
+      <p>${t("divertDismissed")}</p>`;
+    return;
+  }
+  box.innerHTML=`<div class="ttl">${icon("i-bulb",16)}<span>${t("divertTitle")}</span></div>
+    <p>${t("divertText")}</p>
+    <details class="why"><summary>${t("whyThis")}</summary>
+      <ul><li>${t("why1")}</li><li>${t("why2")}</li><li>${t("why3")}</li></ul>
+    </details>
+    <div class="row">
+      <button class="btn sm" onclick="acceptDivert()">${t("accept")}</button>
+      <button class="btn sm quiet" onclick="dismissDivert()">${t("dismiss")}</button>
+    </div>`;
+}
+function acceptDivert(){
+  S.divertOrder = S.stops.slice();                 // 存下原顺序，撤销要用
+  const moved=S.stops.find(x=>x.id===5);
+  if(moved){
+    const rest=S.stops.filter(x=>x.id!==5);
+    const at=rest.findIndex(x=>x.state==="now");
+    rest.splice(at<0?rest.length:at+1,0,moved);
+    S.stops=rest;
+  }
+  S.divertState="done"; renderRoute();
+}
+function undoDivert(){
+  if(S.divertOrder) S.stops=S.divertOrder.slice();
+  S.divertState="open"; renderRoute();
+}
+function dismissDivert(){ S.divertState="dismissed"; renderDivert(); }
+
+/* ============================================================
+   language
+   ============================================================ */
+function narr(){ return NARRATION.find(x=>x.id===S.narration) || NARRATION[0]; }
+function renderNarration(){
+  const sel=$("#narrSel");
+  if(sel) sel.innerHTML = NARRATION.map(x=>
+    `<option value="${x.id}" ${x.id===S.narration?"selected":""}>${x.flag}  ${x.name}</option>`).join("");
+  const n=narr();
+  const v=$("#langVal"); if(v) v.textContent=n.name;
+  const note=$("#narrNote");
+  if(note) note.textContent = n.ui ? t("narrBoth") : t("narrAudioOnly")(n.name);
+  const row=$("#rowLangVal"); if(row) row.textContent=`${n.flag} ${n.name}`;
+}
+function setNarration(id){
+  S.narration=id;
+  const n=narr();
+  if(n.ui && n.ui!==LANG){ setLang(n.ui); return; }
+  renderNarration(); renderProfile();
+}
+function setLang(l){
+  LANG=l;
+  document.documentElement.setAttribute("data-lang", l);
+  const cur=narr();
+  if(cur.ui !== l){ const m=NARRATION.find(x=>x.ui===l); if(m) S.narration=m.id; }
+  const spz=$("#sp-zh"), spe=$("#sp-en");
+  if(spz){ spz.setAttribute("aria-current",String(l==="zh")); spe.setAttribute("aria-current",String(l==="en")); }
+  $("#lang-zh").setAttribute("aria-pressed",String(l==="zh"));
+  $("#lang-en").setAttribute("aria-pressed",String(l==="en"));
+  document.documentElement.lang = l==="zh" ? "zh-CN" : "en";
+  $$("[data-t]").forEach(el=>{ const v=T[l][el.dataset.t]; if(typeof v==="string") el.textContent=v; });
+  $$("[data-t-ph]").forEach(el=>{ const v=T[l][el.dataset.tPh]; if(typeof v==="string") el.placeholder=v; });
+  $("#durVal").textContent=t("durVal")(S.dur);
+  renderAll();
+}
+
+function renderAll(){
+  renderTabbar(); renderVisitors(); renderDepthSeg(); renderModes();
+  renderNarration(); paintBoot(); renderScan(); renderStats(); renderFontSeg(); renderOffline(); renderNearby();
+  renderObjHead(); renderGenerated(); renderRelated(); renderWave(); renderGrounding(S.region);
+  renderModel(); renderAskHome(); renderChat(); setRead(S.readMode); renderRoute(); renderStyles();
+  renderGains(); renderRadar(); renderProfile();
+  const r=[1,1.25,1.5][S.rate];
+  $("#rateBtn").textContent=t("rateVal")(r);
+  $("#rowRateVal").textContent=t("rateRow")(t("rateL")[S.rate], r);
+  routeTab($("#routeMapPane").hidden===false ? "map" : "list");
+  const nfc=$("#nfcSheet"); if(nfc){closeNfc();openNfc();}
+  const ps=$("#posterSheet"); if(ps){closePoster();openPoster();}
+}
+
+/* ---------- bindings ---------- */
+$("#dur").addEventListener("input",e=>{
+  S.dur=+e.target.value;
+  $("#durVal").textContent=t("durVal")(S.dur);
+  S.dropped=[];
+  renderRoute(); renderProfile(); renderStats();
+});
+$("#chatInput").addEventListener("keydown",e=>{ if(e.key==="Enter") sendTyped(); });
+
+// 按真实经过时间推进，不受后台标签页定时器节流影响；CTA 始终可点
+// 两段加载：到达时初始化核心模型；点「进入」后再跑一次，跑完才换页
+let bootPct=0, bootRAF=null, bootPhase="init";   // init | entering
+function runBoot(phase, ms, done){
+  cancelAnimationFrame(bootRAF);
+  bootPhase=phase; bootPct=0;
+  const t0=performance.now();
+  const step=()=>{
+    bootPct=Math.min(100, Math.round((performance.now()-t0)/ms*100));
+    paintBoot();
+    if(bootPct<100) bootRAF=requestAnimationFrame(step);
+    else if(done) done();
+  };
+  bootRAF=requestAnimationFrame(step);
+}
+function paintBoot(){
+  const bar=$("#loadBar"), pct=$("#loadPct"), lab=$("#loadLabel");
+  if(!bar) return;
+  bar.style.width=bootPct+"%";
+  pct.textContent=bootPct+"%";
+  lab.textContent = t("splashEntering");
+}
+function enterMuseum(){
+  const cta=$("#splashCta"), lw=$("#loadWrap");
+  if(cta) cta.disabled=true;
+  if(lw) lw.hidden=false;                       // 加载条此刻才出现
+  bootPct=0; paintBoot();
+  runBoot("entering", 1600, ()=>{
+    if(cta) cta.disabled=false;
+    if(lw) lw.hidden=true;                      // 离开时收起，下次重新开始
+    go("onboard");
+  });
+}
+(function clock(){
+  const d=new Date();
+  $("#clock").textContent=`${d.getHours()}:${String(d.getMinutes()).padStart(2,"0")}`;
+})();
+
+renderAll();
+go("splash");
+</script>
+
+</body>
+</html>
