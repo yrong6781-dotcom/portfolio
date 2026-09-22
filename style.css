@@ -3206,7 +3206,7 @@ html .projects-grid .project-card[data-aos].aos-animate:focus-within {
     height: 100px;
     border-radius: 50%;
     object-fit: cover;
-    object-position: 50% 14%;
+    object-position: 50% 40%;
     background: linear-gradient(150deg, rgba(113, 203, 255, .25), rgba(128, 0, 255, .25));
     border: 1px solid rgba(255, 255, 255, .18);
     margin-bottom: 28px
@@ -3230,7 +3230,7 @@ html .projects-grid .project-card[data-aos].aos-animate:focus-within {
 #name.hero-name {
     font-size: 11rem;
     line-height: 1.12;
-    letter-spacing: .04em
+    letter-spacing: -.01em
 }
 
 .hero-role {
@@ -3447,13 +3447,27 @@ html .projects-grid .project-card[data-aos].aos-animate:focus-within {
     position: absolute;
     z-index: 0;
     height: auto;
-    pointer-events: none
+    pointer-events: none;
+    animation: about-bob 6s ease-in-out infinite
 }
 
-.about-v2-deco--tl { top: 4%; left: 1%; width: 120px }
-.about-v2-deco--bl { bottom: 8%; left: 3%; width: 100px }
-.about-v2-deco--tr { top: 4%; right: 1%; width: 120px }
-.about-v2-deco--br { bottom: 8%; right: 3%; width: 130px }
+.about-v2-deco--bl { animation-delay: -1.5s }
+.about-v2-deco--tr { animation-delay: -3s }
+.about-v2-deco--br { animation-delay: -4.5s }
+
+@keyframes about-bob {
+    0%, 100% { translate: 0 0; rotate: 0deg }
+    50% { translate: 0 -12px; rotate: 4deg }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .about-v2-deco { animation: none }
+}
+
+.about-v2-deco--tl { top: 4%; left: 1%; width: 90px }
+.about-v2-deco--bl { bottom: 8%; left: 3%; width: 76px }
+.about-v2-deco--tr { top: 4%; right: 1%; width: 90px }
+.about-v2-deco--br { bottom: 8%; right: 3%; width: 98px }
 
 /* the prompt's 80px slide instead of AOS's default 100px */
 html:not(.no-js) .about-v2-deco[data-aos=fade-right] { transform: translate3d(-80px, 0, 0) }
@@ -3522,44 +3536,23 @@ html:not(.no-js) .about-v2-deco[data-aos].aos-animate { transform: translate3d(0
     opacity: .2
 }
 
-.about-v2-cta {
-    display: inline-block;
-    padding: 12px 32px;
-    border-radius: 9999px;
-    color: #fff;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    text-decoration: none;
-    background: linear-gradient(123deg, #18011f 7%, #b600a8 37%, #7621b0 72%, #be4c00 100%);
-    box-shadow: 0 4px 4px rgba(181, 1, 167, .25), inset 4px 4px 12px #7721b1;
-    outline: 2px solid #e3e3e3;
-    outline-offset: -3px;
-    transition: opacity .2s
-}
-
-.about-v2-cta:hover { opacity: .9 }
-.about-v2-cta:active { opacity: .75 }
 
 @media screen and (min-width:640px) {
     .about-v2 { padding: 80px 32px }
-    .about-v2-deco--tl { left: 2%; width: 160px }
-    .about-v2-deco--bl { left: 6%; width: 140px }
-    .about-v2-deco--tr { right: 2%; width: 160px }
-    .about-v2-deco--br { right: 6%; width: 170px }
+    .about-v2-deco--tl { left: 2%; width: 120px }
+    .about-v2-deco--bl { left: 6%; width: 105px }
+    .about-v2-deco--tr { right: 2%; width: 120px }
+    .about-v2-deco--br { right: 6%; width: 128px }
     .about-v2-center { gap: 80px }
     .about-v2-group { gap: 56px }
-    .about-v2-cta { padding: 14px 40px; font-size: 14px }
 }
 
 @media screen and (min-width:768px) {
     .about-v2 { padding: 80px 40px }
-    .about-v2-deco--tl { left: 4%; width: 210px }
-    .about-v2-deco--bl { left: 10%; width: 180px }
-    .about-v2-deco--tr { right: 4%; width: 210px }
-    .about-v2-deco--br { right: 10%; width: 220px }
+    .about-v2-deco--tl { left: 4%; width: 158px }
+    .about-v2-deco--bl { left: 10%; width: 135px }
+    .about-v2-deco--tr { right: 4%; width: 158px }
+    .about-v2-deco--br { right: 10%; width: 165px }
     .about-v2-center { gap: 96px }
     .about-v2-group { gap: 64px }
-    .about-v2-cta { padding: 16px 48px; font-size: 16px }
 }
