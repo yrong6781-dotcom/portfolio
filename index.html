@@ -17,7 +17,7 @@
   <!-- aos cdn -->
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   <!-- stylesheet -->
-  <link rel="stylesheet" href="style.css?v=44" />
+  <link rel="stylesheet" href="style.css?v=45" />
   <link rel="prefetch" href="src/projects/bodycode/01.jpg?v=3" as="image" />
   <link rel="prefetch" href="src/projects/bodycode-admin/01.jpg?v=2" as="image" />
   <link rel="prefetch" href="src/projects/grow/01.jpg?v=2" as="image" />
@@ -225,78 +225,75 @@
           <p class="sectionHeadingP"></p>
         </div>
       </div>
-      <ul class="projects-grid">
-        <li class="project-card" data-aos="fade-up" data-aos-delay="0">
-          <div class="project-card-media">
-            <img src="src/jpg/bodycode-cover.jpg?v=7" alt="Bodycode App cover" loading="lazy" style="view-transition-name: bodycode-cover" />
-          </div>
-          <div class="project-card-body">
-            <div class="project-card-head">
-              <div>
-                <h3 class="project-card-title">Bodycode App</h3>
-                <p class="project-card-meta">UI/UX设计 · C端</p>
-              </div>
-              <a href="project-bodycode.html" class="project-card-link" aria-label="View Bodycode App">View project</a>
-            </div>
-          </div>
-        </li>
-        <li class="project-card" data-aos="fade-up" data-aos-delay="100">
-          <div class="project-card-media">
-            <img src="src/jpg/bodycode-admin-cover.jpg?v=2" alt="BodyCode 后台管理系统 cover" loading="lazy" style="view-transition-name: bodycode-admin-cover" />
-          </div>
-          <div class="project-card-body">
-            <div class="project-card-head">
-              <div>
-                <h3 class="project-card-title">BodyCode 后台管理系统</h3>
-                <p class="project-card-meta">UI/UX设计 · B端</p>
-              </div>
-              <a href="project-bodycode-admin.html" class="project-card-link" aria-label="View BodyCode 后台管理系统">View project</a>
-            </div>
-          </div>
-        </li>
-        <li class="project-card" data-aos="fade-up" data-aos-delay="0">
-          <div class="project-card-media">
-            <img src="src/jpg/grow-cover.jpg?v=2" alt="Grow App cover" loading="lazy" style="view-transition-name: grow-cover" />
-          </div>
-          <div class="project-card-body">
-            <div class="project-card-head">
-              <div>
-                <h3 class="project-card-title">Grow App</h3>
-                <p class="project-card-meta">迭代优化 · C端</p>
-              </div>
-              <a href="project-grow.html" class="project-card-link" aria-label="View Grow App">View project</a>
-            </div>
-          </div>
-        </li>
-        <li class="project-card" data-aos="fade-up" data-aos-delay="100">
-          <div class="project-card-media">
-            <img src="src/jpg/sugo-cover.jpg?v=1" alt="SUGO App cover" loading="lazy" style="view-transition-name: sugo-cover" />
-          </div>
-          <div class="project-card-body">
-            <div class="project-card-head">
-              <div>
-                <h3 class="project-card-title">SUGO App</h3>
-                <p class="project-card-meta">动效 · Banner · H5 设计</p>
-              </div>
-              <a href="project-sugo.html" class="project-card-link" aria-label="View SUGO App">View project</a>
-            </div>
-          </div>
-        </li>
-        <li class="project-card" data-aos="fade-up" data-aos-delay="200">
-          <div class="project-card-media">
-            <img src="src/jpg/muse-cover.jpg?v=1" alt="Muse AI cover" loading="lazy" style="view-transition-name: muse-cover" />
-          </div>
-          <div class="project-card-body">
-            <div class="project-card-head">
-              <div>
-                <h3 class="project-card-title">Muse AI</h3>
-                <p class="project-card-meta">UI/UX设计 · 小程序</p>
-              </div>
-              <a href="project-muse.html" class="project-card-link" aria-label="View Muse AI">View project</a>
-            </div>
-          </div>
-        </li>
-      </ul>
+      <!-- arc carousel (arc-carousel.js): the active card sits front and centre, the rest fan out
+           along a downward curve; prev / next buttons, arrow keys and swipes turn it -->
+      <div class="arc-carousel" data-aos="fade-up" aria-roledescription="carousel" aria-label="项目">
+        <ul class="arc-track">
+          <li class="arc-card" data-index="0">
+            <a class="arc-card-face" href="project-bodycode.html" aria-label="查看 Bodycode App">
+              <span class="arc-card-media"><img src="src/jpg/bodycode-cover.jpg?v=7" alt="Bodycode App 封面" loading="lazy" style="view-transition-name: bodycode-cover" /></span>
+              <span class="arc-card-body">
+                <span class="arc-card-index">01</span>
+                <span class="arc-card-title">Bodycode App</span>
+                <span class="arc-card-meta">UI/UX设计 · C端</span>
+                <span class="arc-card-cta">查看项目<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h12.2l-4.6-4.6L14 6l7 7-7 7-1.4-1.4 4.6-4.6H5z" /></svg></span>
+              </span>
+            </a>
+          </li>
+          <li class="arc-card" data-index="1">
+            <a class="arc-card-face" href="project-bodycode-admin.html" aria-label="查看 BodyCode 后台管理系统">
+              <span class="arc-card-media"><img src="src/jpg/bodycode-admin-cover.jpg?v=2" alt="BodyCode 后台管理系统 封面" loading="lazy" style="view-transition-name: bodycode-admin-cover" /></span>
+              <span class="arc-card-body">
+                <span class="arc-card-index">02</span>
+                <span class="arc-card-title">BodyCode 后台管理系统</span>
+                <span class="arc-card-meta">UI/UX设计 · B端</span>
+                <span class="arc-card-cta">查看项目<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h12.2l-4.6-4.6L14 6l7 7-7 7-1.4-1.4 4.6-4.6H5z" /></svg></span>
+              </span>
+            </a>
+          </li>
+          <li class="arc-card" data-index="2">
+            <a class="arc-card-face" href="project-grow.html" aria-label="查看 Grow App">
+              <span class="arc-card-media"><img src="src/jpg/grow-cover.jpg?v=2" alt="Grow App 封面" loading="lazy" style="view-transition-name: grow-cover" /></span>
+              <span class="arc-card-body">
+                <span class="arc-card-index">03</span>
+                <span class="arc-card-title">Grow App</span>
+                <span class="arc-card-meta">迭代优化 · C端</span>
+                <span class="arc-card-cta">查看项目<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h12.2l-4.6-4.6L14 6l7 7-7 7-1.4-1.4 4.6-4.6H5z" /></svg></span>
+              </span>
+            </a>
+          </li>
+          <li class="arc-card" data-index="3">
+            <a class="arc-card-face" href="project-sugo.html" aria-label="查看 SUGO App">
+              <span class="arc-card-media"><img src="src/jpg/sugo-cover.jpg?v=1" alt="SUGO App 封面" loading="lazy" style="view-transition-name: sugo-cover" /></span>
+              <span class="arc-card-body">
+                <span class="arc-card-index">04</span>
+                <span class="arc-card-title">SUGO App</span>
+                <span class="arc-card-meta">动效 · Banner · H5 设计</span>
+                <span class="arc-card-cta">查看项目<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h12.2l-4.6-4.6L14 6l7 7-7 7-1.4-1.4 4.6-4.6H5z" /></svg></span>
+              </span>
+            </a>
+          </li>
+          <li class="arc-card" data-index="4">
+            <a class="arc-card-face" href="project-muse.html" aria-label="查看 Muse AI">
+              <span class="arc-card-media"><img src="src/jpg/muse-cover.jpg?v=1" alt="Muse AI 封面" loading="lazy" style="view-transition-name: muse-cover" /></span>
+              <span class="arc-card-body">
+                <span class="arc-card-index">05</span>
+                <span class="arc-card-title">Muse AI</span>
+                <span class="arc-card-meta">UI/UX设计 · 小程序</span>
+                <span class="arc-card-cta">查看项目<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h12.2l-4.6-4.6L14 6l7 7-7 7-1.4-1.4 4.6-4.6H5z" /></svg></span>
+              </span>
+            </a>
+          </li>
+        </ul>
+        <div class="arc-nav">
+          <button class="arc-btn arc-btn--prev" type="button" aria-label="上一个项目">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+          </button>
+          <button class="arc-btn arc-btn--next" type="button" aria-label="下一个项目">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+          </button>
+        </div>
+      </div>
 
       <!-- Driveletics: video project on its own screen, paused on the first frame until played (reel.js).
            Shown by default. The link without the car project adds ?k=<key>: then the template stays inert (nothing
@@ -521,6 +518,7 @@
   <script src="site-extras.js?v=4"></script>
   <script src="footer-avatar.js?v=2"></script>
   <script src="about-reveal.js?v=1"></script>
+  <script src="arc-carousel.js?v=1"></script>
 </body>
 
 </html>
