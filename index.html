@@ -17,7 +17,7 @@
   <!-- aos cdn -->
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   <!-- stylesheet -->
-  <link rel="stylesheet" href="style.css?v=41" />
+  <link rel="stylesheet" href="style.css?v=43" />
   <link rel="prefetch" href="src/projects/bodycode/01.jpg?v=3" as="image" />
   <link rel="prefetch" href="src/projects/bodycode-admin/01.jpg?v=2" as="image" />
   <link rel="prefetch" href="src/projects/grow/01.jpg?v=2" as="image" />
@@ -36,6 +36,9 @@
     })();
   </script>
   <!-- google fonts-->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Passions+Conflict&family=Orbitron&family=Fira+Code&family=Six+Caps&display=swap" />
 
@@ -192,52 +195,25 @@
      
     </section>
     <!-- landing page ends here -->
-    <section class="about-section-container" id="about" data-aos="fade-up">
-      <div class="about-section">
-        <div class="section-heading">
-          <h2 class="section-heading-article" tabindex="0" aria-label="About me heading">
-            &#60;/AboutMe&#62;
-          </h2>
-          <p class="sectionHeadingP"></p>
+    <section class="about-v2" id="about">
+      <!-- four floating 3D objects in the corners; they slide in from their own side -->
+      <img class="about-v2-deco about-v2-deco--tl" src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/moon_icon.11395d36.png" alt="" aria-hidden="true"
+        data-aos="fade-right" data-aos-delay="100" data-aos-duration="900" />
+      <img class="about-v2-deco about-v2-deco--bl" src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/p59_1.4659672e.png" alt="" aria-hidden="true"
+        data-aos="fade-right" data-aos-delay="250" data-aos-duration="900" />
+      <img class="about-v2-deco about-v2-deco--tr" src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/lego_icon-1.703bb594.png" alt="" aria-hidden="true"
+        data-aos="fade-left" data-aos-delay="150" data-aos-duration="900" />
+      <img class="about-v2-deco about-v2-deco--br" src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/Group_134-1.2e04f3ce.png" alt="" aria-hidden="true"
+        data-aos="fade-left" data-aos-delay="300" data-aos-duration="900" />
+
+      <div class="about-v2-center">
+        <div class="about-v2-group">
+          <h2 class="about-v2-heading hero-heading" data-aos="fade-up">About me</h2>
+          <!-- about-reveal.js splits this into characters that brighten as it scrolls past -->
+          <p class="about-v2-text" data-reveal>我叫颜榕，伦敦大学金史密斯学院用户体验工程硕士在读，有 2 年 UI 设计与 1 年 UX 经验，做过 C 端 App、B 端后台、小程序与出海语音社交产品。我享受从体验策略、信息架构一路做到高保真交付，也用 AI 工具把想法独立做成可交互的产品。一起做点让人记得住的东西吧！</p>
         </div>
-
-        <div class="about-layout">
-          <div class="about-info" data-aos="fade-up">
-            <p class="about-intro">我叫<span class="about-intro-name">颜榕</span>，硕士毕业于伦敦大学金史密斯学院用户体验工程专业，有 <strong>2 年 UI 设计</strong>和 <strong>1 年 UX 设计</strong>经验，做过 C 端 App、B 端后台管理系统、小程序与出海语音社交产品。</p>
-            <p class="about-intro">我具有从体验策略、信息架构到高保真交付的全流程设计经验，也熟悉服务设计、竞品分析、可用性测试与数据驱动迭代：在教育小程序中重构首页至下单的转化路径，关键路径转化率提升至 <strong>40%</strong>；在健康 App 中用竞品分析与 A/B 测试推动版本迭代；在出海社交产品中完成阿拉伯语 RTL 界面适配与动效设计。</p>
-            <p class="about-intro">我掌握 Codex、Claude Code、Lovart、即梦等 AI 工具，具备 AI 辅助全栈开发能力，可以独立完成产品从 0 到 1 的搭建与验证。</p>
-
-            <!-- Resume button (hidden for now)
-      <button class="resume-btn" id="resume-btn" onclick="openURL()">
-        <div class="sign">
-          <svg viewBox="0 0 640 512">
-            <path
-              d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-167l80 80c9.4 9.4 24.6 9.4 33.9 0l80-80c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-39 39V184c0-13.3-10.7-24-24-24s-24 10.7-24 24V318.1l-39-39c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9z" />
-          </svg>
-        </div>
-
-        <div class="text">Resume</div>
-      </button>
-            -->
-          </div>
-
-          <div class="about-card" data-aos="fade-up" data-aos-delay="150">
-            <div class="about-card-back"></div>
-            <div class="about-card-front">
-              <div class="about-card-photo">
-                <img src="src/jpg/rongyan-photo.jpg" alt="颜榕的照片" />
-              </div>
-              <div class="about-card-hello">
-                <p class="about-card-en">HELLO</p>
-                <p class="about-card-name">颜榕</p>
-                <ul class="about-card-tags">
-                  <li>产品逻辑</li>
-                  <li>用户思维</li>
-                  <li>执行制作</li>
-                </ul>
-              </div>
-            </div>
-          </div>
+        <div data-aos="fade-up" data-aos-delay="300">
+          <a class="about-v2-cta" href="#footer">联系我</a>
         </div>
       </div>
     </section>
@@ -547,6 +523,7 @@
 
   <script src="site-extras.js?v=4"></script>
   <script src="footer-avatar.js?v=2"></script>
+  <script src="about-reveal.js?v=1"></script>
 </body>
 
 </html>

@@ -3428,3 +3428,138 @@ html .projects-grid .project-card[data-aos].aos-animate:focus-within {
         height: 52px
     }
 }
+
+/* ===== About me (2026-09-22): four floating 3D corners + scroll-revealed text ===== */
+.about-v2 {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+    overflow: hidden;
+    font-family: "Kanit", "PingFang SC", "Microsoft YaHei", sans-serif
+}
+
+.about-v2-deco {
+    position: absolute;
+    z-index: 0;
+    height: auto;
+    pointer-events: none
+}
+
+.about-v2-deco--tl { top: 4%; left: 1%; width: 120px }
+.about-v2-deco--bl { bottom: 8%; left: 3%; width: 100px }
+.about-v2-deco--tr { top: 4%; right: 1%; width: 120px }
+.about-v2-deco--br { bottom: 8%; right: 3%; width: 130px }
+
+/* the prompt's 80px slide instead of AOS's default 100px */
+html:not(.no-js) .about-v2-deco[data-aos=fade-right] { transform: translate3d(-80px, 0, 0) }
+html:not(.no-js) .about-v2-deco[data-aos=fade-left] { transform: translate3d(80px, 0, 0) }
+html:not(.no-js) .about-v2-deco[data-aos].aos-animate { transform: translate3d(0, 0, 0) }
+
+.about-v2-center {
+    position: relative;
+    z-index: 10;
+    max-width: 896px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 64px
+}
+
+.about-v2-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px
+}
+
+.hero-heading {
+    background: linear-gradient(180deg, #646973 0%, #bbccd7 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent
+}
+
+.about-v2-heading {
+    font-size: clamp(3rem, 12vw, 160px);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -.025em;
+    text-transform: uppercase;
+    text-align: center
+}
+
+.about-v2-text {
+    max-width: 560px;
+    color: #d7e2ea;
+    font-size: clamp(1rem, 2vw, 1.35rem);
+    font-weight: 500;
+    line-height: 1.625;
+    text-align: center
+}
+
+/* html is 62.5% here, so the prompt's rem sizes are pinned to 16px-based values */
+.about-v2-heading { font-size: clamp(48px, 12vw, 160px) }
+.about-v2-text { font-size: clamp(16px, 2vw, 21.6px) }
+
+.reveal-char {
+    position: relative;
+    display: inline-block
+}
+
+.reveal-ghost {
+    visibility: hidden
+}
+
+.reveal-live {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: .2
+}
+
+.about-v2-cta {
+    display: inline-block;
+    padding: 12px 32px;
+    border-radius: 9999px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: linear-gradient(123deg, #18011f 7%, #b600a8 37%, #7621b0 72%, #be4c00 100%);
+    box-shadow: 0 4px 4px rgba(181, 1, 167, .25), inset 4px 4px 12px #7721b1;
+    outline: 2px solid #e3e3e3;
+    outline-offset: -3px;
+    transition: opacity .2s
+}
+
+.about-v2-cta:hover { opacity: .9 }
+.about-v2-cta:active { opacity: .75 }
+
+@media screen and (min-width:640px) {
+    .about-v2 { padding: 80px 32px }
+    .about-v2-deco--tl { left: 2%; width: 160px }
+    .about-v2-deco--bl { left: 6%; width: 140px }
+    .about-v2-deco--tr { right: 2%; width: 160px }
+    .about-v2-deco--br { right: 6%; width: 170px }
+    .about-v2-center { gap: 80px }
+    .about-v2-group { gap: 56px }
+    .about-v2-cta { padding: 14px 40px; font-size: 14px }
+}
+
+@media screen and (min-width:768px) {
+    .about-v2 { padding: 80px 40px }
+    .about-v2-deco--tl { left: 4%; width: 210px }
+    .about-v2-deco--bl { left: 10%; width: 180px }
+    .about-v2-deco--tr { right: 4%; width: 210px }
+    .about-v2-deco--br { right: 10%; width: 220px }
+    .about-v2-center { gap: 96px }
+    .about-v2-group { gap: 64px }
+    .about-v2-cta { padding: 16px 48px; font-size: 16px }
+}
