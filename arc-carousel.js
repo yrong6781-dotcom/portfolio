@@ -11,7 +11,7 @@
   var cards = Array.prototype.slice.call(root.querySelectorAll(".arc-card"));
   var total = cards.length;
   var half = Math.floor(total / 2);
-  var active = Math.floor(total / 2);
+  var active = 0; // open on the first project (Bodycode); the rest wrap around it
   var mq = window.matchMedia("(max-width: 767px)");
 
   // Landscape cards sized from the viewport; spacing, drop and tilt scale with the
