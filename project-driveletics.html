@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- keep the portfolio out of search results: only people with the link should find it -->
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#11111b" />
+  <meta property="og:title" content="Driveletics 疲劳驾驶干预系统 | Rong Yan" />
+  <title>Driveletics | Rong Yan</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="src/png/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="src/png/favicon-192.png" />
+  <link rel="apple-touch-icon" href="src/png/apple-touch-icon.png" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" />
+  <!-- style.css for the reel player (same as the home page), project-detail.css for the top bar -->
+  <link rel="stylesheet" href="style.css?v=40" />
+  <link rel="stylesheet" href="project-detail.css?v=12" />
+  <script src="reel.js?v=2" defer></script>
+  <script src="site-extras.js?v=4" defer></script>
+</head>
+
+<!-- Standalone link to the Driveletics video project (the home page shows the same reel inside #projects).
+     No background-music button here, so site-extras.js leaves the music off while the video is the focus. -->
+<body>
+  <div class="detail-bar">
+    <a class="detail-back" href="index.html" aria-label="Back to portfolio">&#8592; &#60;/Portfolio&#62;</a>
+    <div class="detail-bar-right">
+      <div class="detail-bar-info">
+        <span class="detail-bar-title">Driveletics</span>
+        <span class="detail-bar-meta">UX设计 · 车载 HUD + 司机端 App</span>
+      </div>
+    </div>
+  </div>
+
+  <main>
+      <div class="reel" id="driveletics">
+        <div class="reel-head">
+          <span class="reel-pill">VIDEO PROJECT</span>
+          <h3 class="reel-title">Driveletics<span>疲劳驾驶干预系统</span></h3>
+          <p class="reel-lead">Driveletics 是一套面向网约车司机的疲劳监测与分级干预系统，由车载 HUD 与司机端 App 组成。点击画面播放完整项目视频。</p>
+          <a class="reel-cta" href="driveletics-prototype.html" target="_blank" rel="noopener">
+            查看可交互原型
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h12.2l-4.6-4.6L14 6l7 7-7 7-1.4-1.4 4.6-4.6H5z" /></svg>
+          </a>
+        </div>
+        <figure class="reel-player">
+          <video class="reel-video" src="src/projects/driveletics/driveletics.mp4" poster="src/projects/driveletics/poster.jpg" width="1280" height="720" preload="metadata" playsinline aria-label="Driveletics 项目视频"></video>
+          <span class="reel-badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l10.6-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14z" /></svg>项目视频 · 车载 HUD + 司机端 App</span>
+          <button class="reel-big-play" type="button" aria-label="播放视频"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l10.6-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14z" /></svg></span></button>
+          <div class="reel-controls">
+            <button class="reel-btn reel-toggle" type="button" aria-label="播放">
+              <svg class="reel-icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l10.6-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14z" /></svg>
+              <svg class="reel-icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h3.5v16H7zM13.5 4H17v16h-3.5z" /></svg>
+            </button>
+            <div class="reel-progress" role="slider" tabindex="0" aria-label="播放进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="reel-progress-fill"></span></div>
+            <span class="reel-time">00:00 / 01:39</span>
+            <button class="reel-btn reel-mute" type="button" aria-label="静音">
+              <svg class="reel-icon-sound" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.06A4.5 4.5 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z" /></svg>
+              <svg class="reel-icon-muted" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3zm18.4.0-1.4-1.4-2.5 2.5-2.5-2.5-1.4 1.4 2.5 2.5-2.5 2.5 1.4 1.4 2.5-2.5 2.5 2.5 1.4-1.4-2.5-2.5z" /></svg>
+            </button>
+          </div>
+        </figure>
+      </div>
+  </main>
+</body>
+
+</html>
