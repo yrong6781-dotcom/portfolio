@@ -3338,3 +3338,93 @@ html .projects-grid .project-card[data-aos].aos-animate:focus-within {
         gap: 24px
     }
 }
+
+/* ===== 常用工具 (tools), second-to-last section before the footer (2026-09-22) =====
+   Big gradient heading + a grid of logo cards; aligned with the experience column. */
+.tools-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 40px 0 140px
+}
+
+.tools-inner {
+    width: min(120rem, 80%)
+}
+
+.tools-heading {
+    margin-bottom: 48px;
+    font-size: clamp(4.8rem, 8vw, 11rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -.01em;
+    background: linear-gradient(180deg, #646973 0%, #bbccd7 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    width: fit-content
+}
+
+.tools-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 16px
+}
+
+.tools-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 22px 12px;
+    border: 2px solid rgba(160, 170, 180, .2);
+    border-radius: 28px;
+    transition: border-color .3s
+}
+
+.tools-card:hover {
+    border-color: rgba(215, 226, 234, .6)
+}
+
+.tools-logo {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    transition: transform .3s
+}
+
+.tools-card:hover .tools-logo {
+    transform: translateY(-4px)
+}
+
+.tools-name {
+    font-size: 1.4rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--color-white);
+    opacity: .8
+}
+
+@media screen and (max-width:1024px) {
+    .tools-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr))
+    }
+}
+
+@media screen and (max-width:640px) {
+    .tools-section {
+        padding: 20px 0 100px
+    }
+
+    .tools-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px
+    }
+
+    .tools-logo {
+        width: 52px;
+        height: 52px
+    }
+}

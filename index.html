@@ -17,7 +17,7 @@
   <!-- aos cdn -->
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   <!-- stylesheet -->
-  <link rel="stylesheet" href="style.css?v=40" />
+  <link rel="stylesheet" href="style.css?v=41" />
   <link rel="prefetch" href="src/projects/bodycode/01.jpg?v=3" as="image" />
   <link rel="prefetch" href="src/projects/bodycode-admin/01.jpg?v=2" as="image" />
   <link rel="prefetch" href="src/projects/grow/01.jpg?v=2" as="image" />
@@ -71,21 +71,21 @@
             </a>
           </li>
 
-          <li class="skills" class="navbar-tabs-li" data-aos="fade-down" data-aos-delay="500">
-            <a href="#skills" aria-label="skills menu button">
-              &#60;/Skills&#62;
-            </a>
-          </li>
-
-          <li class="projects" class="navbar-tabs-li" data-aos="fade-down" data-aos-delay="700">
+          <li class="projects" class="navbar-tabs-li" data-aos="fade-down" data-aos-delay="500">
             <a href="#projects" aria-label="projects menu button">
               &#60;/Projects&#62;
             </a>
           </li>
 
-          <li class="experience" class="navbar-tabs-li" data-aos="fade-down" data-aos-delay="900">
+          <li class="experience" class="navbar-tabs-li" data-aos="fade-down" data-aos-delay="700">
             <a href="#experience" aria-label="experience menu button">
               &#60;/Experience&#62;
+            </a>
+          </li>
+
+          <li class="skills" class="navbar-tabs-li" data-aos="fade-down" data-aos-delay="900">
+            <a href="#skills" aria-label="skills menu button">
+              &#60;/Skills&#62;
             </a>
           </li>
         </ul>
@@ -120,11 +120,6 @@
             &#60;/AboutMe&#62;
           </a>
         </li>
-        <li id="skills-mobile-tab" class="mobile-navbar-tabs-li skills" onclick="hidemenubyli()">
-          <a href="#skills" tabindex="0" aria-label="skills menu button">
-            &#60;/Skills&#62;
-          </a>
-        </li>
         <li id="projects-mobile-tab" class="mobile-navbar-tabs-li projects" onclick="hidemenubyli()">
           <a href="#projects" tabindex="0" aria-label="projects menu button">
             &#60;/Projects&#62;
@@ -133,6 +128,11 @@
         <li id="experience-mobile-tab" class="mobile-navbar-tabs-li experience" onclick="hidemenubyli()">
           <a href="#experience" tabindex="0" aria-label="experience menu button">
             &#60;/Experience&#62;
+          </a>
+        </li>
+        <li id="skills-mobile-tab" class="mobile-navbar-tabs-li skills" onclick="hidemenubyli()">
+          <a href="#skills" tabindex="0" aria-label="skills menu button">
+            &#60;/Skills&#62;
           </a>
         </li>
       </ul>
@@ -243,60 +243,6 @@
     </section>
     <!-- about section ends  -->
 
-    <section class="skills-section-container" id="skills">
-      <div class="skills-section">
-        <div class="section-heading" data-aos="fade-up">
-          <h2 class="section-heading-article" tabindex="0" aria-label="skills heading">
-            &#60;/Skills&#62;
-          </h2>
-          <p class="sectionHeadingP"></p>
-        </div>
-
-        <div class="frontend-dev-section">
-          <h3 class="frontend-dev-heading" data-aos="fade-up" tabindex="0"
-            aria-label="As a frontend a developer these are the skills i have">
-            Tech Stack
-          </h3>
-          <ul class="tech-stack-wrapper">
-            <li class="tech-stack-box" data-aos="fade-up">
-              <img src="./src/png/figmalogo.png" alt="figma skill" class="tech-stack-logo" />
-              <span class="tooltip">FIGMA</span>
-            </li>
-
-            <li class="tech-stack-box" data-aos="fade-up">
-              <img src="./src/png/pslogo.png" alt="photoshop skill" class="tech-stack-logo" />
-              <span class="tooltip">PS</span>
-            </li>
-
-            <li class="tech-stack-box" data-aos="fade-up">
-              <img src="./src/png/aelogo.png" alt="after effects skill" class="tech-stack-logo" />
-              <span class="tooltip">AE</span>
-            </li>
-
-            <li class="tech-stack-box" data-aos="fade-up">
-              <img src="./src/png/claudelogo.png" alt="claude code skill" class="tech-stack-logo" />
-              <span class="tooltip">CLAUDE CODE</span>
-            </li>
-
-            <li class="tech-stack-box" data-aos="fade-up">
-              <img src="./src/png/codexlogo.png" alt="codex skill" class="tech-stack-logo" />
-              <span class="tooltip">CODEX</span>
-            </li>
-
-            <li class="tech-stack-box" data-aos="fade-up">
-              <img src="./src/png/lovartlogo.png" alt="lovart skill" class="tech-stack-logo" />
-              <span class="tooltip">LOVART</span>
-            </li>
-
-            <li class="tech-stack-box" data-aos="fade-up">
-              <img src="./src/png/jimenglogo.png" alt="jimeng skill" class="tech-stack-logo" />
-              <span class="tooltip">即梦</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section>
-    <!-- skills section ends -->
     <section class="projects-section-container" id="projects">
       <div class="projects-section-div" data-aos="fade-up">
         <div class="section-heading">
@@ -480,6 +426,42 @@
       </div>
     </section>
     <!-- experience section ends -->
+    <section class="tools-section" id="skills">
+      <div class="tools-inner">
+        <h2 class="tools-heading" data-aos="fade-up">常用工具</h2>
+        <ul class="tools-grid">
+          <li class="tools-card" data-aos="fade-up" data-aos-delay="0">
+            <img src="./src/png/figmalogo.png" alt="" class="tools-logo" loading="lazy" />
+            <span class="tools-name">Figma</span>
+          </li>
+          <li class="tools-card" data-aos="fade-up" data-aos-delay="50">
+            <img src="./src/png/pslogo.png" alt="" class="tools-logo" loading="lazy" />
+            <span class="tools-name">Photoshop</span>
+          </li>
+          <li class="tools-card" data-aos="fade-up" data-aos-delay="100">
+            <img src="./src/png/aelogo.png" alt="" class="tools-logo" loading="lazy" />
+            <span class="tools-name">After Effects</span>
+          </li>
+          <li class="tools-card" data-aos="fade-up" data-aos-delay="150">
+            <img src="./src/png/claudelogo.png" alt="" class="tools-logo" loading="lazy" />
+            <span class="tools-name">Claude Code</span>
+          </li>
+          <li class="tools-card" data-aos="fade-up" data-aos-delay="200">
+            <img src="./src/png/codexlogo.png" alt="" class="tools-logo" loading="lazy" />
+            <span class="tools-name">Codex</span>
+          </li>
+          <li class="tools-card" data-aos="fade-up" data-aos-delay="250">
+            <img src="./src/png/lovartlogo.png" alt="" class="tools-logo" loading="lazy" />
+            <span class="tools-name">Lovart</span>
+          </li>
+          <li class="tools-card" data-aos="fade-up" data-aos-delay="300">
+            <img src="./src/png/jimenglogo.png" alt="" class="tools-logo" loading="lazy" />
+            <span class="tools-name">即梦</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+    <!-- skills section ends -->
   </main>
   <!-- main ends here -->
 
