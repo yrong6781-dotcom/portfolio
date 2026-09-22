@@ -14,10 +14,23 @@
   var active = Math.floor(total / 2);
   var mq = window.matchMedia("(max-width: 767px)");
 
+  // Landscape cards sized from the viewport; spacing, drop and tilt scale with the
+  // card so the arc keeps the same shape at every width.
   function dims() {
-    return mq.matches
-      ? { cardW: 230, cardH: 320, stepX: 170, dropY: 34, tilt: 7, containerH: 460, bump: 22 }
-      : { cardW: 300, cardH: 420, stepX: 295, dropY: 52, tilt: 8, containerH: 560, bump: 30 };
+    var vw = document.documentElement.clientWidth;
+    var cardW = mq.matches ? Math.min(vw * 0.82, 360) : Math.max(420, Math.min(vw * 0.42, 640));
+    var cardH = Math.round(cardW * (mq.matches ? 0.8 : 0.72));
+    var dropY = Math.round(cardW * 0.09);
+    var bump = Math.round(cardW * 0.05);
+    return {
+      cardW: Math.round(cardW),
+      cardH: cardH,
+      stepX: Math.round(cardW * (mq.matches ? 0.78 : 0.84)),
+      dropY: dropY,
+      tilt: 6,
+      bump: bump,
+      containerH: cardH + dropY * 2 + bump + 24,
+    };
   }
 
   function layout() {
@@ -71,7 +84,14 @@
     if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
   });
 
-  if (mq.addEventListener) mq.addEventListener("change", layout);
-  else mq.addListener(layout);
+  var resizeQueued = false;
+  window.addEventListener("resize", function () {
+    if (resizeQueued) return;
+    resizeQueued = true;
+    requestAnimationFrame(function () {
+      resizeQueued = false;
+      layout();
+    });
+  });
   layout();
 })();
