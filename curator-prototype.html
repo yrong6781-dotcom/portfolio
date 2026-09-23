@@ -801,7 +801,7 @@ h1,h2,h3,h4,.h1,.h2,.sheet h3,.topbar .brand,#objName,.stop b,.nearby b,.rel b,.
 .bubble-me{background:linear-gradient(180deg,#EAD7A8,#D4BC85)}
 .iconbtn{background:rgba(255,255,255,.04);border-color:var(--line);color:var(--gold)}
 /* 底部导航：鎏金托盘 + 深色图标，与参考稿一致 */
-.tabbar{background:linear-gradient(180deg,#E8D4A2,#D9C18A);border-top:0;border-radius:28px 28px 0 0;box-shadow:0 -10px 30px -12px rgba(0,0,0,.6)}
+.tabbar{background:linear-gradient(180deg,#E8D4A2,#D9C18A);border-top:0;border-radius:0;box-shadow:0 -10px 30px -12px rgba(0,0,0,.6)}
 .tabbar button{color:rgba(28,32,33,.55)}
 .tabbar button[aria-current="true"]{color:var(--gold-ink);background:rgba(28,32,33,.08)}
 .tabbar button[aria-current="true"] .ic{stroke-width:2.4}
@@ -1225,7 +1225,7 @@ input,textarea,select{color:var(--ink)}
           <button class="iconbtn" onclick="go('guide')"><svg class="ic"><use href="#i-back"/></svg></button>
           <span class="spacer"></span>
           <button class="modelchip" id="modelChip" onclick="toggleModelMenu()" aria-haspopup="listbox" aria-expanded="false">
-            <span id="modelName">Claude Sonnet 5</span>
+            <span id="modelName">DeepSeek Chat</span>
             <svg class="ic chev"><use href="#i-chevdown"/></svg>
           </button>
           <button class="iconbtn" onclick="resetChat()" aria-label="new chat"><svg class="ic"><use href="#i-compose"/></svg></button>
@@ -1426,7 +1426,7 @@ input,textarea,select{color:var(--ink)}
 
     </div>
 
-    <button class="fab" id="fab" onclick="go('chat')" aria-label="AI">
+    <button class="fab" id="fab" onclick="openChat()" aria-label="AI">
       <svg class="ic mark"><use href="#i-bot"/></svg>
     </button>
     <nav class="tabbar" id="tabbar"></nav>
@@ -1972,9 +1972,9 @@ const SOURCES={
 };
 // 讲解模型可选 —— 深度与响应速度的取舍对用户是可见的
 const MODELS=[
-  {id:"opus",   name:"Claude Opus 5",   zh:["深度考据","最细的工艺与文献推理，响应稍慢"], en:["Deep research","Finest craft and archive reasoning, slower"]},
-  {id:"sonnet", name:"Claude Sonnet 5", zh:["均衡","讲解质量与速度兼顾（默认）"],       en:["Balanced","Quality and speed, the default"]},
-  {id:"haiku",  name:"Claude Haiku 4.5",zh:["现场速答","站在展柜前最快拿到答案"],       en:["On-the-spot","Fastest answer while you stand at the case"]}
+  {id:"opus",   name:"DeepSeek Reasoner", zh:["深度考据","最细的工艺与文献推理，响应稍慢"], en:["Deep research","Finest craft and archive reasoning, slower"]},
+  {id:"sonnet", name:"DeepSeek Chat", zh:["均衡","讲解质量与速度兼顾（默认）"],       en:["Balanced","Quality and speed, the default"]},
+  {id:"haiku",  name:"DeepSeek Chat", zh:["现场速答","站在展柜前最快拿到答案"],       en:["On-the-spot","Fastest answer while you stand at the case"]}
 ];
 const ASK_ENTRIES=[
   {id:"suggest", icon:"i-sparkle", zh:["推荐问题","先从策展人挑好的问题问起"], en:["Suggested questions","Start from what the curator would ask"]},
@@ -2521,7 +2521,7 @@ function renderAskHome(){
    ─ 配置了 AI_ENDPOINT：把问题 + 从馆方资料库检索到的依据发给代理（museai-worker.js），由真实大模型作答
    ─ 未配置 / 超时 / 出错：退回本地资料库检索，只摘录馆方资料，不编造
    ============================================================ */
-const AI_ENDPOINT = "";   // ← 部署好代理后，把地址填在这里，例如 "https://museai-proxy.你的账号.workers.dev"
+const AI_ENDPOINT = "https://museai-proxy.yrong6781.workers.dev";
 
 SOURCES[3]={zh:"大英博物馆馆藏档案 · 中国玉器", en:"British Museum collection archive · Chinese jade"};
 SOURCES[4]={zh:"大英博物馆馆藏档案 · 中国书画", en:"British Museum collection archive · Chinese painting"};
@@ -2758,6 +2758,10 @@ function submitFlag(){
 }
 function closeFlag(){ const e=$("#flagSheet"); if(e) e.remove(); }
 function resetChat(){S.log=[];S.hist=[];S.busy=false;S.chatObj=null;S.chatStarted=false;renderAskHome();renderChat();}
+function openChat(){
+  if(S.chatStarted && S.chatObj && S.chatObj!==S.obj) resetChat();   // 切换展品后再问，应该开新的一段问答，不是接着上一件的记录
+  go("chat");
+}
 
 /* ---------- route ---------- */
 // 学生模式：把热门 / 必看展品排到路线前面，短预算也能优先打卡到它们

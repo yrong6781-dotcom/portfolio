@@ -35,7 +35,7 @@ splash 启动页 → onboard 角色引导 → **home 首页** / guide 展品识�
 - 视觉参考：小红书「有料设计素材 · 塑古寻踪」非遗博物馆 APP（深墨底 + 鎏金、底部金色托盘标签栏）。
 
 ## 待办
-- [ ] 接入 DeepSeek API：把 `museai-worker.js` 改成调用 DeepSeek（OpenAI 兼容格式），问答页右上角模型名（`MODELS`）一起改掉，不要再显示 Claude。
+- [x] 接入 DeepSeek API：`museai-worker.js` 已改成调用 DeepSeek（OpenAI 兼容格式，`/chat/completions` + `Authorization: Bearer`），`MODELS` 显示名已改成 DeepSeek Chat / DeepSeek Reasoner。Worker 环境变量从 `ANTHROPIC_API_KEY` 改成了 `DEEPSEEK_API_KEY`——部署新 Worker 或更新旧 Worker 的环境变量时注意改名。
 - [ ] 语音提问目前是模拟的（`voiceDone()` 固定问同一个问题），可改用浏览器 Web Speech API。
 - [ ] 楼层地图 `floorplan.jpg` 底图是示意图，不是大英博物馆真实布局。
 - [ ] 确认展品信息：玉茶壶（照片 IMG_2985）的名称与年代；龙纹琉璃砖、象牙扇的展厅号（目前写 33 号厅）。

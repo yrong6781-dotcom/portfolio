@@ -1,16 +1,17 @@
 /**
  * Muse AI 问答代理（Cloudflare Worker）
- * 作用：接收原型发来的问题和馆方资料摘录，调用 Claude API，按固定格式返回。
+ * 作用：接收原型发来的问题和馆方资料摘录，调用 DeepSeek API，按固定格式返回。
  * API Key 只存在 Worker 的环境变量里，不会出现在网页代码中。
  *
  * 需要在 Worker 设置里添加：
- *   ANTHROPIC_API_KEY   （Secret）你的 Anthropic API Key
+ *   DEEPSEEK_API_KEY    （Secret）你的 DeepSeek API Key（在 https://platform.deepseek.com 创建）
  *   ALLOWED_ORIGIN      允许调用的网站，例如 https://yrong6781-dotcom.github.io
  *   MODEL_OPUS / MODEL_SONNET / MODEL_HAIKU   （可选）三档对应的模型 ID，
- *                       取值见 https://docs.claude.com/en/docs/about-claude/models
+ *                       不填则分别用 deepseek-reasoner / deepseek-chat / deepseek-chat，
+ *                       可选模型见 https://api-docs.deepseek.com/quick_start/pricing
  */
 
-const DEFAULT_MODEL = "claude-sonnet-4-5";
+const DEFAULT_MODEL = "deepseek-chat";
 
 const SYSTEM = `你是大英博物馆 AI 导览「Muse AI」。回答访客关于展品的问题。
 规则：
@@ -41,8 +42,12 @@ export default {
     const question = String(body.question || "").slice(0, 500);
     if (!question) return json({ error: "empty question" }, 400, cors);
 
-    const models = { opus: env.MODEL_OPUS, sonnet: env.MODEL_SONNET, haiku: env.MODEL_HAIKU };
-    const model = models[body.tier] || env.MODEL_SONNET || DEFAULT_MODEL;
+    const models = {
+      opus: env.MODEL_OPUS || "deepseek-reasoner",
+      sonnet: env.MODEL_SONNET || "deepseek-chat",
+      haiku: env.MODEL_HAIKU || "deepseek-chat",
+    };
+    const model = models[body.tier] || DEFAULT_MODEL;
     const sources = Object.entries(body.sources || {}).map(([k, v]) => `S${k} = ${v}`).join("\n");
     const context = String(body.context || "").slice(0, 6000);
 
@@ -65,27 +70,28 @@ ${context || "（未检索到相关资料）"}
 ${question}`;
 
     // 保证消息以 user 开头、user/assistant 交替
-    const messages = [];
+    const history2 = [];
     for (const m of history) {
-      if (!messages.length && m.role !== "user") continue;
-      if (messages.length && messages[messages.length - 1].role === m.role) continue;
-      messages.push(m);
+      if (!history2.length && m.role !== "user") continue;
+      if (history2.length && history2[history2.length - 1].role === m.role) continue;
+      history2.push(m);
     }
-    if (messages.length && messages[messages.length - 1].role === "user") messages.pop();
-    messages.push({ role: "user", content: userMsg });
+    if (history2.length && history2[history2.length - 1].role === "user") history2.pop();
 
-    const r = await fetch("https://api.anthropic.com/v1/messages", {
+    // DeepSeek 走 OpenAI 兼容格式：system 是 messages 数组里的第一条，不是单独字段
+    const messages = [{ role: "system", content: SYSTEM }, ...history2, { role: "user", content: userMsg }];
+
+    const r = await fetch("https://api.deepseek.com/chat/completions", {
       method: "POST",
       headers: {
-        "x-api-key": env.ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
+        "authorization": `Bearer ${env.DEEPSEEK_API_KEY}`,
         "content-type": "application/json",
       },
-      body: JSON.stringify({ model, max_tokens: 800, system: SYSTEM, messages }),
+      body: JSON.stringify({ model, max_tokens: 800, messages }),
     });
     if (!r.ok) return json({ error: "upstream " + r.status }, 502, cors);
     const data = await r.json();
-    const text = (data.content || []).map(c => c.text || "").join("");
+    const text = data.choices?.[0]?.message?.content || "";
     const m = text.match(/\{[\s\S]*\}/);
     if (!m) return json({ error: "no json" }, 502, cors);
     try {
