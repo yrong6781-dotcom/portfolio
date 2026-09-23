@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="description" content="The Digital Curator — an interactive prototype of an AI museum guide for the British Museum. Bilingual, iPhone 16.">
-<meta property="og:title" content="The Digital Curator">
+<meta name="description" content="Muse AI — an interactive prototype of an AI museum guide for the British Museum. Bilingual, iPhone 16.">
+<meta property="og:title" content="Muse AI">
 <meta property="og:description" content="AI museum guide prototype · British Museum · bilingual">
-<title>数字策展人</title>
+<title>Muse AI</title>
 <style>
 :root{
   --jade-900:#0F2B1D; --jade-800:#1A4A31; --jade-700:#24603E;
@@ -129,7 +129,7 @@ button{font:inherit;color:inherit;border:0;padding:0;background:none;cursor:poin
 .btn:active{transform:scale(.985);background:var(--jade-600)}
 .btn.ghost{background:var(--jade-50);color:var(--jade-500);border:1px solid var(--jade-100)}
 .btn.quiet{background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line)}
-.btn.sm{height:var(--h-ctrl-m);font-size:13px;border-radius:var(--r-s);width:auto;padding:0 var(--sp-base)}
+.btn.sm{height:var(--h-ctrl-m);font-size:13px;border-radius:999px;width:auto;padding:0 var(--sp-base)}
 
 .ic{width:1em;height:1em;display:block;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .ic.solid{fill:currentColor}
@@ -139,12 +139,12 @@ button{font:inherit;color:inherit;border:0;padding:0;background:none;cursor:poin
 
 /* topbar */
 .offbar{display:flex;align-items:center;gap:8px;margin:0 var(--sp-base) var(--sp-tight);padding:10px 12px;
-  border-radius:var(--r-s);background:var(--gilt-soft);color:#7A5B21;font-size:11.5px;font-weight:600;line-height:1.5}
+  border-radius:16px;background:var(--gilt-soft);color:#7A5B21;font-size:11.5px;font-weight:600;line-height:1.5}
 .offbar .ic{flex:none}
 .offbar .offdl{flex:none;margin-left:auto;font-size:11.5px;font-weight:700;color:#7A5B21;text-decoration:underline}
 .topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:var(--sp-tight);padding:var(--sp-tight) var(--sp-base) var(--sp-base-tight);background:linear-gradient(var(--paper) 72%,transparent)}
 .topbar .brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;color:var(--ink)}
-.iconbtn{width:var(--h-ctrl-s);height:var(--h-ctrl-s);border-radius:var(--r-s);display:grid;place-items:center;background:var(--surface);border:1px solid var(--line);color:var(--ink-2);font-size:16px;flex:none}
+.iconbtn{width:var(--h-ctrl-s);height:var(--h-ctrl-s);border-radius:50%;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line);color:var(--ink-2);font-size:16px;flex:none}
 .spacer{flex:1}
 .livedot{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;letter-spacing:.06em;color:var(--jade-500);
   background:var(--jade-50);border:1px solid var(--jade-100);padding:4px 8px;border-radius:999px}
@@ -191,7 +191,7 @@ button{font:inherit;color:inherit;border:0;padding:0;background:none;cursor:poin
 .steps{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--jade-500)}
 .steps .track{flex:1;height:3px;border-radius:2px;background:var(--jade-100);overflow:hidden}
 .steps .track i{display:block;height:100%;width:60%;background:var(--jade-500);border-radius:2px;transition:width .4s}
-.opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px;border-radius:var(--r-m);background:var(--surface-2);border:1.5px solid transparent;transition:background .18s,border-color .18s}
+.opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px;border-radius:16px;background:var(--surface-2);border:1.5px solid transparent;transition:background .18s,border-color .18s}
 .opt .glyph{width:40px;height:40px;border-radius:12px;background:var(--surface);display:grid;place-items:center;font-size:19px;flex:none;border:1px solid var(--line)}
 .opt b{display:block;font-size:14.5px;color:var(--ink);font-weight:700}
 .opt span{display:block;font-size:12px;color:var(--ink-3);margin-top:2px}
@@ -203,7 +203,7 @@ button{font:inherit;color:inherit;border:0;padding:0;background:none;cursor:poin
 .fieldrow .lbl{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
 .fieldrow .val{font-size:13px;font-weight:700;color:var(--jade-500);font-variant-numeric:tabular-nums}
 .selwrap{position:relative}
-.selwrap select{appearance:none;-webkit-appearance:none;width:100%;height:var(--h-ctrl-m);border:1px solid var(--line);border-radius:var(--r-s);background:var(--surface);padding:0 36px 0 var(--sp-base-tight);font:inherit;font-size:14px;font-weight:600;color:var(--ink)}
+.selwrap select{appearance:none;-webkit-appearance:none;width:100%;height:var(--h-ctrl-m);border:1px solid var(--line);border-radius:var(--r-m);background:var(--surface);padding:0 36px 0 var(--sp-base-tight);font:inherit;font-size:14px;font-weight:600;color:var(--ink)}
 .selwrap .chev{position:absolute;right:12px;top:50%;width:16px;height:16px;color:var(--ink-3);transform:translateY(-50%);pointer-events:none}
 .selnote{margin:8px 0 0;font-size:11.5px;line-height:1.6;color:var(--ink-3)}
 input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:2px;background:var(--jade-100);outline:none;margin:0}
@@ -219,7 +219,7 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 .fineprint a{color:var(--jade-500);text-decoration:none;border-bottom:1px solid var(--jade-200)}
 
 /* ---------- recognition viewfinder ---------- */
-.finder{position:relative;border-radius:var(--r-l);overflow:hidden;aspect-ratio:4/3;background:#0d1410}
+.finder{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:4/3;background:#0d1410}
 .finder img{width:100%;height:100%;object-fit:cover;display:block}
 .finder .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,12,9,.5),transparent 38%,transparent 62%,rgba(6,12,9,.55))}
 .finder .where{position:absolute;top:11px;left:11px;display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:600;color:#fff;
@@ -247,14 +247,14 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 .finder[data-state="scanning"] .verdict{background:rgba(40,52,46,.86)}
 .hintbar.as-action{width:100%;text-align:left;align-items:center}
 .hintbar.as-action b{color:var(--jade-700);font-weight:700}
-.degrade{margin-top:8px;padding:12px;border-radius:var(--r-m);background:var(--surface);border:1px solid var(--line)}
+.degrade{margin-top:8px;padding:12px;border-radius:16px;background:var(--surface);border:1px solid var(--line)}
 .degrade.low{background:var(--surface-2)}
 .dg-head{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--ink-2);margin-bottom:8px}
 .dg-head .ic{color:var(--gilt)}
 .degrade.low .dg-head .ic{color:var(--ink-3)}
 .cand{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:8px;border-radius:var(--r-s);transition:background .16s}
 .cand:active{background:var(--jade-50)}
-.cand img{width:40px;height:40px;border-radius:var(--r-xs);object-fit:cover;flex:none}
+.cand img{width:40px;height:40px;border-radius:12px;object-fit:cover;flex:none}
 .cand .meta{flex:1;min-width:0}
 .cand b{display:block;font-size:13px;font-weight:700;color:var(--ink)}
 .cand .meta span{display:block;font-size:11px;color:var(--ink-3);margin-top:2px}
@@ -266,7 +266,7 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 .dg-btn .ic{color:var(--jade-500)}
 .taginput{width:100%;height:var(--h-ctrl-l);border:1px solid var(--line);border-radius:var(--r-m);background:var(--surface-2);
   padding:0 var(--sp-base-tight);font:inherit;font-size:15px;font-weight:600;color:var(--ink);text-align:center;letter-spacing:.08em}
-.hintbar{display:flex;align-items:center;gap:8px;margin-top:8px;padding:12px 12px;border-radius:12px;background:var(--jade-50);border:1px solid var(--jade-100);font-size:12px;color:var(--jade-700);line-height:1.5}
+.hintbar{display:flex;align-items:center;gap:8px;margin-top:8px;padding:12px 12px;border-radius:16px;background:var(--jade-50);border:1px solid var(--jade-100);font-size:12px;color:var(--jade-700);line-height:1.5}
 
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
 .stat{padding:12px;border-radius:12px;background:var(--surface);border:1px solid var(--line)}
@@ -276,7 +276,7 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 .stat span{display:block;font-size:11.5px;color:var(--ink-3);margin-top:4px}
 .rail{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;margin:0 calc(var(--sp-base) * -1);padding-inline:var(--sp-base);padding-bottom:4px}
 .rail::-webkit-scrollbar{display:none}
-.nearby{flex:none;width:144px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-m);overflow:hidden;transition:transform .12s}
+.nearby{flex:none;width:144px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;transition:transform .12s}
 .nearby:active{transform:scale(.98)}
 .nearby img{width:100%;aspect-ratio:16/11;object-fit:cover;display:block;background:var(--surface-2)}
 .nearby .t{padding:12px}
@@ -285,21 +285,51 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 .nearby span .ic{display:inline-block;vertical-align:-2px;margin-right:3px;color:var(--jade-500)}
 
 /* exhibit rows */
-.exhibit{display:flex;gap:12px;width:100%;text-align:left;padding:12px;border-radius:var(--r-m);background:var(--surface);border:1px solid var(--line);align-items:center}
-.exhibit img{width:60px;height:60px;border-radius:8px;object-fit:cover;flex:none;background:var(--surface-2)}
+.exhibit{display:flex;gap:12px;width:100%;text-align:left;padding:12px;border-radius:16px;background:var(--surface);border:1px solid var(--line);align-items:center}
+.exhibit img{width:60px;height:60px;border-radius:12px;object-fit:cover;flex:none;background:var(--surface-2)}
 .exhibit .meta{flex:1;min-width:0}
 .exhibit b{display:block;font-size:14px;font-weight:700;color:var(--ink)}
 .exhibit span{display:block;font-size:11.5px;color:var(--ink-3);margin-top:2px;line-height:1.45}
-.walk{font-size:10px;font-weight:700;color:var(--ink-3);background:var(--surface-2);border-radius:8px;padding:4px 8px;flex:none;text-align:center;line-height:1.3}
+.walk{font-size:10px;font-weight:700;color:var(--ink-3);background:var(--surface-2);border-radius:6px;padding:4px 8px;flex:none;text-align:center;line-height:1.3}
 
-.hero-card{position:relative;border-radius:var(--r-l);overflow:hidden;border:1px solid var(--line)}
+.hero-card{position:relative;border-radius:20px;overflow:hidden;border:1px solid var(--line)}
 .hero-card img{width:100%;display:block;aspect-ratio:16/11;object-fit:cover}
 .hero-card .cap{position:absolute;inset:auto 0 0 0;padding:16px 16px 12px;background:linear-gradient(transparent,rgba(6,12,9,.88))}
 .hero-card .cap b{display:block;font-family:var(--font-display);font-size:19px;color:#fff;font-weight:700;letter-spacing:-.01em}
 .hero-card .cap span{display:block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.66);margin-top:4px}
 .hero-card .pill{position:absolute;top:12px;left:12px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--jade-500);padding:4px 8px;border-radius:999px}
 
-.divert{border-radius:var(--r-m);padding:12px;background:var(--jade-50);border:1px solid var(--jade-100)}
+/* ---------- home ---------- */
+.searchbar{display:flex;align-items:center;gap:8px;margin-top:14px;height:var(--h-ctrl-l);padding:0 14px;border-radius:12px;background:var(--surface-2);outline:none}
+.searchbar .ic{color:var(--ink-3);flex:none}
+.searchbar input{flex:1;border:0;background:none;font:inherit;font-size:14px;color:var(--ink);min-width:0;outline:none}
+.searchbar input::placeholder{color:var(--ink-3)}
+.cats{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-top:14px;margin-inline:calc(var(--sp-base) * -1);padding-inline:var(--sp-base);padding-bottom:2px}
+.catchip{flex:none;display:flex;align-items:center;height:34px;padding:0 14px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);font-size:12.5px;font-weight:600;color:var(--ink-3)}
+.catchip[aria-pressed="true"]{background:var(--jade-500);border-color:var(--jade-500);color:var(--gold-ink)}
+.homegrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.homecard{position:relative;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;cursor:pointer;box-shadow:var(--shadow)}
+.homecard img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;background:var(--surface-2)}
+.homecard .fav{position:absolute;top:8px;right:8px;width:30px;height:30px;border-radius:50%;background:rgba(10,20,15,.45);backdrop-filter:blur(8px);color:#fff;display:grid;place-items:center;z-index:2}
+.homecard .fav.on{color:#FF6B4A}
+.homecard .fav.pop{animation:favPop .38s cubic-bezier(.34,1.56,.64,1)}
+@keyframes favPop{0%{transform:scale(1)}45%{transform:scale(1.3)}100%{transform:scale(1)}}
+.homecard .hc-body{padding:10px 12px 12px}
+.homecard .hc-body span{display:block;font-size:10.5px;color:var(--ink-3)}
+.homecard .hc-body b{display:block;font-size:13.5px;font-weight:700;color:var(--ink);margin-top:2px;line-height:1.35}
+.homecard .cta{display:block;width:100%;margin-top:10px;height:32px;border-radius:999px;font-size:12px;font-weight:700;background:linear-gradient(180deg,#EAD7A8,#D4BC85);color:var(--gold-ink);border:0}
+.homeempty{padding:32px 0;text-align:center;color:var(--ink-3);font-size:13px;grid-column:1/-1}
+
+.ai-orb{width:20px;height:20px;border-radius:50%;flex:none;display:inline-block;background:radial-gradient(circle at 50% 50%,#fff 0 18%,rgba(255,255,255,.6) 28%,rgba(255,255,255,0) 46%),radial-gradient(circle at 35% 30%,#5fa77c,var(--jade-500) 55%,var(--jade-700));box-shadow:0 0 0 3px var(--jade-100)}
+.stop.moved{border-color:var(--jade-400);animation:movedPulse 1.6s ease-out 2}
+.stop.moved .bdg.ai{background:var(--jade-500);border-color:var(--jade-500);color:#fff}
+.stop .sub s{opacity:.55;margin-right:4px}
+@keyframes movedPulse{0%{box-shadow:0 0 0 0 rgba(51,118,75,.45)}100%{box-shadow:0 0 0 12px rgba(51,118,75,0)}}
+.divert .delta{display:flex;gap:8px;margin:8px 0 12px}
+.divert .delta div{flex:1;background:var(--surface);border:1px solid var(--jade-100);border-radius:10px;padding:8px 10px}
+.divert .delta span{display:block;font-size:10.5px;color:var(--ink-3)}
+.divert .delta b{font-size:15px;color:var(--jade-700)}
+.divert{border-radius:16px;padding:12px;background:var(--jade-50);border:1px solid var(--jade-100)}
 .divert .nudge-t,.divert .ttl{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;color:var(--jade-700)}
 .divert p{margin:8px 0 12px;font-size:12.5px;line-height:1.65;color:var(--jade-700);opacity:.85}
 .divert .row{display:flex;gap:8px}
@@ -321,7 +351,7 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 .detail-hero .grad{z-index:1;position:absolute;inset:auto 0 0 0;height:90px;background:linear-gradient(transparent,var(--paper))}
 .detail-hero .match{z-index:2;position:absolute;left:16px;bottom:16px;display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;color:#fff;background:rgba(51,118,75,.9);padding:4px 12px;border-radius:999px}
 
-.gblock{padding:var(--sp-base);border-radius:var(--r-m);background:var(--surface);border:1px solid var(--line)}
+.gblock{padding:var(--sp-base);border-radius:16px;background:var(--surface);border:1px solid var(--line)}
 .gblock .body{margin:0}
 .gb-k{display:block;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--jade-500);margin-bottom:var(--sp-tight)}
 .gblock.quote{background:var(--jade-50);border-color:var(--jade-100)}
@@ -339,10 +369,11 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 .tl.prov b{color:var(--gilt)}
 .routeline{display:flex;align-items:center;gap:var(--sp-tight);overflow-x:auto;scrollbar-width:none}
 .routeline::-webkit-scrollbar{display:none}
-.rl-node{flex:none;text-align:center;padding:var(--sp-tight) var(--sp-base-tight);border-radius:var(--r-s);background:var(--jade-50);min-width:84px}
-.rl-node b{display:block;font-size:13px;font-weight:700;color:var(--jade-700)}
-.rl-node span{display:block;font-size:10.5px;color:var(--jade-600);margin-top:2px;line-height:1.4}
-.rl-arrow{flex:none;color:var(--jade-300);font-size:14px}
+.rl-node{flex:none;text-align:center;padding:var(--sp-tight) var(--sp-base-tight);border-radius:12px;background:rgba(226,204,152,.10);border:1px solid rgba(226,204,152,.30);min-width:84px;animation:cardIn .38s cubic-bezier(.2,.8,.3,1) both;animation-delay:calc(var(--i,0) * 160ms)}
+.rl-node b{display:block;font-size:14px;font-weight:700;color:var(--gold)}
+.rl-node span{display:block;font-size:10px;color:var(--ink-3);margin-top:2px;line-height:1.4}
+.rl-arrow{flex:none;color:var(--ink-3);font-size:14px;opacity:.7;animation:cardIn .3s ease both;animation-delay:calc(var(--i,0) * 160ms + 80ms)}
+@media (prefers-reduced-motion:reduce){.rl-node,.rl-arrow{animation:none!important}}
 .strata{display:flex;flex-direction:column;gap:var(--sp-tight)}
 .st{display:grid;grid-template-columns:4px auto 1fr;align-items:center;gap:var(--sp-base-tight)}
 .st-bar{width:4px;height:26px;border-radius:2px;background:var(--jade-400);opacity:calc(1 - var(--i) * .26)}
@@ -362,32 +393,13 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
   padding:3px 7px;border-radius:var(--r-xs);opacity:0;transition:opacity .22s}
 .rgn.on{border-color:var(--jade-400);background:rgba(127,224,168,.16)}
 .rgn.on span{opacity:1}
-.facts{display:grid;grid-template-columns:1fr 1fr;gap:0px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-m);overflow:hidden}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:0px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden}
 .fact{background:var(--surface);padding:12px 12px}
 .fact span{display:block;font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
 .fact b{display:block;font-size:14px;font-weight:700;color:var(--ink);margin-top:4px}
 
 /* audio */
-.player{padding:12px;border-radius:var(--r-m);background:var(--surface);border:1px solid var(--line)}
-.player .top{display:flex;align-items:center;gap:12px}
-.player .playbtn{width:46px;height:46px;border-radius:50%;background:var(--jade-500);color:#fff;display:grid;place-items:center;font-size:17px;flex:none;transition:transform .12s}
-.player .playbtn:active{transform:scale(.93)}
-.player .info b{display:block;font-size:13.5px;font-weight:700;color:var(--ink)}
-.player .info span{display:block;font-size:11px;color:var(--ink-3);margin-top:2px}
-.player .rate{margin-left:auto;font-size:11.5px;font-weight:700;color:var(--jade-500);background:var(--jade-50);border:1px solid var(--jade-100);border-radius:8px;padding:4px 8px;flex:none}
-.wave{display:flex;align-items:flex-end;gap:2px;height:36px;margin-top:12px}
-.wave i{flex:1;border-radius:2px;background:var(--jade-100);transition:background .2s}
-.wave i.on{background:var(--jade-500)}
-.wave.playing i.on{animation:bounce .9s ease-in-out infinite alternate}
-.caps{margin-top:12px;padding-top:12px;border-top:1px solid var(--line-soft)}
-.caps summary{font-size:11.5px;font-weight:700;color:var(--jade-600);cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:4px}
-.caps summary::-webkit-details-marker{display:none}
-.caps summary::before{content:"▸";display:inline-block;transition:transform .18s}
-.caps[open] summary::before{transform:rotate(90deg)}
-#transcript p{margin:8px 0 0;font-size:12.5px;line-height:1.7;color:var(--ink-3);transition:color .2s}
-#transcript p.on{color:var(--ink);font-weight:600}
-#transcript .ts{display:inline-block;min-width:34px;font-size:10.5px;color:var(--jade-500);font-variant-numeric:tabular-nums}
-.times{display:flex;justify-content:space-between;font-size:10.5px;color:var(--ink-3);margin-top:8px;font-variant-numeric:tabular-nums}
+.playchip:active{transform:scale(.93)}
 @keyframes bounce{from{transform:scaleY(.65)}to{transform:scaleY(1)}}
 @media (prefers-reduced-motion:reduce){
   .wave.playing i.on,.scanline,.livedot i,.loadline i{animation:none!important}
@@ -399,7 +411,7 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
   background:var(--surface);border:1px solid var(--line);color:var(--ink-3);white-space:nowrap}
 .tabs button[aria-selected="true"]{background:var(--jade-500);border-color:var(--jade-500);color:#fff}
 
-.switchrow{display:flex;align-items:center;gap:12px;padding:12px 12px;border-radius:var(--r-m);background:var(--surface);border:1px solid var(--line)}
+.switchrow{display:flex;align-items:center;gap:12px;padding:12px 12px;border-radius:16px;background:var(--surface);border:1px solid var(--line)}
 .switchrow .glyph{width:34px;height:34px;border-radius:8px;background:var(--jade-50);color:var(--jade-500);display:grid;place-items:center;font-size:16px;flex:none}
 .switchrow .txt{flex:1;min-width:0}
 .switchrow b{display:flex;align-items:center;gap:4px;font-size:13.5px;font-weight:700;color:var(--ink)}
@@ -408,19 +420,21 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 .sw i{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .22s}
 .sw[aria-pressed="true"]{background:var(--jade-500)}
 .sw[aria-pressed="true"] i{transform:translateX(18px)}
-.req{font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--gilt);background:var(--gilt-soft);border-radius:4px;padding:2px 4px}
+.req{font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--gilt);background:var(--gilt-soft);border-radius:6px;padding:2px 4px}
 
-.insight{padding:16px;border-radius:var(--r-m);background:var(--surface);border:1px solid var(--line)}
-.source{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line-soft);font-size:11px;color:var(--ink-3)}
+.insight{padding:16px;border-radius:16px;background:linear-gradient(155deg,rgba(226,204,152,.09),var(--surface) 55%);border:1px solid var(--line);border-left:3px solid var(--gold)}
+.insight .body{font-size:14.5px;color:var(--ink)}
+.source{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line-soft);font-size:10.5px;color:var(--ink-3);opacity:.85}
 
 .knowgrid{display:flex;gap:var(--sp-tight);overflow-x:auto;scrollbar-width:none;padding-bottom:2px;margin:0 calc(var(--sp-base) * -1);padding-inline:var(--sp-base)}
 .knowgrid::-webkit-scrollbar{display:none}
-.know{flex:none;width:126px;padding:12px;border-radius:var(--r-m);background:var(--surface);border:1px solid var(--line)}
+.know{flex:none;width:126px;padding:12px;border-radius:16px;background:var(--surface);border:1px solid var(--line)}
 .know .emoji{font-size:20px}
 .know span{display:block;font-size:10.5px;color:var(--ink-3);margin-top:8px}
 .know b{display:block;font-size:14.5px;font-weight:700;color:var(--ink);margin-top:2px}
 
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+button.rel{display:block;width:100%;text-align:left;background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer}
 .rel img{width:100%;aspect-ratio:1/1.24;object-fit:cover;border-radius:var(--r-m);display:block;background:var(--surface-2);border:1px solid var(--line)}
 .rel span{display:block;font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-top:8px}
 .rel b{display:block;font-size:13.5px;font-weight:700;color:var(--ink);margin-top:2px;line-height:1.35}
@@ -433,14 +447,15 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 .modelchip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .modelchip .chev{width:14px;height:14px;color:var(--ink-3);flex:none}
 .modelchip[aria-expanded="true"]{background:var(--jade-50);border-color:var(--jade-200);color:var(--jade-700)}
-.modelmenu{margin:0 var(--sp-base) var(--sp-tight);padding:var(--sp-extra-tight);border-radius:var(--r-m);
+.modelmenu{margin:0 var(--sp-base) var(--sp-tight);padding:4px;border-radius:var(--r-m);
   background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow-lift);
   animation:rise .18s cubic-bezier(.2,.8,.3,1)}
-.mrow{display:flex;align-items:center;gap:var(--sp-base-tight);width:100%;text-align:left;
-  padding:var(--sp-base-tight);border-radius:var(--r-s);color:var(--jade-500)}
+.mrow{display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+  padding:8px 10px;border-radius:var(--r-s);color:var(--jade-500)}
 .mrow:active{background:var(--surface-2)}
 .mrow.on{background:var(--jade-50)}
 .mrow .mr-t{flex:1;min-width:0}
+.mrow .mr-t b{display:block;font-size:13px;font-weight:700;line-height:1.4}
 .mrow b{display:block;font-size:13.5px;font-weight:700;color:var(--ink)}
 .mrow .mr-t span{display:block;font-size:11.5px;color:var(--ink-3);margin-top:2px;line-height:1.5}
 .askhome{padding:var(--sp-extra-tight) var(--sp-base) var(--sp-base);flex:none}
@@ -462,11 +477,11 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 .bubble-ai p:last-of-type{margin-bottom:0}
 .bubble-ai p strong{color:var(--ink);font-weight:700}
 .meta-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px;padding-top:8px;border-top:1px solid var(--line-soft)}
-.srcchip{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;color:var(--ink-3);background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:4px 8px}
+.srcchip{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;color:var(--ink-3);background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:4px 8px}
 .bubble-ai p.from-archive{border-left:2px solid var(--jade-300);padding-left:10px}
 .bubble-ai p.from-ai{border-left:2px dashed var(--line);padding-left:10px;color:var(--ink-2)}
 .cite{font-size:9px;font-weight:700;color:var(--jade-500);vertical-align:super;margin-left:2px}
-.aimark{display:inline-block;margin-left:6px;font-size:9.5px;font-weight:700;letter-spacing:.06em;color:var(--gilt);background:var(--gilt-soft);border-radius:4px;padding:1px 5px;vertical-align:1px}
+.aimark{display:inline-block;margin-left:6px;font-size:9.5px;font-weight:700;letter-spacing:.06em;color:var(--gilt);background:var(--gilt-soft);border-radius:6px;padding:1px 5px;vertical-align:1px}
 .srcchip b{color:var(--jade-500)}
 .provkey{display:flex;gap:16px;padding-left:38px;margin-top:-4px}
 .provkey span{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;color:var(--ink-3)}
@@ -478,7 +493,7 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 .followups button{display:inline-flex;align-items:center;gap:8px;max-width:100%;text-align:left;font-size:12.5px;font-weight:600;color:var(--jade-600);
   background:var(--jade-50);border:1px solid var(--jade-100);border-radius:12px;padding:8px 12px;line-height:1.45}
 .followups button:active{background:var(--jade-100)}
-.visualcard{border-radius:var(--r-m);overflow:hidden;border:1px solid var(--line);background:var(--surface)}
+.visualcard{border-radius:16px;overflow:hidden;border:1px solid var(--line);background:var(--surface)}
 .visualcard img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
 .visualcard .cap{padding:12px 12px}
 .body-wrap.redline{background:var(--gilt-soft);border-color:#E7D5AE}
@@ -495,6 +510,12 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 .ct{width:32px;height:32px;border-radius:var(--r-s);display:grid;place-items:center;color:var(--ink-3);background:var(--surface-2)}
 .ct .ic{width:16px;height:16px}
 .mic{width:38px;height:38px;border-radius:var(--r-full);background:var(--jade-500);color:#fff;display:grid;place-items:center;flex:none}
+.playchip{width:30px;height:30px;border-radius:var(--r-full);background:var(--jade-500);color:#fff;display:grid;place-items:center;flex:none}
+.capoverlay{position:absolute;z-index:2;left:16px;bottom:52px;width:68%;background:rgba(10,20,15,.55);backdrop-filter:blur(8px);border-radius:16px;padding:10px 12px;max-height:150px;overflow-y:auto}
+.capoverlay #transcript p{margin:6px 0 0;font-size:12px;line-height:1.6;color:rgba(255,255,255,.68)}
+.capoverlay #transcript p:first-child{margin-top:0}
+.capoverlay #transcript p.on{color:#fff;font-weight:600}
+.capoverlay #transcript .ts{display:inline-block;min-width:34px;font-size:10px;color:rgba(255,255,255,.5);font-variant-numeric:tabular-nums}
 .mic .ic{width:18px;height:18px}
 .composer input{width:100%;border:0;padding:0;background:none;outline:none;font:inherit;font-size:14px;color:var(--ink);min-width:0}
 .composer input::placeholder{color:var(--ink-3)}
@@ -509,14 +530,14 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 .progresscard .nums{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
 .progresscard .nums b{display:block;font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
 .progresscard .nums span{display:block;font-size:10.5px;opacity:.72;margin-top:2px}
-.pacing{margin-top:12px;padding:12px;border-radius:var(--r-m);border:1px solid var(--jade-100);background:var(--jade-50)}
+.pacing{margin-top:12px;padding:12px;border-radius:16px;border:1px solid var(--jade-100);background:var(--jade-50)}
 .pacing[data-tone="warn"]{border-color:#E7D5AE;background:var(--gilt-soft)}
 .pacing .pace-t{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:var(--jade-700)}
 .pacing[data-tone="warn"] .pace-t{color:#7A5B21}
 .pacing p{margin:4px 0 0;font-size:12px;line-height:1.6;color:var(--jade-700);opacity:.85}
 .pacing[data-tone="warn"] p{color:#7A5B21}
 .pacing .btn{margin-top:12px}
-.aiNote{display:flex;gap:8px;padding:12px;border-radius:var(--r-m);background:var(--jade-50);border:1px solid var(--jade-100)}
+.aiNote{display:flex;gap:8px;padding:12px;border-radius:16px;background:var(--jade-50);border:1px solid var(--jade-100)}
 .aiNote b{display:block;font-size:12.5px;font-weight:700;color:var(--jade-700)}
 .aiNote p{margin:4px 0 0;font-size:12px;line-height:1.6;color:var(--jade-700);opacity:.82}
 .map{border-radius:var(--r-m);overflow:hidden;border:1px solid var(--line);background:var(--surface)}
@@ -545,22 +566,23 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
   font-size:12.5px;line-height:1.65;color:rgba(255,255,255,.8)}
 .routelist{display:flex;flex-direction:column;gap:8px}
 .reportcard{display:flex;align-items:center;gap:12px;width:100%;text-align:left;margin-top:12px;padding:14px;
-  border-radius:var(--r-m);background:var(--surface);border:1px dashed var(--line);color:var(--ink-3)}
+  border-radius:16px;background:var(--surface);border:1px dashed var(--line);color:var(--ink-3)}
 .reportcard .rc-t{flex:1;min-width:0}
 .reportcard b{display:block;font-size:14px;font-weight:700;color:var(--ink)}
 .reportcard .rc-t span{display:block;font-size:11.5px;margin-top:2px}
 .reportcard .rc-ic{width:38px;height:38px;border-radius:var(--r-s);background:var(--surface-2);display:grid;place-items:center;flex:none}
 .reportcard.done{border-style:solid;border-color:var(--jade-300);background:var(--jade-50);color:var(--jade-700)}
 .reportcard.done .rc-ic{background:var(--jade-500);color:#fff}
-.stop{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;padding:12px;border-radius:var(--r-m);background:var(--surface);border:1px solid var(--line);transition:border-color .2s}
+.stop{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;padding:12px;border-radius:16px;background:var(--surface);border:1px solid var(--line);transition:border-color .2s}
 .stop .dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;flex:none;margin-top:20px;color:transparent;font-size:11px}
-.stop img{width:52px;height:52px;border-radius:8px;object-fit:cover;flex:none;background:var(--surface-2)}
+.stop img{width:52px;height:52px;border-radius:12px;object-fit:cover;flex:none;background:var(--surface-2)}
 .stop .meta{flex:1;min-width:0}
 .stop .state{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
 .stop b{display:block;font-size:14px;font-weight:700;color:var(--ink);margin-top:2px}
 .stop .sub{display:block;font-size:11.5px;color:var(--ink-3);margin-top:2px}
 .stop .badges{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
-.stop .bdg{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;background:var(--surface-2);border:1px solid var(--line);color:var(--ink-3)}
+.stop .bdg{font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;background:var(--surface-2);border:1px solid var(--line);color:var(--ink-3)}
+.stop .bdg.photo{background:var(--jade-50);border-color:var(--jade-100);color:var(--jade-600)}
 .stop[data-state="done"]{opacity:.62}
 .stop[data-state="done"] .dot{background:var(--jade-500);border-color:var(--jade-500);color:#fff}
 .stop[data-state="done"] .state{color:var(--jade-500)}
@@ -571,7 +593,7 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 
 /* ---------- report ---------- */
 .tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.tile{padding:16px;border-radius:var(--r-m);background:var(--surface);border:1px solid var(--line)}
+.tile{padding:16px;border-radius:16px;background:var(--surface);border:1px solid var(--line)}
 .tile .ic{width:17px;height:17px;color:var(--jade-500)}
 .tile b{display:block;font-size:27px;font-weight:700;color:var(--ink);margin-top:8px;font-variant-numeric:tabular-nums;letter-spacing:-.03em;line-height:1}
 .tile span{display:block;font-size:11px;color:var(--ink-3);margin-top:4px}
@@ -583,17 +605,17 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 .noradar b{font-size:13.5px;color:var(--ink-2)}
 .noradar p{margin:0;font-size:12px;line-height:1.6;max-width:30ch}
 .styles{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.style{position:relative;padding:12px;border-radius:var(--r-m);background:var(--surface);border:1.5px solid var(--line);text-align:left;transition:border-color .2s,background .2s}
+.style{position:relative;padding:12px;border-radius:16px;background:var(--surface);border:1.5px solid var(--line);text-align:left;transition:border-color .2s,background .2s}
 .style .emoji{font-size:19px}
 .style b{display:block;font-size:13.5px;font-weight:700;color:var(--ink);margin-top:8px}
 .style span{display:block;font-size:11px;color:var(--ink-3);margin-top:2px}
 .style[aria-pressed="true"]{border-color:var(--jade-400);background:var(--jade-50)}
-.style .rec{position:absolute;top:11px;right:11px;font-size:9px;font-weight:700;letter-spacing:.06em;color:var(--gilt);background:var(--gilt-soft);border-radius:4px;padding:2px 4px}
-.gain{display:flex;gap:12px;padding:12px;border-radius:var(--r-m);background:var(--surface);border:1px solid var(--line)}
+.style .rec{position:absolute;top:11px;right:11px;font-size:9px;font-weight:700;letter-spacing:.06em;color:var(--gilt);background:var(--gilt-soft);border-radius:6px;padding:2px 4px}
+.gain{display:flex;gap:12px;padding:12px;border-radius:16px;background:var(--surface);border:1px solid var(--line)}
 .gain .emoji{font-size:19px;flex:none}
 .gain b{display:block;font-size:13.5px;font-weight:700;color:var(--ink)}
 .gain p{margin:4px 0 0;font-size:12px;line-height:1.6;color:var(--ink-3)}
-.poster{border-radius:var(--r-l);padding:16px;background:linear-gradient(150deg,#16231C,#0E1A14);border:1px solid rgba(78,144,104,.32)}
+.poster{border-radius:var(--r-l);padding:16px;background:linear-gradient(150deg,#241C12,#170F09);border:1px solid rgba(226,204,152,.32)}
 .poster .brand{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;color:var(--gilt);letter-spacing:.06em}
 .poster .mosaic{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:12px 0}
 .poster .mosaic img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:8px;display:block}
@@ -606,15 +628,14 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 /* ---------- profile ---------- */
 .profcard{display:flex;align-items:center;gap:12px;padding:16px;border-radius:var(--r-l);background:linear-gradient(140deg,var(--jade-600),var(--jade-800));color:#fff}
 .profcard .av{width:54px;height:54px;border-radius:16px;background:rgba(255,255,255,.16);display:grid;place-items:center;font-size:24px;flex:none;position:relative}
-.profcard .av i{position:absolute;right:-2px;bottom:-2px;width:14px;height:14px;border-radius:50%;background:#5FD08A;border:2.5px solid var(--jade-700)}
 .profcard b{display:block;font-size:17px;font-weight:700}
 .profcard .tags{display:flex;gap:4px;margin-top:8px;flex-wrap:wrap}
-.profcard .tags span{font-size:10.5px;background:rgba(255,255,255,.16);border-radius:4px;padding:2px 8px}
-.persona{display:grid;grid-template-columns:1fr 1fr;gap:0px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-m);overflow:hidden}
+.profcard .tags span{font-size:10.5px;background:rgba(255,255,255,.16);border-radius:6px;padding:2px 8px}
+.persona{display:grid;grid-template-columns:1fr 1fr;gap:0px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden}
 .persona div{background:var(--surface);padding:12px 12px}
 .persona span{display:block;font-size:10.5px;color:var(--ink-3)}
 .persona b{display:block;font-size:13.5px;font-weight:700;color:var(--ink);margin-top:4px}
-.rows{border:1px solid var(--line);border-radius:var(--r-m);overflow:hidden;background:var(--surface)}
+.rows{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--surface)}
 .row-item{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 12px;border-bottom:1px solid var(--line-soft)}
 .row-item:last-child{border-bottom:0}
 .row-item .glyph{width:32px;height:32px;border-radius:8px;background:var(--jade-50);color:var(--jade-500);display:grid;place-items:center;font-size:15px;flex:none}
@@ -625,7 +646,7 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 .lost .ic{margin-top:2px;flex:none}
 .row-item .val{font-size:12.5px;font-weight:600;color:var(--ink-3);flex:none}
 .grouplbl{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:20px 0 8px}
-.trust{display:flex;gap:8px;padding:12px;border-radius:var(--r-m);background:var(--jade-50);border:1px solid var(--jade-100)}
+.trust{display:flex;gap:8px;padding:12px;border-radius:16px;background:var(--jade-50);border:1px solid var(--jade-100)}
 .trust b{display:block;font-size:13px;font-weight:700;color:var(--jade-700)}
 .trust p{margin:4px 0 0;font-size:12px;line-height:1.65;color:var(--jade-700);opacity:.82}
 
@@ -651,8 +672,33 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 @media (prefers-reduced-motion:reduce){.v-wave i{transition:none}}
 .sheet-bg{position:absolute;inset:0;z-index:50;background:rgba(8,16,12,.45);backdrop-filter:blur(3px);display:grid;place-items:center;padding:20px;animation:fade .25s ease}
 @keyframes fade{from{opacity:0}to{opacity:1}}
-.sheet{width:100%;background:var(--surface);border-radius:var(--r-xl);padding:20px 20px;text-align:center;box-shadow:var(--shadow-lift);animation:rise .3s cubic-bezier(.2,.8,.3,1)}
+.sheet{width:100%;background:var(--surface);border-radius:28px;padding:20px 20px;text-align:center;box-shadow:var(--shadow-lift);animation:rise .3s cubic-bezier(.2,.8,.3,1)}
 @keyframes rise{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
+
+/* ---------- motion pass：屏幕切换 + 列表进场 + 交互反馈 ---------- */
+.screen:not([hidden]){animation:screenIn .34s cubic-bezier(.2,.8,.3,1) both}
+@keyframes screenIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes cardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.homegrid>*,.rail>*,#routeList>*,#relGrid>*,.stats>*,#gainList>*{animation:cardIn .36s cubic-bezier(.2,.8,.3,1) both}
+.homegrid>*:nth-child(1),.rail>*:nth-child(1),#routeList>*:nth-child(1),#relGrid>*:nth-child(1),.stats>*:nth-child(1),#gainList>*:nth-child(1){animation-delay:0ms}
+.homegrid>*:nth-child(2),.rail>*:nth-child(2),#routeList>*:nth-child(2),#relGrid>*:nth-child(2),.stats>*:nth-child(2),#gainList>*:nth-child(2){animation-delay:45ms}
+.homegrid>*:nth-child(3),.rail>*:nth-child(3),#routeList>*:nth-child(3),#relGrid>*:nth-child(3),.stats>*:nth-child(3),#gainList>*:nth-child(3){animation-delay:90ms}
+.homegrid>*:nth-child(4),.rail>*:nth-child(4),#routeList>*:nth-child(4),#relGrid>*:nth-child(4){animation-delay:135ms}
+.homegrid>*:nth-child(5),#routeList>*:nth-child(5){animation-delay:180ms}
+.homegrid>*:nth-child(6){animation-delay:225ms}
+.homecard,.stop,.nearby,.exhibit,.divert,.gblock,.know,.insight{transition:transform .16s ease}
+.homecard:active,.stop:active,.nearby:active,.exhibit:active{transform:scale(.97)}
+.homecard img{transition:transform .3s cubic-bezier(.2,.8,.3,1)}
+.homecard:active img{transform:scale(1.05)}
+.catchip,.mode,.style,.dg-btn{transition:transform .14s ease,background .18s,color .18s,border-color .18s}
+.catchip:active,.mode:active,.style:active,.dg-btn:active{transform:scale(.95)}
+.tabbar button .ic{transition:transform .22s cubic-bezier(.34,1.56,.64,1)}
+.tabbar button[aria-current="true"] .ic{transform:scale(1.12)}
+.fab{animation:fabBreathe 3.6s ease-in-out infinite}
+@keyframes fabBreathe{0%,100%{box-shadow:0 10px 26px -6px rgba(226,204,152,.55),0 0 0 6px rgba(226,204,152,.12)}50%{box-shadow:0 10px 30px -4px rgba(226,204,152,.75),0 0 0 9px rgba(226,204,152,.18)}}
+@media (prefers-reduced-motion:reduce){
+  .screen:not([hidden]),.homegrid>*,.rail>*,#routeList>*,#relGrid>*,.stats>*,#gainList>*,.fab{animation:none!important}
+}
 .sheet .pill{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:var(--jade-600);background:var(--jade-50);border:1px solid var(--jade-100);padding:4px 12px;border-radius:999px}
 .sheet img{width:160px;height:160px;object-fit:cover;border-radius:var(--r-m);margin:16px auto 0;display:block;background:var(--surface-2)}
 .sheet h3{margin:16px 0 0;font-family:var(--font-display);font-size:20px;font-weight:700;letter-spacing:-.01em;color:var(--ink)}
@@ -660,6 +706,55 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 .sheet p{margin:12px 0 16px;font-size:13px;line-height:1.7;color:var(--ink-2)}
 .sheet .dismiss{margin-top:12px;font-size:13px;font-weight:600;color:var(--ink-3)}
 #posterSheet{background:rgba(8,16,12,.7)}
+.postersheet{max-height:100%;overflow-y:auto;scrollbar-width:none}
+.poster .gold{color:#fff}
+.p-note{background:#F5F0E4;border-color:#E2D8C2;color:#2B2A26;font-family:Georgia,"Songti SC","Noto Serif SC",serif}
+.p-note .pn-head{display:flex;justify-content:space-between;font-size:10px;letter-spacing:.08em;color:#8A7F66;border-bottom:1px solid #D9CEB6;padding-bottom:8px}
+.p-note h4{color:#1E2B24;font-size:17px;margin-top:10px;line-height:1.35}
+.p-note .pn-meta{color:#8A7F66;margin:4px 0 10px}
+.pn-item{display:flex;gap:10px;padding:10px 0;border-top:1px dashed #D9CEB6}
+.pn-item img{width:44px;height:44px;border-radius:6px;object-fit:cover;flex:none}
+.pn-item b{display:block;font-size:13px;color:#1E2B24}
+.pn-item .pn-dyn{display:block;font-size:10.5px;color:#8A7F66;margin-top:1px}
+.p-note .pn-item p{margin:4px 0 0;font-size:11.5px;line-height:1.6;color:#3C3A33}
+.p-note .pn-item p.pn-q{color:#8A6A2E;font-style:italic}
+.p-note sup{font-size:8px;color:#8A6A2E}
+.pn-refs{font-size:9.5px;line-height:1.6;color:#8A7F66;border-top:1px solid #D9CEB6;padding-top:8px;margin:4px 0 12px}
+.p-note .gold{background:#8A6A2E}.p-note .icn{border-color:#CFC4AC;color:#8A6A2E}
+.p-trip .brand{color:#D9C18A}
+.p-trip .pt-sub{margin:4px 0 12px}
+.pt-cols{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#D9C18A;padding-bottom:6px;border-bottom:1px solid rgba(226,204,152,.25)}
+.pt-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 0;border-bottom:1px solid rgba(226,204,152,.15);position:relative}
+.pt-row::after{content:"⇄";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:11px;color:#D9C18A;opacity:.6}
+.pt-l img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:6px;display:block;margin-bottom:6px}
+.pt-l b{display:block;font-size:12px;color:#fff}.pt-l span{display:block;font-size:10px;color:rgba(255,255,255,.55);margin-top:2px}
+.pt-r{font-size:11.5px;line-height:1.6;color:#E8DCC0;align-self:center;padding-left:8px}
+.pt-foot{font-size:10px!important;margin:10px 0 12px!important}
+.p-trip .gold{background:#B08A45}
+.p-story{background:linear-gradient(160deg,#FFE27A 0%,#FFA98A 48%,#8FD3FF 100%);border-color:transparent;color:#3A2A1A}
+.ps-top{display:flex;justify-content:space-between;font-size:10.5px;font-weight:700;color:#7A3D14}
+.p-story h4{color:#3A1E0A;font-size:22px;margin:8px 0 10px;font-family:inherit;font-weight:800}
+.ps-card{display:flex;gap:10px;align-items:center;background:#fff;border-radius:16px;padding:8px;margin-bottom:10px;transform:rotate(var(--tilt));box-shadow:0 6px 0 var(--c)}
+.ps-card img{width:54px;height:54px;border-radius:50%;object-fit:cover;flex:none;border:3px solid var(--c)}
+.ps-card b{display:block;font-size:13px;color:#3A1E0A}
+.p-story .ps-card p{margin:2px 0 0;font-size:11.5px;line-height:1.5;color:#5A4030}
+.ps-quiz{background:#3A1E0A;color:#FFE27A;border-radius:14px;padding:10px 12px;font-size:12px;line-height:1.55;margin:4px 0 12px}
+.ps-quiz b{display:block;font-size:12.5px;margin-bottom:2px}.ps-quiz span{display:block;margin-top:4px;font-size:10.5px;color:#FFC9B0}
+.p-story .gold{background:#FF6B4A}.p-story .icn{border-color:rgba(58,30,10,.3);color:#3A1E0A}
+.p-card{background:#16100A}
+.pc-head{display:flex;justify-content:space-between;align-items:baseline;color:#D9C18A;font-size:12px;font-weight:700;letter-spacing:.06em}
+.pc-head b{font-size:26px;color:#fff;font-family:var(--font-display)}.pc-head i{font-style:normal;font-size:14px;color:#D9C18A}
+.pc-hero{position:relative;margin:10px 0 6px}
+.pc-hero img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;display:block}
+.pc-hero span{position:absolute;left:8px;bottom:8px;font-size:10.5px;font-weight:700;color:#fff;background:rgba(0,0,0,.55);padding:3px 8px;border-radius:999px}
+.pc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:12px}
+.pc-cell{position:relative;border-radius:8px;overflow:hidden;aspect-ratio:1/1;background:#2A2013}
+.pc-cell img{width:100%;height:100%;object-fit:cover;display:block}
+.pc-cell span{position:absolute;inset:auto 0 0 0;font-size:9px;font-weight:700;color:#fff;padding:12px 5px 4px;background:linear-gradient(transparent,rgba(0,0,0,.75));white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc-cell.lock img{filter:grayscale(1) brightness(.45)}
+.pc-cell.more{display:grid;place-items:center;border:1px dashed rgba(226,204,152,.4);background:none}
+.pc-cell.more span{position:static;background:none;padding:0;color:#D9C18A}
+.p-card .gold{background:#E2CC98;color:#1C2021}
 .postersheet{width:100%;max-width:312px;animation:rise .3s cubic-bezier(.2,.8,.3,1)}
 .postersheet .poster{box-shadow:0 24px 60px -20px rgba(0,0,0,.6)}
 .postersheet .dismiss{display:block;width:100%;margin-top:16px;padding:8px;font-size:13px;font-weight:600;color:#fff;opacity:.8}
@@ -670,6 +765,148 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
   .stage{padding-block:0}
   .phone{border-radius:32px;max-height:none;height:820px}
 }
+
+/* ============================================================
+   Muse AI · 深墨底 + 鎏金 主题（覆盖上方的浅色 jade 主题）
+   ============================================================ */
+:root{
+  --gold:#E2CC98; --gold-2:#CDB47C; --gold-3:#A88F5C; --gold-ink:#1C2021;
+  --jade-900:#F6EBCF; --jade-800:#F0E1BA; --jade-700:#E8D5A6;
+  --jade-600:#CDB47C; --jade-500:#E2CC98; --jade-400:#EAD8AC;
+  --jade-300:#8C7A56; --jade-200:#4D4535; --jade-100:#3A362D; --jade-50:#2D2E2A;
+  --gilt:#E2CC98; --gilt-soft:rgba(226,204,152,.14);
+  --ink:#F2EBDD; --ink-2:#C8C0AF; --ink-3:#8F8A7E;
+  --paper:#1E2324; --surface:#272D2F; --surface-2:#232829;
+  --line:rgba(226,204,152,.13); --line-soft:rgba(226,204,152,.08);
+  --shadow:0 1px 2px rgba(0,0,0,.25), 0 10px 26px -14px rgba(0,0,0,.6);
+  --shadow-lift:0 2px 6px rgba(0,0,0,.3), 0 24px 50px -20px rgba(0,0,0,.7);
+  --stage:#141819; --stage-ink:#E9E1CF;
+  --font-serif:"Songti SC","STSong","Noto Serif SC","Source Han Serif SC",Georgia,"Times New Roman",serif;
+  --font-display:var(--font-serif);
+}
+body{background:radial-gradient(120% 80% at 50% 0%,#252B2C,#121516 70%)}
+.phone{background:linear-gradient(180deg,#252B2C 0%,#1E2324 38%,#1A1E1F 100%);border-color:rgba(226,204,152,.18)}
+.island{background:#050606}
+.homebar{background:var(--gold);opacity:.5}
+.screen{background:transparent}
+.topbar{background:linear-gradient(#232829 72%,transparent)}
+/* 标题一律衬线，呼应文物气质 */
+h1,h2,h3,h4,.h1,.h2,.sheet h3,.topbar .brand,#objName,.stop b,.nearby b,.rel b,.ask-t,.cand b{font-family:var(--font-serif)!important;letter-spacing:.01em}
+/* 金色实心控件：深色字 */
+.btn,.langpill button[aria-pressed="true"],.bubble-me,.fab,.dg-btn.on,.seg button[aria-pressed="true"]{color:var(--gold-ink)!important}
+.btn{background:linear-gradient(180deg,#EAD7A8,#D4BC85);box-shadow:0 6px 18px -8px rgba(226,204,152,.55);border-radius:999px}
+.btn:active{background:var(--gold-2)}
+.btn.quiet{background:transparent;color:var(--gold)!important;border:1px solid rgba(226,204,152,.45);box-shadow:none}
+.btn.ghost{background:transparent;color:var(--gold)!important;border:1px solid rgba(226,204,152,.45)}
+.bubble-me{background:linear-gradient(180deg,#EAD7A8,#D4BC85)}
+.iconbtn{background:rgba(255,255,255,.04);border-color:var(--line);color:var(--gold)}
+/* 底部导航：鎏金托盘 + 深色图标，与参考稿一致 */
+.tabbar{background:linear-gradient(180deg,#E8D4A2,#D9C18A);border-top:0;border-radius:28px 28px 0 0;box-shadow:0 -10px 30px -12px rgba(0,0,0,.6)}
+.tabbar button{color:rgba(28,32,33,.55)}
+.tabbar button[aria-current="true"]{color:var(--gold-ink);background:rgba(28,32,33,.08)}
+.tabbar button[aria-current="true"] .ic{stroke-width:2.4}
+/* AI 光球：金色 */
+.fab{background:radial-gradient(circle at 50% 50%,#fff 0 14%,rgba(255,255,255,.5) 24%,rgba(255,255,255,0) 44%),radial-gradient(circle at 35% 30%,#F1E2BA,#D4BC85 60%,#A88F5C);box-shadow:0 10px 26px -6px rgba(226,204,152,.55),0 0 0 6px rgba(226,204,152,.12)}
+.ai-orb{background:radial-gradient(circle,#fff 0 18%,rgba(255,255,255,.6) 28%,rgba(255,255,255,0) 46%),radial-gradient(circle at 35% 30%,#F1E2BA,#D4BC85 55%,#A88F5C);box-shadow:0 0 0 3px rgba(226,204,152,.18)}
+.bubble-ai .av{background:linear-gradient(180deg,#EAD7A8,#D4BC85);color:var(--gold-ink)}
+/* 卡片：深墨面 + 细金边 */
+.stop,.nearby,.stat,.hero-card,.insight,.gblock,.bubble-ai .body-wrap,.sheet,.divert,.style,.cand,.ask-line,.hintbar{border-color:var(--line)!important}
+.sheet{background:#262C2E}
+.stop[data-state="now"],.stop.moved{background:linear-gradient(180deg,rgba(226,204,152,.10),rgba(226,204,152,.03));border-color:rgba(226,204,152,.5)!important}
+.stop[data-state="done"] .dot{background:var(--gold);border-color:var(--gold);color:var(--gold-ink)}
+.stop.moved .bdg.ai{color:var(--gold-ink)}
+.livedot{background:rgba(226,204,152,.1);border-color:rgba(226,204,152,.25)}
+.divert{background:linear-gradient(180deg,rgba(226,204,152,.10),rgba(226,204,152,.04))}
+.divert .delta div{background:rgba(0,0,0,.18)}
+.sheet-bg{background:rgba(5,7,7,.6)}
+.srcchip{background:rgba(255,255,255,.04)}
+.aimark{color:var(--gold-ink);background:var(--gold)}
+input,textarea,select{color:var(--ink)}
+.detail-hero .grad{background:linear-gradient(transparent,#1E2324)}
+.detail-hero img{background:#111}
+/* 启动页：深墨 + 金色圆盘托起展品，Muse AI 衬线标识 */
+#s-splash{background:radial-gradient(90% 60% at 50% 38%,#2B3233,#171B1C 70%)}
+.splash-img,.splash-veil{display:none}
+.splash-mid{top:44%}
+.splash-art{position:relative;width:200px;height:200px;margin:0 auto 34px}
+.splash-art::before{content:"";position:absolute;right:-22px;top:-18px;width:170px;height:170px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#F1E2BA,#D9C18A 60%,#B89C63)}
+.splash-art img{position:absolute;inset:0;width:200px;height:200px;object-fit:cover;border-radius:50%;border:2px solid rgba(226,204,152,.7);box-shadow:0 20px 40px -12px rgba(0,0,0,.8)}
+.splash-logo{display:flex;align-items:center;justify-content:center;gap:10px}
+.splash-logo i{width:26px;height:26px;border-radius:50%;border:2px solid var(--gold);display:grid;place-items:center}
+.splash-logo i::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--gold)}
+.splash-title{font-family:var(--font-serif);color:var(--ink);letter-spacing:.06em;font-size:30px;font-weight:700}
+.splash-sub{color:rgba(242,235,221,.55);font-family:var(--font-serif)}
+.splash-cta{background:linear-gradient(180deg,#EAD7A8,#D4BC85);color:var(--gold-ink);border:0;border-radius:999px;font-family:var(--font-serif);font-weight:700}
+.splash-foot b{color:var(--gold)}
+.splash-lang{border-color:rgba(226,204,152,.35);background:rgba(226,204,152,.08)}
+.splash-lang button[aria-current="true"]{color:var(--gold)}
+
+/* 金色实心的小控件统一深色字 */
+.mode[aria-pressed="true"],.hero-card .pill,.playchip,.tabs button[aria-selected="true"],.mic,.reportcard.done .rc-ic,.opt[aria-pressed="true"] .check,.v-mic,.stop.moved .bdg.ai,.rgn.on span,.rgn span{color:var(--gold-ink)!important}
+.mode[aria-pressed="true"],.tabs button[aria-selected="true"],.playchip,.mic,.v-mic{background:linear-gradient(180deg,#EAD7A8,#D4BC85)!important;border-color:transparent!important}
+.seg{background:rgba(0,0,0,.22)!important;border-color:var(--line)!important}
+.seg button[aria-pressed="true"]{background:linear-gradient(180deg,#EAD7A8,#D4BC85);color:var(--gold-ink)!important;box-shadow:none}
+/* 强调卡片：深墨 + 金描边（参考稿「最受欢迎」卡） */
+.progresscard,.gaincard,.tile.accent,.profcard{background:linear-gradient(140deg,#35352C 0%,#262B2B 70%)!important;border:1px solid rgba(226,204,152,.45)!important;color:var(--ink)!important}
+.tile.accent *{color:var(--ink)}
+.tile.accent .ic,.progresscard .ic,.profcard .ic{color:var(--gold)}
+.opt[aria-pressed="true"]{background:rgba(226,204,152,.08);border-color:rgba(226,204,152,.55)}
+.style[aria-pressed="true"]{background:rgba(226,204,152,.08)}
+
+.finder[data-state="high"] .verdict,.detail-hero .match{background:linear-gradient(180deg,#EAD7A8,#D4BC85)!important;color:var(--gold-ink)!important}
+.finder[data-state="mid"] .verdict{background:rgba(168,143,92,.95);color:var(--gold-ink)}
+@keyframes movedPulse{0%{box-shadow:0 0 0 0 rgba(226,204,152,.5)}100%{box-shadow:0 0 0 12px rgba(226,204,152,0)}}
+
+/* 启动页 v2：大英博物馆柱廊 + 大中庭玻璃穹顶纹理 */
+.splash-art{display:none}
+.splash-lattice{position:absolute;inset:0;opacity:.09;pointer-events:none;
+  background-image:linear-gradient(60deg,transparent 49.3%,#E2CC98 49.3%,#E2CC98 50.7%,transparent 50.7%),linear-gradient(-60deg,transparent 49.3%,#E2CC98 49.3%,#E2CC98 50.7%,transparent 50.7%),linear-gradient(0deg,transparent 48.6%,#E2CC98 48.6%,#E2CC98 51.4%,transparent 51.4%);
+  background-size:38px 66px;-webkit-mask-image:radial-gradient(70% 45% at 50% 0%,#000,transparent);mask-image:radial-gradient(70% 45% at 50% 0%,#000,transparent)}
+.splash-mid{top:46%}
+.splash-eyebrow{display:flex;align-items:center;justify-content:center;gap:10px;font-family:var(--font-serif);font-size:10.5px;letter-spacing:.32em;color:rgba(226,204,152,.75);margin-bottom:18px}
+.splash-eyebrow span{width:28px;height:1px;background:rgba(226,204,152,.5)}
+.bm-portico{display:block;width:244px;height:auto;margin:0 auto 26px;fill:none;stroke:#E2CC98;stroke-width:1.3;stroke-linejoin:round;filter:drop-shadow(0 0 18px rgba(226,204,152,.18))}
+.bm-portico .ped{fill:rgba(226,204,152,.08)}
+.splash-objs{display:flex;align-items:center;justify-content:center;margin-top:30px}
+.splash-objs img{width:38px;height:38px;border-radius:50%;object-fit:cover;border:1.5px solid #E2CC98;margin-left:-10px;box-shadow:0 4px 12px rgba(0,0,0,.5)}
+.splash-objs img:first-child{margin-left:0}
+.splash-objs span{margin-left:12px;font-size:11.5px;color:rgba(242,235,221,.6);font-family:var(--font-serif)}
+.splash-note{margin-top:14px;text-align:center;font-size:9.5px;letter-spacing:.08em;color:rgba(242,235,221,.35)}
+
+/* ===== 强调层：纯黑卡片（参考稿「最受欢迎」卡 / 搜索框） ===== */
+:root{--deep:#0D1011;--paper:#262C2D}
+.phone{background:linear-gradient(180deg,#2C3233 0%,#262C2D 40%,#212627 100%)}
+.topbar{background:linear-gradient(#2A3031 72%,transparent)}
+.detail-hero .grad{background:linear-gradient(transparent,#262C2D)}
+.hintbar,.progresscard,.gaincard,.profcard,.tile.accent,.divert,.player,.degrade,.seg,.cbox{background:var(--deep)!important;border-color:rgba(226,204,152,.38)!important}
+.bubble-ai .body-wrap{background:#1B2021!important}
+.hintbar,.progresscard,.gaincard,.profcard,.tile.accent,.divert,.player{border:1px solid rgba(226,204,152,.38)!important;box-shadow:0 14px 30px -16px rgba(0,0,0,.9)}
+.hintbar.as-action b{color:var(--gold)}
+.finder{border:1px solid rgba(226,204,152,.25);box-shadow:0 18px 36px -18px rgba(0,0,0,.9)}
+
+/* ===== 识别置信度：三档一眼能分 ===== */
+.finder .verdict{border-radius:999px;padding:5px 11px 5px 9px;backdrop-filter:blur(6px)}
+.finder .verdict::before{content:"";width:7px;height:7px;border-radius:50%;margin-right:2px;flex:none}
+/* 高：实心金，深色字 */
+.finder[data-state="high"] .verdict{background:linear-gradient(180deg,#F0DEAF,#D8BF86)!important;color:#141718!important;box-shadow:0 0 0 3px rgba(226,204,152,.25)}
+.finder[data-state="high"] .verdict::before{background:#141718;box-shadow:0 0 0 2px rgba(20,23,24,.18)}
+.finder[data-state="high"] .bracket{border-color:#EAD7A8}
+/* 中：黑底 + 琥珀橙描边，提示要确认 */
+.finder[data-state="mid"] .verdict{background:rgba(13,16,17,.88)!important;color:#F2A65A!important;border:1.5px solid #F2A65A}
+.finder[data-state="mid"] .verdict::before{background:#F2A65A;animation:pulse 1.2s ease-in-out infinite}
+.finder[data-state="mid"] .bracket{border-color:#F2A65A}
+/* 低：黑底 + 珊瑚红描边，改用其他方式 */
+.finder[data-state="low"] .verdict{background:rgba(13,16,17,.88)!important;color:#F07E6E!important;border:1.5px dashed #F07E6E}
+.finder[data-state="low"] .verdict::before{background:#F07E6E}
+.finder[data-state="low"] .bracket{border-color:#F07E6E;border-style:dashed}
+.finder[data-state="scanning"] .verdict{background:rgba(13,16,17,.88)!important;color:var(--ink-2)!important;border:1px solid rgba(255,255,255,.2)}
+.finder[data-state="scanning"] .verdict::before{background:var(--ink-2);animation:pulse 1s ease-in-out infinite}
+/* 候选列表：最高那条金色，其余灰 */
+.degrade .cand:first-of-type .pct{color:#F2A65A}
+.degrade{border:1px solid rgba(242,166,90,.4)!important}
+.degrade.low{border:1px dashed rgba(240,126,110,.5)!important}
+.degrade .dg-head{color:#F2A65A}
+.degrade.low .dg-head{color:#F07E6E}
 </style>
 
 </head>
@@ -711,10 +948,15 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 <symbol id="i-settings" viewBox="0 0 24 24"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></symbol>
 <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></symbol>
 <symbol id="i-landmark" viewBox="0 0 24 24"><path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></symbol>
-<symbol id="i-museum" viewBox="0 0 24 24"><path d="M3.6 9.4 12 3.4l8.4 6v11.2H3.6Z"/><path d="M8.6 16.8v-5.2L12 14.4l3.4-2.8v5.2"/></symbol>
-<symbol id="i-compose" viewBox="0 0 24 24"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></symbol>
+<symbol id="i-museum" viewBox="0 0 24 24"><path d="M3.6 9.4 12 3.4l8.4 6v11.2H3.6Z"/><path d="M8.6 16.8v-5.2L12 14.4l3.4-2.8v5.2"/></symbol><symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol><symbol id="i-compose" viewBox="0 0 24 24"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></symbol>
 <symbol id="i-chevdown" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
-<symbol id="i-blob" viewBox="0 0 24 24"><path d="M19.39 11.58C19.49 12.64 19.46 13.91 19.05 14.88C18.63 15.85 17.70 16.70 16.89 17.40C16.08 18.10 15.16 18.67 14.19 19.09C13.22 19.51 12.14 19.84 11.08 19.90C10.02 19.95 8.81 19.83 7.82 19.44C6.83 19.04 5.82 18.32 5.13 17.52C4.44 16.72 4.08 15.63 3.68 14.64C3.28 13.65 2.86 12.64 2.76 11.58C2.66 10.52 2.69 9.25 3.11 8.28C3.52 7.31 4.45 6.46 5.26 5.76C6.07 5.06 7.00 4.49 7.97 4.07C8.94 3.65 10.02 3.32 11.08 3.26C12.14 3.21 13.34 3.33 14.33 3.72C15.32 4.12 16.33 4.84 17.02 5.64C17.71 6.44 18.08 7.53 18.47 8.52C18.87 9.51 19.30 10.52 19.39 11.58Z" fill="currentColor" fill-opacity=".34"/><path d="M21.23 11.75C21.23 12.79 20.95 13.96 20.50 14.88C20.04 15.81 19.23 16.58 18.49 17.32C17.75 18.05 16.97 18.79 16.04 19.27C15.11 19.76 13.96 20.23 12.92 20.22C11.89 20.20 10.78 19.65 9.85 19.17C8.91 18.70 8.06 18.07 7.31 17.36C6.56 16.65 5.79 15.83 5.34 14.89C4.89 13.96 4.61 12.79 4.61 11.75C4.62 10.70 4.90 9.54 5.35 8.61C5.81 7.68 6.61 6.91 7.36 6.18C8.10 5.45 8.88 4.71 9.81 4.22C10.73 3.74 11.89 3.26 12.92 3.28C13.96 3.29 15.06 3.85 16.00 4.32C16.94 4.80 17.78 5.42 18.54 6.14C19.29 6.85 20.06 7.67 20.51 8.60C20.96 9.54 21.24 10.70 21.23 11.75Z" fill="currentColor" fill-opacity=".34"/><path d="M20.13 13.01C20.05 14.04 19.77 15.04 19.40 16.00C19.04 16.97 18.62 18.01 17.94 18.78C17.26 19.54 16.27 20.21 15.31 20.60C14.35 20.99 13.19 21.16 12.17 21.10C11.14 21.04 10.12 20.63 9.17 20.23C8.23 19.83 7.27 19.37 6.48 18.70C5.69 18.03 4.80 17.17 4.42 16.22C4.04 15.27 4.12 14.04 4.20 13.01C4.29 11.97 4.57 10.97 4.93 10.01C5.30 9.05 5.72 8.00 6.40 7.24C7.08 6.47 8.06 5.80 9.02 5.42C9.98 5.03 11.14 4.86 12.17 4.92C13.19 4.98 14.21 5.38 15.16 5.78C16.11 6.18 17.06 6.65 17.86 7.32C18.65 7.99 19.54 8.85 19.92 9.80C20.30 10.75 20.22 11.97 20.13 13.01Z" fill="currentColor" fill-opacity=".34"/><path d="M16.95 12.00C16.95 12.64 16.87 13.32 16.65 13.93C16.44 14.54 16.12 15.22 15.66 15.66C15.21 16.11 14.52 16.40 13.91 16.61C13.30 16.82 12.64 16.90 12.00 16.92C11.36 16.94 10.65 16.94 10.05 16.72C9.44 16.50 8.83 16.08 8.39 15.61C7.94 15.15 7.58 14.53 7.36 13.92C7.14 13.32 7.05 12.64 7.05 12.00C7.05 11.36 7.13 10.68 7.35 10.07C7.56 9.46 7.88 8.78 8.34 8.34C8.79 7.89 9.48 7.60 10.09 7.39C10.70 7.18 11.36 7.10 12.00 7.08C12.64 7.06 13.35 7.06 13.95 7.28C14.56 7.50 15.17 7.92 15.61 8.39C16.06 8.85 16.42 9.47 16.64 10.08C16.86 10.68 16.95 11.36 16.95 12.00Z" fill="currentColor" fill-opacity=".95"/></symbol>
+<symbol id="i-bot" viewBox="0 0 24 24">
+  <rect x="0.5" y="9" width="3" height="6" rx="1.5" style="fill:var(--gold-ink);opacity:.35;stroke:none"/>
+  <rect x="20.5" y="9" width="3" height="6" rx="1.5" style="fill:var(--gold-ink);opacity:.35;stroke:none"/>
+  <rect x="3.4" y="4.6" width="17.2" height="14.8" rx="7.4" style="fill:var(--gold-ink);stroke:none"/>
+  <rect x="8.4" y="10" width="2.5" height="5.2" rx="1.25" style="fill:#fff;stroke:none"/>
+  <rect x="13.1" y="10" width="2.5" height="5.2" rx="1.25" style="fill:#fff;stroke:none"/>
+</symbol>
 </defs></svg>
 
 <div class="stage">
@@ -723,9 +965,18 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
     <div class="statusbar">
       <span id="clock">10:24</span>
       <span class="sigs">
-        <svg class="ic" style="width:16px;height:16px" viewBox="0 0 24 24"><use href="#i-nfc"/></svg>
-        <span class="bar" style="height:7px"></span><span class="bar" style="height:10px"></span><span class="bar" style="height:13px"></span>
-        <svg class="ic" style="width:18px;height:18px" viewBox="0 0 24 24"><rect x="2" y="7" width="17" height="10" rx="2.5"/><path d="M21.5 11v2"/><rect x="4" y="9" width="12" height="6" rx="1" fill="currentColor" stroke="none"/></svg>
+        <span class="bar" style="height:6px"></span><span class="bar" style="height:8px"></span><span class="bar" style="height:10px"></span><span class="bar" style="height:12px"></span>
+        <svg class="ic" style="width:15px;height:15px;margin:0 1px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 9a15 15 0 0 1 20 0"/>
+          <path d="M5.5 13a10 10 0 0 1 13 0"/>
+          <path d="M9 17a5 5 0 0 1 6 0"/>
+          <circle cx="12" cy="20" r="1.3" fill="currentColor" stroke="none"/>
+        </svg>
+        <svg class="ic" style="width:26px;height:14px" viewBox="0 0 26 14" fill="none" stroke="currentColor" stroke-width="1.2">
+          <rect x="1" y="1" width="21" height="12" rx="3.2"/>
+          <rect x="23.4" y="5" width="1.6" height="4" rx="0.8" fill="currentColor" stroke="none"/>
+          <rect x="3" y="3" width="17" height="8" rx="1.6" fill="currentColor" stroke="none"/>
+        </svg>
       </span>
     </div>
 
@@ -733,7 +984,7 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 
       <!-- ============ SPLASH ============ -->
       <section class="screen" id="s-splash">
-        <div class="splash-img"></div><div class="splash-veil"></div>
+        <div class="splash-img"></div><div class="splash-veil"></div><div class="splash-lattice"></div>
         <div class="splash-lang">
           <svg class="ic" style="width:15px;height:15px;opacity:.7"><use href="#i-globe"/></svg>
           <button id="sp-en" onclick="setLang('en')">EN</button>
@@ -742,15 +993,29 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
         </div>
         <div class="splash-in">
           <div class="splash-mid">
-            <div class="crest">⛩</div>
-            <h2 class="splash-title">THE DIGITAL CURATOR</h2>
-            <p class="splash-sub">Artificially Intelligent, Culturally Human</p>
+            <div class="splash-eyebrow"><span></span>LONDON · SINCE 1753<span></span></div>
+            <svg class="bm-portico" viewBox="0 0 280 160" aria-hidden="true">
+  <path class="ped" d="M18 62 L140 14 L262 62 Z"/>
+  <path d="M34 58 L140 20 L246 58" opacity=".5"/>
+  <circle cx="140" cy="44" r="7" opacity=".6"/>
+  <rect x="16" y="62" width="248" height="9" rx="1"/>
+  <path d="M20 74h240" opacity=".6"/>
+  <path d="M30.0 76h12M29.0 79.5h14"/><rect x="31.5" y="80" width="9" height="58" rx="1"/><path d="M34.5 84v50M37.5 84v50" opacity=".45"/><path d="M30.0 139h12"/><path d="M59.7 76h12M58.7 79.5h14"/><rect x="61.2" y="80" width="9" height="58" rx="1"/><path d="M64.2 84v50M67.2 84v50" opacity=".45"/><path d="M59.7 139h12"/><path d="M89.4 76h12M88.4 79.5h14"/><rect x="90.9" y="80" width="9" height="58" rx="1"/><path d="M93.9 84v50M96.9 84v50" opacity=".45"/><path d="M89.4 139h12"/><path d="M119.1 76h12M118.1 79.5h14"/><rect x="120.6" y="80" width="9" height="58" rx="1"/><path d="M123.6 84v50M126.6 84v50" opacity=".45"/><path d="M119.1 139h12"/><path d="M148.8 76h12M147.8 79.5h14"/><rect x="150.3" y="80" width="9" height="58" rx="1"/><path d="M153.3 84v50M156.3 84v50" opacity=".45"/><path d="M148.8 139h12"/><path d="M178.5 76h12M177.5 79.5h14"/><rect x="180.0" y="80" width="9" height="58" rx="1"/><path d="M183.0 84v50M186.0 84v50" opacity=".45"/><path d="M178.5 139h12"/><path d="M208.2 76h12M207.2 79.5h14"/><rect x="209.7" y="80" width="9" height="58" rx="1"/><path d="M212.7 84v50M215.7 84v50" opacity=".45"/><path d="M208.2 139h12"/><path d="M237.9 76h12M236.9 79.5h14"/><rect x="239.4" y="80" width="9" height="58" rx="1"/><path d="M242.4 84v50M245.4 84v50" opacity=".45"/><path d="M237.9 139h12"/>
+  <path d="M12 142h256M6 148h268M0 154h280"/>
+</svg>
+            <div class="splash-logo"><i></i><h2 class="splash-title">Muse AI</h2></div>
+            <p class="splash-sub" data-t="splashSub">大英博物馆 · AI 智慧导览</p>
+            <div class="splash-objs">
+              <img src="src/projects/curator/david-vases.jpg" alt=""><img src="src/projects/curator/liangzhu-cong.jpg" alt=""><img src="src/projects/curator/admonitions-scroll.jpg" alt="">
+              <span data-t="splashObjs">800 万件藏品，从这里开始读懂</span>
+            </div>
           </div>
           <div class="splash-bottom">
             <button class="splash-cta" id="splashCta" onclick="enterMuseum()">
               <svg class="ic" style="width:17px;height:17px"><use href="#i-sparkle"/></svg>
-              <span data-t="splashCta">进入 AI 线上博物馆</span>
+              <span data-t="splashCta">开始导览</span>
             </button>
+            <p class="splash-note" data-t="splashNote">学生概念项目 · 非大英博物馆官方应用</p>
             <div class="loadwrap" id="loadWrap" hidden>
               <div class="splash-foot"><span id="loadLabel">正在进入</span><b id="loadPct">0%</b></div>
               <div class="loadline"><i id="loadBar"></i></div>
@@ -776,15 +1041,15 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 
           <div class="sec">
             <div class="card" style="padding:16px">
-              <div class="fieldrow"><span class="lbl" data-t="obDur">参观时长</span><span class="val" id="durVal">90 分钟</span></div>
-              <input type="range" id="dur" min="30" max="180" step="15" value="90" aria-label="duration">
+              <div class="fieldrow"><span class="lbl" data-t="obDur">参观时长</span><span class="val" id="durVal">30 分钟</span></div>
+              <input type="range" id="dur" min="30" max="180" step="15" value="30" aria-label="duration">
               <div class="scale"><span data-t="obDurA">快速打卡</span><span data-t="obDurB">沉浸深游</span></div>
             </div>
           </div>
 
           <div class="sec">
             <div class="card" style="padding:16px">
-              <div class="fieldrow"><span class="lbl" data-t="obDepth">讲解深度</span><span class="val" id="depthVal">标准级</span></div>
+              <div class="fieldrow"><span class="lbl" data-t="obDepth">讲解深度</span><span class="val" id="depthVal">轻览</span></div>
               <div class="seg" id="depthSeg"></div>
             </div>
           </div>
@@ -803,6 +1068,40 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
         <div class="sticky-cta">
           <button class="btn" onclick="finishOnboard()"><span data-t="obCta">进入博物馆</span><svg class="ic" style="width:17px;height:17px"><use href="#i-arrow"/></svg></button>
           <p class="fineprint"><span data-t="obFine1">继续即表示同意</span> <a href="#" onclick="go('profile');return false" data-t="obFine2">《策展隐私条款》</a><span data-t="obFine3">。你的画像仅在本机推理，随时可关闭。</span></p>
+        </div>
+      </section>
+
+      <!-- ============ HOME ============ -->
+      <section class="screen" id="s-home" hidden>
+        <div class="topbar">
+          <div style="min-width:0">
+            <div class="brand">
+              <svg class="ic" style="width:19px;height:19px;color:var(--jade-500)"><use href="#i-museum"/></svg>
+              <span data-t="museum">大英博物馆</span>
+            </div>
+          </div>
+          <span class="spacer"></span>
+          <div class="langpill" role="group" aria-label="Language">
+            <button id="lang-zh-home" aria-pressed="true" onclick="setLang('zh')">中</button>
+            <button id="lang-en-home" aria-pressed="false" onclick="setLang('en')">EN</button>
+          </div>
+          <button class="iconbtn" onclick="openNfc()" aria-label="NFC"><svg class="ic"><use href="#i-bell"/></svg></button>
+        </div>
+        <div class="pad">
+          <div class="searchbar">
+            <svg class="ic"><use href="#i-search"/></svg>
+            <input id="homeSearch" type="text" data-t-ph="homeSearchPh" placeholder="搜索展品、展厅或朝代" oninput="onHomeSearch(this.value)">
+          </div>
+
+          <div class="cats" id="homeCats"></div>
+
+          <div class="sec-head" style="margin-top:20px"><h3 class="h2" data-t="homeFeatured">今日必看</h3></div>
+          <div id="homeHero"></div>
+
+          <div class="sec-head" style="margin-top:20px"><h3 class="h2" data-t="homeSection">馆藏展品</h3></div>
+          <div class="homegrid" id="homeGrid"></div>
+
+          <div class="tail"></div>
         </div>
       </section>
 
@@ -826,7 +1125,7 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
         </div>
         <div class="pad">
           <div class="finder" id="finder" data-state="high" onclick="rescan()" role="button" tabindex="0">
-            <img src="src/projects/curator/porcelain-hall.jpg" alt="">
+            <img src="src/projects/curator/david-vases.jpg" alt="">
             <div class="scrim"></div>
             <span class="where"><svg class="ic" style="width:12px;height:12px"><use href="#i-pin"/></svg><span data-t="whereNow">95 号厅 · 中国陶瓷</span></span>
             <div class="tools">
@@ -855,7 +1154,7 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
       <!-- ============ DETAIL ============ -->
       <section class="screen" id="s-detail" hidden>
         <div class="detail-hero">
-          <img src="src/projects/curator/dragon-vessel.jpg" id="heroImg" alt="">
+          <img src="src/projects/curator/david-vases.jpg" id="heroImg" alt="">
           <div class="grounding" id="grounding"></div>
           <div class="navrow">
             <button onclick="go('guide')" aria-label="back"><svg class="ic"><use href="#i-back"/></svg></button>
@@ -865,6 +1164,7 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
           </div>
           <span class="match"><svg class="ic" style="width:12px;height:12px"><use href="#i-sparkle"/></svg><span data-t="matchTxt">AI 识别匹配 · 置信度 97%</span></span>
           <button class="notthis" onclick="go('guide');S.scan='mid';renderScan()" data-t="notThis">不是这件？</button>
+          <div class="capoverlay" id="capOverlay" hidden><div id="transcript"></div></div>
           <div class="grad"></div>
         </div>
         <div class="pad" style="margin-top:-8px;position:relative;z-index:1">
@@ -872,7 +1172,15 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
             <span class="tag" id="objCat" style="background:var(--jade-50);border-color:var(--jade-100);color:var(--jade-600)">中国陶瓷</span>
             <span class="tag" id="objRoom">95 号厅</span>
           </div>
-          <h2 class="h1" style="margin:0" id="objName">大维德花瓶</h2>
+          <div style="display:flex;align-items:center;gap:8px">
+            <h2 class="h1" style="margin:0;flex:1;min-width:0" id="objName">大维德花瓶</h2>
+            <button class="playchip" id="playBtn" onclick="togglePlay()" aria-label="play">
+              <svg class="ic solid" id="playIcon" style="width:13px;height:13px"><use href="#i-play"/></svg>
+            </button>
+            <button class="iconbtn" id="capBtn" aria-pressed="false" onclick="toggleCaptions()" aria-label="captions" style="width:30px;height:30px">
+              <svg class="ic" style="width:15px;height:15px"><use href="#i-doc"/></svg>
+            </button>
+          </div>
           <p style="margin:8px 0 0;font-size:13px;color:var(--ink-3)" id="objDyn">元代 · 至正十一年（1351）</p>
           <div class="chipwrap" style="margin-top:12px" id="a1Tags"></div>
 
@@ -894,20 +1202,6 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
             </div>
           </div>
 
-          <div class="sec">
-            <div class="player">
-              <div class="top">
-                <button class="playbtn" id="playBtn" onclick="togglePlay()" aria-label="play">
-                  <svg class="ic solid" id="playIcon" style="width:18px;height:18px"><use href="#i-play"/></svg>
-                </button>
-                <span class="info"><b data-t="audioTitle">AI 语音讲解</b><span id="audioSub">标准级 · 约 3 分钟</span></span>
-                <button class="rate" id="rateBtn" onclick="cycleRate()">1.0×</button>
-              </div>
-              <div class="wave" id="wave"></div>
-              <div class="times"><span id="tNow">0:00</span><span id="tTotal">3:00</span></div>
-              <details class="caps"><summary data-t="captions">字幕</summary><div id="transcript"></div></details>
-            </div>
-
           <div id="composeBar"></div>
           <div id="genBlocks"></div>
           <div class="sec" id="relSec">
@@ -917,7 +1211,7 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 
           <div class="sec" id="askSec">
             <button class="btn ghost" onclick="go('chat')">
-              <svg class="ic mark" style="width:20px;height:20px"><use href="#i-blob"/></svg>
+              <svg class="ic mark" style="width:20px;height:20px"><use href="#i-bot"/></svg>
               <span data-t="askAbout">就这件展品追问策展人</span>
             </button>
           </div>
@@ -980,7 +1274,7 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 
           <div class="sec">
             <div class="divert" id="divertCard">
-              <div class="ttl"><svg class="ic" style="width:16px;height:16px"><use href="#i-bulb"/></svg><span data-t="divertTitle">智能改道建议</span></div>
+              <div class="ttl"><span class="ai-orb"></span><span data-t="divertTitle">智能改道建议</span></div>
               <p id="divertText" data-t="divertText">91a 号厅中国书画当前人流下降 40%，此刻比 33 号厅更从容。要把它提到下一站吗？</p>
               <div class="row">
                 <button class="btn sm" onclick="acceptDivert()" data-t="accept">接受改道</button>
@@ -1068,7 +1362,7 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
         </div>
         <div class="pad">
           <div class="profcard">
-            <span class="av">👤<i></i></span>
+            <span class="av">👤</span>
             <div>
               <b data-t="profName">博物馆探索者</b>
               <div class="tags" id="profTags"></div>
@@ -1133,7 +1427,7 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
     </div>
 
     <button class="fab" id="fab" onclick="go('chat')" aria-label="AI">
-      <svg class="ic mark"><use href="#i-blob"/></svg>
+      <svg class="ic mark"><use href="#i-bot"/></svg>
     </button>
     <nav class="tabbar" id="tabbar"></nav>
     <div class="homebar"></div>
@@ -1147,8 +1441,8 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
    ============================================================ */
 const T = {
   zh:{
-    appName:"数字策展人", appTag:"大英博物馆 · AI 智慧导览",
-    splashCta:"进入 AI 线上博物馆", splashLoad:"正在初始化核心模型", splashEntering:"正在进入",
+    appName:"Muse AI", appTag:"大英博物馆 · AI 智慧导览",
+    splashCta:"开始导览", splashSub:"大英博物馆 · AI 智慧导览", splashObjs:"800 万件藏品，从这里开始读懂", splashNote:"学生概念项目 · 非大英博物馆官方应用", splashLoad:"正在初始化核心模型", splashEntering:"正在进入",
     obPhase:"定制阶段 01", obStep:"第 1 步 / 共 1 步", obStepR:"个性化",
     obTitle:"定制你的这场参观",
     obLead:"告诉策展人你的兴趣，AI 会据此重排展线、挑选讲解深度，并在参观中持续调整。",
@@ -1171,10 +1465,10 @@ const T = {
     composedFor:(n)=>`AI 为这件展品编排了 ${n} 个模块 · 展开看依据`,
     ruleNarr:"讲解正文：所有展品都有",
     ruleInscr:"这件器物带铭文，且讲解深度在标准级以上",
-    ruleTime:"有确切纪年，且你选的是国内深度（或深度讲解）",
+    ruleTime:"有确切纪年，且讲解深度选择了「深度」",
     ruleProv:"这件有完整的流传记录，值得单列",
     ruleRoute:"国际游客：补一条材料与贸易的来路",
-    ruleMat:"国内深度 + 标准级以上：加入材质剖面",
+    ruleMat:"讲解深度选择「深度」时：加入材质剖面",
     ruleCmp:"这件的意义要靠对比才讲得清",
     ruleQ:"亲子模式：用一个问题收尾，而不是结论",
     ruleNum:"关键数值，所有展品都有",
@@ -1233,12 +1527,12 @@ const T = {
     hintScan:"将摄像头对准展品，AI 会自动识别并接上讲解",
     hintNfc:"靠近展签上的 NFC 标签，0.3 秒即可调出完整档案",
     hintLoc:"室内定位已开启，走到哪讲到哪，误差约 1.5 米",
-    statSeen:"已参观", statMin:"参观时长", statType:"参观类型", statTypeV:"探索型", nearby:"附近推荐",
+    statSeen:"已参观", statMin:"参观时长", statType:"参观类型", statTypeV:{intl:"国际型",local:"学生型",family:"亲子型"}, nearby:"附近推荐",
     curNow:"眼前这件", seeAll:"查看详情", pillNow:"当前展品",
     upNext:"接下来", wholeRoute:"全部路线 ›",
     divertTitle:"智能改道建议",
     divertText:"91a 号厅中国书画当前人流下降 40%，此刻比 33 号厅更从容。要把它提到下一站吗？",
-    divertDone:"已把 91a 号厅提到下一站，路线与预计时长已同步更新。",
+    divertDone:n=>`已把「${n}」（91a 号厅）提到下一站，下面的路线顺序和时长已经更新。`,
     accept:"接受改道", dismiss:"暂不",
     matchTxt:"AI 识别匹配 · 置信度 97%", catPorcelain:"中国陶瓷", a1Loc:"95 号厅",
     a1Name:"大维德花瓶", a1Meta:"元代 · 至正十一年 1351 · 95 号厅", a1Dyn:"元代 · 至正十一年（1351）",
@@ -1274,11 +1568,13 @@ const T = {
     trustT:"透明策展",
     trustP:"画像推理在本机完成，行为数据默认不上传。每段 AI 讲解都标注来源，你可以随手举报错误。",
     restart:"重新开始一次导览",
-    nfcPill:"检测到 NFC 展签", nfcName:"汉代玉璧", nfcMeta:"西汉 · 公元前 202 – 公元 8 年",
-    nfcDesc:"这件礼器出土于东侧展厅。轻触即可听它背后被反复改写的那段礼制故事。",
+    nfcPill:"检测到 NFC 展签", nfcName:"大维德花瓶", nfcMeta:"元代 · 至正十一年（1351） · 95 号厅",
+    nfcDesc:"已读取展柜上的 NFC 展签。这对青花瓶的颈部写有纪年铭文，是元青花断代的标尺。轻触开始讲解。",
     nfcCta:"开始语音讲解", nfcDismiss:"稍后再说",
     legend:"可交互原型：切换语言、选身份、播讲解、问策展人、走完路线并生成报告。",
-    tabGuide:"导览", tabMuseum:"展馆", tabRoute:"路线", tabChat:"问答", tabReport:"报告", tabMe:"我的",
+    tabHome:"首页", tabGuide:"识别", tabMuseum:"展馆", tabRoute:"路线", tabChat:"问答", tabReport:"报告", tabMe:"我的",
+    homeSearchPh:"搜索展品、展厅或朝代", homeFeatured:"今日必看",
+    homeSection:"馆藏展品", homeEmpty:"没有找到匹配的展品", viewDetail:"查看详情",
     ixSplash:"启动页", ixOnboard:"个性化定制", ixGuide:"导览首页", ixDetail:"展品详情",
     ixChat:"AI 问答", ixRoute:"路线地图", ixReport:"参观报告", ixProfile:"我的与隐私",
     minute:"分钟", hours:"小时", required:"必要",
@@ -1291,8 +1587,8 @@ const T = {
     rateVal:(r)=>`${r}×`, rateRow:(l,r)=>`${l} ${r}×`
   },
   en:{
-    appName:"The Digital Curator", appTag:"The British Museum · AI Guided Visit",
-    splashCta:"Enter the AI Museum", splashLoad:"Initializing core model", splashEntering:"Entering",
+    appName:"Muse AI", appTag:"The British Museum · AI Guided Visit",
+    splashCta:"Start the tour", splashSub:"The British Museum · AI guide", splashObjs:"Eight million objects — start reading them here", splashNote:"Student concept project · not an official British Museum app", splashLoad:"Initializing core model", splashEntering:"Entering",
     obPhase:"Curation phase 01", obStep:"Step 1 of 1", obStepR:"Personalization",
     obTitle:"Tailor this visit",
     obLead:"Tell the curator what draws you in. The AI reorders the route, sets the depth of narration, and keeps adjusting as you walk.",
@@ -1315,10 +1611,10 @@ const T = {
     composedFor:(n)=>`The AI composed ${n} blocks for this object · tap for the reasoning`,
     ruleNarr:"Narration: every object has one",
     ruleInscr:"This object carries an inscription, and depth is standard or above",
-    ruleTime:"It is securely dated, and you chose the local deep-dive (or deep narration)",
+    ruleTime:"It is securely dated, and you chose Deep narration depth",
     ruleProv:"Its chain of ownership is documented and worth its own block",
     ruleRoute:"International visitor: add where the material came from",
-    ruleMat:"Local deep-dive at standard depth or above: add the material section",
+    ruleMat:"Deep narration depth: add the material section",
     ruleCmp:"This object only makes sense against another one",
     ruleQ:"Family mode: end on a question, not a conclusion",
     ruleNum:"Key figures: every object has them",
@@ -1377,12 +1673,12 @@ const T = {
     hintScan:"Point the camera at an object — the AI identifies it and picks up the story",
     hintNfc:"Tap the NFC label on the case to pull the full record in 0.3s",
     hintLoc:"Indoor positioning is on — narration follows you, accurate to ~1.5m",
-    statSeen:"Seen", statMin:"Time in", statType:"Visitor type", statTypeV:"Explorer", nearby:"Nearby",
+    statSeen:"Seen", statMin:"Time in", statType:"Visitor type", statTypeV:{intl:"International",local:"Student",family:"Family"}, nearby:"Nearby",
     curNow:"In front of you", seeAll:"Open record", pillNow:"Current object",
     upNext:"Up next", wholeRoute:"Full route ›",
     divertTitle:"Smart diversion",
     divertText:"Room 91a is 40% quieter than Room 33 right now. Move it to your next stop?",
-    divertDone:"Room 91a moved to your next stop. Route and timing updated.",
+    divertDone:n=>`Moved "${n}" (Room 91a) up to your next stop. The route order and times below are updated.`,
     accept:"Accept", dismiss:"Not now",
     matchTxt:"AI match · 97% confidence", catPorcelain:"Chinese ceramics", a1Loc:"Room 95",
     a1Name:"The David Vases", a1Meta:"Yuan · dated 1351 · Room 95",
@@ -1419,11 +1715,13 @@ const T = {
     trustT:"Transparent curation",
     trustP:"Profiling runs on-device and behavioural data stays local by default. Every narration cites its source, and you can flag an error in one tap.",
     restart:"Start a new visit",
-    nfcPill:"NFC label detected", nfcName:"Han Dynasty Jade Bi", nfcMeta:"Western Han · 202 BC – AD 8",
-    nfcDesc:"This ritual disc was excavated in the east wing. Tap to hear the ceremonial story that kept being rewritten around it.",
+    nfcPill:"NFC label detected", nfcName:"The David Vases", nfcMeta:"Yuan · dated 1351 · Room 95",
+    nfcDesc:"Read from the NFC label on the case. The inscription on the necks of this pair dates them to 1351 — the benchmark for Yuan blue-and-white. Tap to start the tour.",
     nfcCta:"Start audio guide", nfcDismiss:"Maybe later",
     legend:"Interactive prototype: switch language, pick a visitor type, play narration, ask the curator, walk the route and generate the report.",
-    tabGuide:"Guide", tabMuseum:"Museum", tabRoute:"Route", tabChat:"Ask", tabReport:"Report", tabMe:"Profile",
+    tabHome:"Home", tabGuide:"Identify", tabMuseum:"Museum", tabRoute:"Route", tabChat:"Ask", tabReport:"Report", tabMe:"Profile",
+    homeSearchPh:"Search objects, rooms, dynasties", homeFeatured:"Today's pick",
+    homeSection:"Collection", homeEmpty:"No objects match", viewDetail:"View details",
     ixSplash:"Splash", ixOnboard:"Personalize", ixGuide:"Guide home", ixDetail:"Object record",
     ixChat:"Ask the curator", ixRoute:"Route & map", ixReport:"Visit report", ixProfile:"Profile & privacy",
     minute:"min", hours:"h", required:"Required",
@@ -1454,7 +1752,7 @@ const NARRATION=[
 ];
 const VISITORS=[
   {id:"intl", glyph:"🌏", zh:["国际游客","文化脉络与全球对照"], en:["International visitor","Global context and comparison"]},
-  {id:"local",glyph:"📖", zh:["国内深度","制度、工艺与细节考据"], en:["Local deep diver","Institutions, craft and detail"]},
+  {id:"local",glyph:"🎓", zh:["学生模式","30 分钟精选路线 · 拍照点 · 可分享纪念"], en:["Student mode","30-min highlights, photo spots, shareable card"]},
   {id:"family",glyph:"👨‍👩‍👧", zh:["亲子同行","故事化、互动、可提问"], en:["Family visit","Story-led, interactive, question-friendly"]}
 ];
 const MODES=[
@@ -1474,7 +1772,7 @@ const INSIGHT_TABS=[
 // 没有铭文的器物不会出现铭文块，没有纪年的不会出现时间轴 —— 版式因物而异，不是填空。
 const OBJECTS={
   david:{
-    img:"src/projects/curator/dragon-vessel.jpg",
+    img:"src/projects/curator/david-vases.jpg",
     zh:{name:"大维德花瓶", dyn:"元代 · 至正十一年（1351）", cat:"中国陶瓷", room:"95 号厅"},
     en:{name:"The David Vases", dyn:"Yuan · dated 1351", cat:"Chinese ceramics", room:"Room 95"},
     tags:{zh:["#元代","#青花","#至正十一年","#断代标尺"],en:["#Yuan","#BlueAndWhite","#Dated1351","#Benchmark"]},
@@ -1493,11 +1791,11 @@ const OBJECTS={
     question:{zh:["想一想","一百只瓶子进窑，能同时烧出漂亮蓝色的有几只？"],
               en:["Think about it","Out of a hundred pots fired, how many came out with a good blue?"]},
     regions:{
-      zh:[["云龙纹",[24,14,54,26]],["器肩缠枝",[17,41,68,11]],["腹部主纹",[12,53,78,28]],["圈足",[29,82,44,10]]],
-      en:[["Dragon",[24,14,54,26]],["Shoulder scroll",[17,41,68,11]],["Main body decoration",[12,53,78,28]],["Foot ring",[29,82,44,10]]]}
+      zh:[["颈部纹饰",[26,5,50,14]],["象首耳",[19,19,63,12]],["腹部云龙纹",[18,37,64,37]],["足部纹饰",[21,80,58,11]]],
+      en:[["Neck bands",[26,5,50,14]],["Elephant-head handles",[19,19,63,12]],["Dragon among clouds",[18,37,64,37]],["Foot bands",[21,80,58,11]]]}
   },
   cong:{
-    img:"src/projects/curator/cong-tube.jpg",
+    img:"src/projects/curator/liangzhu-cong.jpg",
     zh:{name:"良渚玉琮", dyn:"新石器 · 约公元前 3300–2300", cat:"中国玉器", room:"33 号厅"},
     en:{name:"Liangzhu jade cong", dyn:"Neolithic · c. 3300–2300 BC", cat:"Chinese jade", room:"Room 33"},
     tags:{zh:["#良渚","#礼器","#软玉","#无纪年"],en:["#Liangzhu","#Ritual","#Nephrite","#Undated"]},
@@ -1510,11 +1808,11 @@ const OBJECTS={
              en:[["Age","c. 4,500 years"],["Stone","tremolite"],["Tiers","multiple"],["Gallery","Room 33"]]},
     question:{zh:["想一想","没有文字的年代，我们怎么知道一件东西是做什么用的？"],
               en:["Think about it","With no writing from that period, how do we work out what an object was for?"]},
-    regions:{zh:[["神人兽面纹",[31,24,38,52]],["射口",[8,36,20,32]]],
-             en:[["Mask motif",[31,24,38,52]],["Drilled aperture",[8,36,20,32]]]}
+    regions:{zh:[["神人兽面纹",[70,31,24,37]],["射口",[16,28,66,8]]],
+             en:[["Mask motif",[70,31,24,37]],["Collar rim",[16,28,66,8]]]}
   },
   scroll:{
-    img:"src/projects/curator/mount-tai-scroll.jpg",
+    img:"src/projects/curator/admonitions-scroll.jpg",
     zh:{name:"女史箴图（唐摹本）", dyn:"唐摹 · 7–8 世纪", cat:"中国书画", room:"91a 号厅"},
     en:{name:"The Admonitions Scroll", dyn:"Tang copy · 7th–8th century", cat:"Chinese painting", room:"Room 91a"},
     tags:{zh:["#顾恺之","#唐摹本","#限时展出","#流传有序"],en:["#GuKaizhi","#TangCopy","#LimitedDisplay","#Provenance"]},
@@ -1529,8 +1827,8 @@ const OBJECTS={
              en:[["Size","24.4 × 343.7 cm"],["Date","Tang copy"],["On view","~6 weeks a year"],["Gallery","Room 91a"]]},
     question:{zh:["想一想","一件复制品，为什么会比原作更有名？"],
               en:["Think about it","Why can a copy end up more famous than the original?"]},
-    regions:{zh:[["画心",[28,26,44,50]],["天杆与轴",[11,15,78,9]]],
-             en:[["Painted surface",[28,26,44,50]],["Mount and roller",[11,15,78,9]]]}
+    regions:{zh:[["箴文题字",[6,3,24,78]],["对镜梳妆",[32,6,60,86]]],
+             en:[["Admonition text",[6,3,24,78]],["Dressing scene",[32,6,60,86]]]}
   }
 };
 const CORE={
@@ -1575,9 +1873,8 @@ const INSIGHT={
   }
 };
 const CANDIDATES=[
-  {img:"src/projects/curator/thumb-porcelain.jpg", zh:["大维德花瓶","元代 · 95 号厅"],   en:["The David Vases","Yuan · Room 95"], p:68},
-  {img:"src/projects/curator/dragon-vessel.jpg",   zh:["青花缠枝牡丹瓶","元代 · 95 号厅"], en:["Peony-scroll vase","Yuan · Room 95"], p:19},
-  {img:"src/projects/curator/thumb-ding.jpg",      zh:["青花云龙纹罐","明早期 · 95 号厅"], en:["Dragon jar","Early Ming · Room 95"], p:9}
+  {obj:"david", img:"src/projects/curator/david-vases.jpg", zh:["大维德花瓶","元代 · 95 号厅"], en:["The David Vases","Yuan · Room 95"], p:71},
+  {img:"src/projects/curator/dragon-tiles.jpg", zh:["龙纹琉璃砖","明代 · 33 号厅"], en:["Dragon glazed tiles","Ming · Room 33"], p:22}
 ];
 const FACTS=[
   {zh:["材质","景德镇青花瓷"],en:["Material","Jingdezhen blue-and-white"]},
@@ -1592,47 +1889,67 @@ const KNOW=[
   {e:"⭐",zh:["存世","成对完整"],en:["Survival","An intact pair"]}
 ];
 const RELATED=[
-  {img:"src/projects/curator/bronze-vessel.jpg", zh:["商代","青铜礼器"],en:["Shang dynasty","Bronze ritual vessel"]},
-  {img:"src/projects/curator/orchid-scroll.jpg", zh:["唐代","敦煌写经"],en:["Tang dynasty","Dunhuang manuscript"]},
-  {img:"src/projects/curator/mist-peaks.jpg",    zh:["宋代","山水册页"],en:["Song dynasty","Landscape album leaf"]},
-  {img:"src/projects/curator/jade-dragon-disc.jpg",zh:["汉代","玉璧"],en:["Han dynasty","Jade bi disc"]}
+  {obj:"cong",  img:"src/projects/curator/liangzhu-cong.jpg",      zh:["新石器","良渚玉琮"],en:["Neolithic","Liangzhu jade cong"]},
+  {obj:"scroll",img:"src/projects/curator/admonitions-scroll.jpg", zh:["唐摹本","女史箴图"],en:["Tang copy","Admonitions Scroll"]},
+  {img:"src/projects/curator/dragon-tiles.jpg",  zh:["明代","龙纹琉璃砖"],en:["Ming dynasty","Dragon glazed tiles"]},
+  {img:"src/projects/curator/jade-teapot.jpg",   zh:["清代","玉茶壶"],en:["Qing dynasty","Jade teapot"]}
 ];
 const NEARBY=[
-  {obj:"david", img:"src/projects/curator/thumb-porcelain.jpg",  zh:["大维德花瓶","95 号厅"],       en:["The David Vases","Room 95"]},
-  {obj:"cong",  img:"src/projects/curator/cong-tube.jpg",        zh:["良渚玉琮","33 号厅"],         en:["Liangzhu jade cong","Room 33"]},
-  {obj:"david", img:"src/projects/curator/jade-dragon-disc.jpg", zh:["汉代玉璧","33 号厅"],         en:["Han jade bi disc","Room 33"]},
-  {obj:"scroll",img:"src/projects/curator/mount-tai-scroll.jpg", zh:["女史箴图（唐摹本）","91a 号厅"],en:["Admonitions Scroll","Room 91a"]}
+  {obj:"david", img:"src/projects/curator/david-vases.jpg",        zh:["大维德花瓶","95 号厅"],       en:["The David Vases","Room 95"]},
+  {obj:"cong",  img:"src/projects/curator/liangzhu-cong.jpg",      zh:["良渚玉琮","33 号厅"],         en:["Liangzhu jade cong","Room 33"]},
+  {img:"src/projects/curator/dragon-tiles.jpg",                    zh:["龙纹琉璃砖","33 号厅"],       en:["Dragon glazed tiles","Room 33"]},
+  {obj:"scroll",img:"src/projects/curator/admonitions-scroll.jpg", zh:["女史箴图（唐摹本）","91a 号厅"],en:["Admonitions Scroll","Room 91a"]}
+];
+const HOME_CATS=[
+  {id:"all",  zh:"全部类别", en:"All"},
+  {id:"done", zh:"已有讲解", en:"With guide"},
+  {id:"soon", zh:"资料整理中", en:"Coming soon"}
+];
+const HOME_ITEMS=[
+  {obj:"david", img:"src/projects/curator/david-vases.jpg", hall:{zh:"95 号厅",en:"Room 95"},
+   zh:["大维德花瓶","元代 · 中国陶瓷"], en:["The David Vases","Yuan · Chinese ceramics"]},
+  {obj:"cong", img:"src/projects/curator/liangzhu-cong.jpg", hall:{zh:"33 号厅",en:"Room 33"},
+   zh:["良渚玉琮","新石器 · 玉器"], en:["Liangzhu jade cong","Neolithic · Jade"]},
+  {obj:"scroll", img:"src/projects/curator/admonitions-scroll.jpg", hall:{zh:"91a 号厅",en:"Room 91a"},
+   zh:["女史箴图","唐摹本 · 书画"], en:["Admonitions Scroll","Tang copy · Painting"]},
+  {img:"src/projects/curator/dragon-tiles.jpg", hall:{zh:"33 号厅",en:"Room 33"},
+   zh:["龙纹琉璃砖","明代 · 建筑构件"], en:["Dragon glazed tiles","Ming · Architecture"]},
+  {img:"src/projects/curator/ivory-fan.jpg", hall:{zh:"33 号厅",en:"Room 33"},
+   zh:["象牙雕花扇","清代 · 工艺"], en:["Carved ivory fan","Qing · Craft"]},
+  {img:"src/projects/curator/jade-teapot.jpg", hall:{zh:"33 号厅",en:"Room 33"},
+   zh:["玉茶壶","清代 · 玉器"], en:["Jade teapot","Qing · Jade"]}
 ];
 const WAYS={zh:["在你左前方","穿过大中庭","右手边第二展柜","上到 5 层"],
              en:["ahead on your left","across the Great Court","second case on your right","up to level 5"]};
 const STATS=[
   {icon:"i-eye",   key:"statSeen", val:()=>String(planned().filter(x=>x.state==="done").length)},
   {icon:"i-clock", key:"statMin",  val:()=>LANG==="zh" ? minsUsed()+"分钟" : minsUsed()+" min"},
-  {icon:"i-star",  key:"statType", val:()=>t("statTypeV")}
+  {icon:"i-star",  key:"statType", val:()=>t("statTypeV")[S.visitor]||t("statTypeV").local}
 ];
 const STOPS=[
-  {id:1,obj:"cong",view:8,walk:3,hall:{zh:"33 号厅",en:"Room 33"},img:"src/projects/curator/cong-tube.jpg", state:"done",
+  {id:1,obj:"cong",view:8,walk:3,hall:{zh:"33 号厅",en:"Room 33"},img:"src/projects/curator/liangzhu-cong.jpg", state:"done", hot:true,
    zh:["良渚玉琮","中国与南亚馆 · 33 号厅","参观约 8 分 · 步行 3 分",["必看 · 新石器礼器"]],
    en:["Liangzhu jade cong","China & South Asia · Room 33","~8 min · 3 min walk",["Must-see · Neolithic ritual"]]},
-  {id:2,view:7,walk:2,hall:{zh:"33 号厅",en:"Room 33"},img:"src/projects/curator/bronze-vessel.jpg", state:"done",
-   zh:["商代青铜礼器","中国与南亚馆 · 33 号厅","参观约 7 分 · 步行 2 分",["推荐 · 礼制源头"]],
-   en:["Shang bronze vessel","China & South Asia · Room 33","~7 min · 2 min walk",["Recommended · Ritual origins"]]},
-  {id:3,obj:"david",view:10,walk:5,hall:{zh:"95 号厅",en:"Room 95"},img:"src/projects/curator/dragon-vessel.jpg", state:"now",
-   zh:["大维德花瓶","中国陶瓷馆 · 95 号厅","参观约 10 分 · 步行 5 分",["必看 · 断代标尺"]],
-   en:["The David Vases","Chinese ceramics · Room 95","~10 min · 5 min walk",["Must-see · The benchmark"]]},
-  {id:4,view:6,walk:4,hall:{zh:"33 号厅",en:"Room 33"},img:"src/projects/curator/jade-dragon-disc.jpg", state:"next",
-   zh:["汉代玉璧","中国与南亚馆 · 33 号厅","参观约 6 分 · 步行 4 分",["AI 推荐 · 兴趣匹配"]],
-   en:["Han jade bi disc","China & South Asia · Room 33","~6 min · 4 min walk",["AI pick · Matches you"]]},
-  {id:5,obj:"scroll",view:9,walk:6,hall:{zh:"91a 号厅",en:"Room 91a"},img:"src/projects/curator/mount-tai-scroll.jpg", state:"next",
+  {id:2,view:7,walk:2,hall:{zh:"33 号厅",en:"Room 33"},img:"src/projects/curator/ivory-fan.jpg", state:"next",
+   zh:["象牙雕花扇","中国与南亚馆 · 33 号厅","参观约 7 分 · 步行 2 分",["推荐 · 工艺细节"]],
+   en:["Carved ivory fan","China & South Asia · Room 33","~7 min · 2 min walk",["Recommended · Craft detail"]]},
+  {id:3,obj:"david",view:10,walk:5,hall:{zh:"95 号厅",en:"Room 95"},img:"src/projects/curator/david-vases.jpg", state:"now", hot:true,
+   zh:["大维德花瓶","中国陶瓷馆 · 95 号厅","参观约 10 分 · 步行 5 分",["必看 · 断代标尺","📸 最佳拍照点"]],
+   en:["The David Vases","Chinese ceramics · Room 95","~10 min · 5 min walk",["Must-see · The benchmark","📸 Best photo spot"]]},
+  {id:4,view:6,walk:4,hall:{zh:"33 号厅",en:"Room 33"},img:"src/projects/curator/dragon-tiles.jpg", state:"next",
+   zh:["龙纹琉璃砖","中国与南亚馆 · 33 号厅","参观约 6 分 · 步行 4 分",["AI 推荐 · 兴趣匹配","📸 最佳拍照点"]],
+   en:["Dragon glazed tiles","China & South Asia · Room 33","~6 min · 4 min walk",["AI pick · Matches you","📸 Best photo spot"]]},
+  {id:5,obj:"scroll",view:9,walk:6,hall:{zh:"91a 号厅",en:"Room 91a"},img:"src/projects/curator/admonitions-scroll.jpg", state:"next",
    zh:["女史箴图（唐摹本）","中国书画馆 · 91a 号厅","参观约 9 分 · 步行 6 分",["行程末段 · 限时展出"]],
    en:["Admonitions Scroll","Chinese paintings · Room 91a","~9 min · 6 min walk",["End of route · Limited display"]]}
 ];
 const STYLES=[
-  {id:"note",e:"📖",rec:false,zh:["研究笔记","适合深度爱好者"],en:["Research notes","For the deep diver"]},
-  {id:"trip",e:"🧭",rec:true, zh:["文化之旅","适合国际游客"],en:["Cultural journey","For international visitors"]},
-  {id:"story",e:"💛",rec:false,zh:["故事记录","适合亲子参观"],en:["Story log","For family visits"]},
-  {id:"card",e:"📷",rec:false,zh:["打卡图鉴","适合快速分享"],en:["Photo index","For quick sharing"]}
+  {id:"note",e:"📖",zh:["研究笔记","适合深度爱好者"],en:["Research notes","For the deep diver"]},
+  {id:"trip",e:"🧭",zh:["文化之旅","适合国际游客"],en:["Cultural journey","For international visitors"]},
+  {id:"story",e:"💛",zh:["故事记录","适合亲子参观"],en:["Story log","For family visits"]},
+  {id:"card",e:"📷",zh:["打卡图鉴","适合快速分享"],en:["Photo index","For quick sharing"]}
 ];
+const STYLE_REC={intl:"trip", local:"card", family:"story"};   // 按访客身份推荐分享样式
 const GAINS=[
   {e:"📜",zh:["纪年器的断代价值","理解了一件有确切年款的器物如何校准整片时间序列"],en:["Why dated objects matter","How one securely dated object recalibrates a whole chronology"]},
   {e:"🌏",zh:["海上贸易与钴料","看到波斯钴料经海路进入景德镇的路径"],en:["Sea routes and cobalt","How Persian cobalt reached Jingdezhen by sea"]},
@@ -1702,13 +2019,15 @@ const CHAT_MORE={
    ============================================================ */
 let LANG="zh";
 const S={
-  screen:"splash", visitor:"local", dur:90, depth:1, rate:0,
+  screen:"splash", visitor:"local", dur:30, depth:0, rate:0,
   ct:false, playing:false, pos:0, insight:"core", mode:"scan", scan:"high", pick:0,
   narration:"zh-CN", model:"sonnet", modelOpen:false, chatStarted:false, voice:false, voiceSec:0, onboarded:true, autoDivert:true, divertState:"open", readMode:"quick", fontStep:0, offline:false, downloaded:false,
+  homeCat:"all", homeQuery:"", favs:new Set(), showCaptions:false,
   metrics:{audioDone:0, asks:0, deepRead:0, corrections:0},
-  stops:STOPS.map(s=>({...s})), style:"trip", perms:{}, chatStep:0, diverted:false
+  stops:STOPS.map(s=>({...s})), style:"card", perms:{}, chatStep:0, diverted:false, log:[], hist:[], busy:false, chatObj:null
 };
 PERMS.forEach(p=>S.perms[p.id]=p.on);
+if(S.visitor==="local") prioritizeHot();
 
 const can = k => !!S.perms[k];      // 权限直接决定功能是否可用，不是装饰
 const $=s=>document.querySelector(s);
@@ -1719,11 +2038,11 @@ const L=o=>o[LANG];
 /* ============================================================
    navigation
    ============================================================ */
-const SCREENS=["splash","onboard","guide","detail","chat","route","report","profile"];
+const SCREENS=["splash","onboard","home","guide","detail","chat","route","report","profile"];
 const TABS=[
-  {id:"guide",  icon:"i-museum",  key:"tabGuide"},
+  {id:"home",   icon:"i-museum", key:"tabHome"},
+  {id:"guide",  icon:"i-scan",   key:"tabGuide"},
   {id:"route",  icon:"i-map",     key:"tabRoute"},
-  {id:"chat",   icon:"i-blob",    key:"tabChat"},
   {id:"profile",icon:"i-user",    key:"tabMe"}
 ];
 function go(id){
@@ -1734,7 +2053,7 @@ function go(id){
   const el=$("#s-"+id); if(el) el.scrollTop=0;
   const chrome = (id!=="splash" && id!=="onboard");
   $("#tabbar").style.display = chrome ? "grid" : "none";
-  $("#fab").hidden = !(id==="guide" || id==="route" || id==="detail");
+  $("#fab").hidden = !(id==="home" || id==="guide" || id==="route" || id==="detail");
   const tabFor={detail:"guide", report:"route"};
   $$("#tabbar button").forEach(b=>b.setAttribute("aria-current", String(b.dataset.id===id || b.dataset.id===tabFor[id])));
 }
@@ -1746,7 +2065,7 @@ function icon(id,size,cls){return `<svg class="ic${cls?" "+cls:""}" style="width
 
 function renderTabbar(){
   $("#tabbar").innerHTML = TABS.map(x=>
-    `<button data-id="${x.id}" onclick="go('${x.id}')">${icon(x.icon,20,x.icon==="i-blob"?"mark":"")}<span>${t(x.key)}</span></button>`).join("");
+    `<button data-id="${x.id}" onclick="go('${x.id}')">${icon(x.icon,20,x.icon==="i-bot"?"mark":"")}<span>${t(x.key)}</span></button>`).join("");
 }
 function renderVisitors(){
   $("#visitorOpts").innerHTML = VISITORS.map(v=>`
@@ -1759,7 +2078,15 @@ function renderVisitors(){
 function pickVisitor(id){
   S.visitor=id;
   if(id==="intl" && !S.ct){ S.ct=true; $("#ctSw").setAttribute("aria-pressed","true"); $("#ctSw2").setAttribute("aria-pressed","true"); }
-  renderVisitors(); renderGenerated(); renderProfile();
+  if(id==="local"){                          // 学生模式：默认走 30 分钟速览路线，优先热门展品
+    S.dur=30; S.depth=0; S.style="card";
+    const dur=$("#dur"); if(dur) dur.value=30;
+    const durVal=$("#durVal"); if(durVal) durVal.textContent=t("durVal")(30);
+    prioritizeHot();
+    renderDepthSeg(); renderStyles();
+  }
+  updateCtVisibility();
+  renderVisitors(); renderGenerated(); renderProfile(); renderStats(); renderRoute();
 }
 
 function renderDepthSeg(){
@@ -1774,7 +2101,10 @@ function rescan(){
   if(S.scan==="scanning") return;
   const next=SCAN_NEXT[S.scan];
   S.scan="scanning"; renderScan();
-  setTimeout(()=>{ S.scan=next; renderScan(); }, 1100);
+  setTimeout(()=>{
+    S.scan=next; renderScan();
+    if(next==="high") openObj("david");   // 识别成功后直接进详情页，不用再点一次
+  }, 1100);
 }
 function renderScan(){
   setTimeout(renderNudge,0);
@@ -1802,10 +2132,7 @@ function renderScan(){
   if(st==="scanning"){ body.innerHTML = `<div class="hintbar"><span class="typing"><i></i><i></i><i></i></span><span>${t("scanBusyHint")}</span></div>`; return; }
 
   if(st==="high"){
-    body.innerHTML = `<button class="hintbar as-action" onclick="go('detail')">
-      ${icon("i-sparkle",15)}
-      <span><b>${t("a1Name")}</b><br>${t("scanHighHint")}</span>
-      ${icon("i-arrow",15)}</button>`;
+    body.innerHTML = "";
     return;
   }
   if(st==="mid"){
@@ -1830,7 +2157,27 @@ function renderScan(){
     </div>
   </div>`;
 }
-function pickCandidate(i){ S.pick=i; S.metrics.corrections++; S.scan="high"; renderScan(); openObj("david"); }
+function pickCandidate(i){
+  const c=CANDIDATES[i]; S.pick=i; S.metrics.corrections++;
+  if(c.obj){ S.scan="high"; renderScan(); openObj(c.obj); } else openStub(c);
+}
+/* 未收录展品：不生成讲解，只说明原因（没有馆方依据就不讲） */
+function openStub(item,nameIdx){
+  if(!item || $("#stubSheet")) return;
+  const name=L(item)[nameIdx?1:0], meta=L(item)[nameIdx?0:1];
+  const el=document.createElement("div");
+  el.className="sheet-bg"; el.id="stubSheet";
+  el.innerHTML=`<div class="sheet">
+    <span class="pill">${icon("i-shield",12)}${LANG==='zh'?'讲解整理中':'Guide in preparation'}</span>
+    <img src="${item.img}" alt="">
+    <h3>${name}</h3>
+    <div class="sub">${meta}</div>
+    <p>${LANG==='zh'?'这件展品的馆方资料还没接入知识库。没有可核验的来源，AI 不会为它生成讲解。':'The museum records for this object are not in the knowledge base yet. Without a verifiable source, the AI will not write a tour for it.'}</p>
+    <button class="dismiss" onclick="$('#stubSheet').remove()">${LANG==='zh'?'知道了':'Got it'}</button>
+  </div>`;
+  el.addEventListener("click",e=>{if(e.target===el)el.remove()});
+  $("#viewport").appendChild(el);
+}
 function openTagInput(){
   if($("#tagSheet")) return;
   const el=document.createElement("div");
@@ -1839,7 +2186,7 @@ function openTagInput(){
     <span class="pill">${icon("i-doc",12)}${t("tagTitle")}</span>
     <p style="margin:16px 0 12px">${t("tagHint")}</p>
     <input id="tagNum" class="taginput" inputmode="numeric" placeholder="POR-0421">
-    <button class="btn" style="margin-top:16px" onclick="closeTag();S.scan='high';renderScan();go('detail')">${t("tagGo")}</button>
+    <button class="btn" style="margin-top:16px" onclick="closeTag();S.scan='high';renderScan();openObj('david')">${t("tagGo")}</button>
     <button class="dismiss" onclick="closeTag()">${t("nfcDismiss")}</button>
   </div>`;
   el.addEventListener("click",e=>{ if(e.target===el) closeTag(); });
@@ -1867,7 +2214,7 @@ function renderStats(){
 function renderNearby(){
   const mins=[2,4,6,9];
   $("#nearbyRail").innerHTML = NEARBY.map((n,i)=>
-    `<button class="nearby" onclick="openObj('${n.obj}')">
+    `<button class="nearby" onclick="${n.obj?`openObj('${n.obj}')`:`openStub(NEARBY[${i}])`}">
        <img src="${n.img}" alt="">
        <span class="t"><b>${L(n)[0]}</b>
          <span>${ can("loc")
@@ -1906,10 +2253,10 @@ function compose(){
   const add=(b,rule)=>{ out.push(b); why.push(rule); };
   add("narration","ruleNarr");
   if(has.inscription && d>=1)                 add("inscription","ruleInscr");
-  if(has.timeline && (v==="local" || d===2))  add("timeline","ruleTime");
+  if(has.timeline && d===2)                   add("timeline","ruleTime");
   if(has.provenance)                          add("provenance","ruleProv");
   if(has.route && v==="intl")                 add("route","ruleRoute");
-  if(has.material && v==="local" && d>=1)     add("material","ruleMat");
+  if(has.material && d===2)                   add("material","ruleMat");
   if(has.compare && v!=="family")             add("compare","ruleCmp");
   if(has.question && v==="family")            add("question","ruleQ");
   if(has.numbers)                             add("numbers","ruleNum");
@@ -1927,7 +2274,7 @@ const BLOCK={
       <div class="gblock"><ol class="tl prov">${L(o.provenance).map(r=>`<li><b>${r[0]}</b><span>${r[1]}</span></li>`).join("")}</ol></div></div>`,
   route:(o)=>`<div class="sec"><h3 class="h2">${t("bRoute")}</h3>
       <div class="gblock"><div class="routeline">${L(o.route).map((r,i,arr)=>
-        `<span class="rl-node"><b>${r[0]}</b><span>${r[1]}</span></span>${i<arr.length-1?'<span class="rl-arrow">→</span>':''}`).join("")}</div></div></div>`,
+        `<span class="rl-node" style="--i:${i}"><b>${r[0]}</b><span>${r[1]}</span></span>${i<arr.length-1?`<span class="rl-arrow" style="--i:${i}">→</span>`:''}`).join("")}</div></div></div>`,
   material:(o)=>`<div class="sec"><h3 class="h2">${t("bMaterial")}</h3>
       <div class="gblock"><div class="strata">${L(o.material).map((r,i)=>
         `<div class="st" style="--i:${i}"><span class="st-bar"></span><b>${r[0]}</b><span>${r[1]}</span></div>`).join("")}</div></div></div>`,
@@ -1965,11 +2312,17 @@ function renderInsightTabs(){
     ? t("srcCT")
     : `${t("src1")} · <b style="color:var(--jade-500)">${t("depthL")[S.depth]}</b> · ${L(VISITORS.find(v=>v.id===S.visitor))[0]}`;
 }
+function updateCtVisibility(){
+  const el=$("#ctSec"); if(!el) return;
+  el.hidden = !(S.readMode==="deep" && S.visitor==="intl");   // 文化转译只对国际游客身份开放
+  if(S.visitor!=="intl" && S.ct){ S.ct=false; S.insight = S.insight==="ct" ? "core" : S.insight; }
+}
 function setRead(m){
   S.readMode=m;
   $$("#readSeg button").forEach((b,i)=>b.setAttribute("aria-pressed",String((i===0)===(m==="quick"))));
   const deep = m==="deep";
-  ["ctSec","relSec","askSec"].forEach(id=>{ const el=$("#"+id); if(el) el.hidden=!deep; });
+  ["relSec","askSec"].forEach(id=>{ const el=$("#"+id); if(el) el.hidden=!deep; });
+  updateCtVisibility();
   const it=$("#insightTabs"); if(it) it.hidden=!deep;
   if(!deep) S.insight="core";
   renderInsightTabs();
@@ -1990,28 +2343,21 @@ function renderKnow(){
 }
 function renderRelated(){
   $("#relGrid").innerHTML = RELATED.map(r=>
-    `<div class="rel"><img src="${r.img}" alt=""><span>${L(r)[0]}</span><b>${L(r)[1]}</b></div>`).join("");
+    `<button class="rel" onclick="${r.obj?`openObj('${r.obj}')`:`openStub(RELATED.find(x=>x.img==='${r.img}'),1)`}"><img src="${r.img}" alt=""><span>${L(r)[0]}</span><b>${L(r)[1]}</b></button>`).join("");
 }
 
 /* ---------- audio player ---------- */
-const WAVE_N=34;
-const HEIGHTS=[];
-for(let i=0;i<WAVE_N;i++){
-  const base=Math.sin(i*0.55)*0.32+Math.sin(i*1.9)*0.18+0.55;
-  HEIGHTS.push(Math.max(0.18,Math.min(1,base)));
-}
 function renderWave(){
   const total=audioLen();
   if(S.pos>total) S.pos=total;
-  const done=Math.round(S.pos/total*WAVE_N);
-  $("#wave").innerHTML = HEIGHTS.map((h,i)=>
-    `<i class="${i<done?'on':''}" style="height:${(h*100).toFixed(0)}%"></i>`).join("");
-  $("#wave").classList.toggle("playing",S.playing);
-  $("#tNow").textContent=fmtTime(S.pos);
-  $("#tTotal").textContent=fmtTime(total);
-  $("#audioSub").textContent=t("audioSubFor")(t("depthL")[S.depth], Math.round(total/60));
   renderTranscript(total);
-  $("#playIcon").innerHTML=`<use href="#${S.playing?"i-pause":"i-play"}"/>`;
+  const cap=$("#capOverlay"); if(cap) cap.hidden=!S.showCaptions;
+  const icon=$("#playIcon"); if(icon) icon.innerHTML=`<use href="#${S.playing?"i-pause":"i-play"}"/>`;
+}
+function toggleCaptions(){
+  S.showCaptions=!S.showCaptions;
+  const b=$("#capBtn"); if(b) b.setAttribute("aria-pressed",String(S.showCaptions));
+  renderWave();
 }
 function renderGrounding(idx){
   const o=curObj(), regs=L(o.regions)||[], box=$("#grounding");
@@ -2049,8 +2395,8 @@ function togglePlay(){
 function cycleRate(){
   S.rate=(S.rate+1)%3;
   const r=[1,1.25,1.5][S.rate];
-  $("#rateBtn").textContent=t("rateVal")(r.toFixed(r===1?1:2).replace(/0$/,""));
-  $("#rowRateVal").textContent=t("rateRow")(t("rateL")[S.rate], r);
+  const rb=$("#rateBtn"); if(rb) rb.textContent=t("rateVal")(r.toFixed(r===1?1:2).replace(/0$/,""));
+  const rr=$("#rowRateVal"); if(rr) rr.textContent=t("rateRow")(t("rateL")[S.rate], r);
 }
 
 /* ---------- chat ---------- */
@@ -2061,15 +2407,16 @@ function provenanceKey(){
     <span><i class="sw-ai"></i>${t("keyInferred")}</span>
   </div>`;
 }
-function bubbleAi(paras){
+function bubbleAi(paras,eng,none){
   const used=[...new Set(paras.filter(p=>p.k==="archive"&&p.s).map(p=>p.s))];
-  const body=paras.map(p=> p.k==="archive"
+  const body=none ? paras.map(p=>`<p>${p.t}</p>`).join("") : paras.map(p=> p.k==="archive"
       ? `<p class="from-archive">${p.t}<sup class="cite">[${p.s}]</sup></p>`
       : `<p class="from-ai">${p.t}<span class="aimark">${t("inferredMark")}</span></p>`).join("");
-  return `<div class="bubble-ai"><span class="av">${icon("i-blob",19,"mark")}</span>
+  return `<div class="bubble-ai"><span class="av">${icon("i-bot",19,"mark")}</span>
     <div class="body-wrap">
       ${body}
       <div class="meta-row">
+        ${eng?`<span class="srcchip eng">${icon("i-sparkle",11)}${eng}</span>`:""}
         ${used.map(n=>`<span class="srcchip">${icon("i-doc",11)}<b>[${n}]</b> ${L(SOURCES[n])}</span>`).join("")}
       </div>
       <div class="acts">
@@ -2098,6 +2445,64 @@ function renderModel(){
 }
 function toggleModelMenu(){ S.modelOpen=!S.modelOpen; renderModel(); }
 function pickModel(id){ S.model=id; S.modelOpen=false; renderModel(); }
+
+/* ---------- home ---------- */
+function homeItemDone(it){ return !!it.obj; }
+function homeKey(it){ return it.obj || it.img; }
+function openHomeItem(it){ if(it.obj) openObj(it.obj); else openStub(it); }
+function filteredHomeItems(){
+  return HOME_ITEMS.filter(it=>{
+    if(S.homeCat==="done" && !homeItemDone(it)) return false;
+    if(S.homeCat==="soon" && homeItemDone(it)) return false;
+    if(S.homeQuery){
+      const hay=(L(it)[0]+" "+L(it)[1]+" "+it.hall[LANG]).toLowerCase();
+      if(!hay.includes(S.homeQuery)) return false;
+    }
+    return true;
+  });
+}
+function setHomeCat(id){ S.homeCat=id; renderHomeCats(); renderHomeGrid(); }
+function onHomeSearch(v){ S.homeQuery=v.trim().toLowerCase(); renderHomeGrid(); }
+function toggleFav(key,e){
+  if(e) e.stopPropagation();
+  if(S.favs.has(key)) S.favs.delete(key); else S.favs.add(key);
+  const on=S.favs.has(key), btn=e&&e.currentTarget;
+  if(btn){ btn.classList.toggle("on",on); btn.classList.remove("pop"); requestAnimationFrame(()=>btn.classList.add("pop")); }
+  else renderHomeGrid();
+}
+function renderHomeCats(){
+  const el=$("#homeCats"); if(!el) return;
+  el.innerHTML = HOME_CATS.map(c=>
+    `<button class="catchip" aria-pressed="${S.homeCat===c.id}" onclick="setHomeCat('${c.id}')">${L(c)}</button>`).join("");
+}
+function renderHomeHero(){
+  const el=$("#homeHero"); if(!el) return;
+  const it=HOME_ITEMS[0];
+  el.innerHTML = `<button class="hero-card" style="width:100%" onclick="openHomeItem(HOME_ITEMS[0])">
+    <img src="${it.img}" alt="">
+    <span class="cap"><b>${L(it)[0]}</b><span>${it.hall[LANG]} · ${L(it)[1]}</span></span>
+  </button>`;
+}
+let homeFiltered=[];
+function renderHomeGrid(){
+  const el=$("#homeGrid"); if(!el) return;
+  homeFiltered=filteredHomeItems();
+  if(!homeFiltered.length){ el.innerHTML=`<div class="homeempty">${t("homeEmpty")}</div>`; return; }
+  el.innerHTML = homeFiltered.map((it,i)=>{
+    const key=homeKey(it), on=S.favs.has(key);
+    return `<div class="homecard" onclick="openHomeItem(homeFiltered[${i}])">
+      <img src="${it.img}" alt="">
+      <button class="fav ${on?"on":""}" aria-label="favorite" onclick="toggleFav('${key}',event)">${icon("i-heart",15)}</button>
+      <div class="hc-body">
+        <span>${it.hall[LANG]}</span>
+        <b>${L(it)[0]}</b>
+        <button class="cta" onclick="event.stopPropagation();openHomeItem(homeFiltered[${i}])">${t("viewDetail")}</button>
+      </div>
+    </div>`;
+  }).join("");
+}
+function renderHome(){ renderHomeCats(); renderHomeHero(); renderHomeGrid(); }
+
 function renderAskHome(){
   const box=$("#askHome"); if(!box) return;
   box.hidden = S.chatStarted;
@@ -2111,63 +2516,221 @@ function renderAskHome(){
         </button>`).join("")}
     </div>`;
 }
+/* ============================================================
+   AI 问答引擎
+   ─ 配置了 AI_ENDPOINT：把问题 + 从馆方资料库检索到的依据发给代理（museai-worker.js），由真实大模型作答
+   ─ 未配置 / 超时 / 出错：退回本地资料库检索，只摘录馆方资料，不编造
+   ============================================================ */
+const AI_ENDPOINT = "";   // ← 部署好代理后，把地址填在这里，例如 "https://museai-proxy.你的账号.workers.dev"
+
+SOURCES[3]={zh:"大英博物馆馆藏档案 · 中国玉器", en:"British Museum collection archive · Chinese jade"};
+SOURCES[4]={zh:"大英博物馆馆藏档案 · 中国书画", en:"British Museum collection archive · Chinese painting"};
+const OBJ_SRC={david:1, cong:3, scroll:4};
+const OBJ_ALIAS={
+  david:/大维德|花瓶|青花|瓶子|这对瓶|张文进|至正|david|vase|blue-and-white/i,
+  cong:/玉琮|琮|良渚|liangzhu|cong/i,
+  scroll:/女史箴|箴图|顾恺之|摹本|scroll|admonition|gu kaizhi/i
+};
+const NO_DATA=/琉璃砖|琉璃|象牙|扇子|牙雕|茶壶|玉壶|tile|ivory|fan\b|teapot/i;
+const STOP_BI=new Set("什么 为什 么是 这个 那个 一下 可以 怎么 是不 不是 有没 没有 哪里 的是 了吗 是什 么时 时候 这对 这件 一个 我们 你们 他们 请问 告诉 介绍 讲讲 一讲 说说 知道 想知 道这 么样 样的 的吗 呢吗 这是 那是 它的 它是 有什 么会 为啥 吗？ 来的 里来 从哪 哪来 用什 做的 是用 么玉 多少 少年".split(" "));
+const STOP_EN=new Set("the a an of to is are was were what why how who when where which does did do it its this that these those and or in on for with about me tell you can please there now just some any".split(" "));
+function toks(str){
+  str=String(str).toLowerCase().replace(/<[^>]+>/g,"");
+  const out=[];
+  (str.match(/[a-z0-9]+/g)||[]).forEach(w=>{ if(w.length>1&&!STOP_EN.has(w)) out.push(w.replace(/s$/,"")); });
+  str.replace(/[^一-鿿]+/g," ").split(" ").forEach(seg=>{
+    if(seg.length===1) out.push(seg);
+    for(let i=0;i<seg.length-1;i++){ const b=seg.slice(i,i+2); if(!STOP_BI.has(b)) out.push(b); }
+  });
+  return out;
+}
+const strip=x=>String(x).replace(/<[^>]+>/g,"");
+let KB=null;
+function buildKB(){
+  const d=[];
+  const add=(obj,k,s,zh,en)=>d.push({obj,k,s,zh:strip(zh),en:strip(en)});
+  for(const [id,o] of Object.entries(OBJECTS)){
+    const s=OBJ_SRC[id]||1, j=(a,sep)=>a.map(r=>r.join(sep)).join("；");
+    add(id,"archive",s,`${o.zh.name}：${o.zh.dyn}，${o.zh.cat}，现陈列于大英博物馆 ${o.zh.room}。`,`${o.en.name}: ${o.en.dyn}, ${o.en.cat}, on display in ${o.en.room} of the British Museum.`);
+    if(o.inscription) add(id,"archive",s,o.inscription.zh.join("："),o.inscription.en.join(": "));
+    if(o.timeline) add(id,"archive",s,"流传经过："+j(o.timeline.zh," ")+"。","History: "+o.timeline.en.map(r=>r.join(" – ")).join("; ")+".");
+    if(o.provenance) add(id,"archive",s,"流传经过："+j(o.provenance.zh," ")+"。","Provenance: "+o.provenance.en.map(r=>r.join(" – ")).join("; ")+".");
+    if(o.route) add(id,"archive",s,"从原料到供奉："+o.route.zh.map(r=>r[0]+"（"+r[1]+"）").join(" → ")+"。","From raw material to altar: "+o.route.en.map(r=>r[0]+" ("+r[1]+")").join(" → ")+".");
+    if(o.material) add(id,"archive",s,"材质与工艺："+o.material.zh.map(r=>r[0]+"为"+r[1]).join("，")+"。","Material and making: "+o.material.en.map(r=>r[0]+": "+r[1]).join("; ")+".");
+    if(o.numbers) add(id,"archive",s,"基本数据："+o.numbers.zh.map(r=>r[0]+" "+r[1]).join("，")+"。","Key figures: "+o.numbers.en.map(r=>r[0]+" "+r[1]).join(", ")+".");
+    if(o.compare) add(id,"inferred",0,o.compare.zh.join("："),o.compare.en.join(": "));
+  }
+  ["local","intl","family"].forEach(v=>CORE[v].zh.forEach((z,i)=>add("david",i===2?"inferred":"archive",i===2?0:1,z,CORE[v].en[i])));
+  add("david","archive",1,INSIGHT.gen.zh,INSIGHT.gen.en);
+  add("david","archive",1,"要点："+FACTS.map(f=>f.zh.join(" ")).concat(KNOW.map(k=>k.zh.join(" "))).join("，")+"。","Key facts: "+FACTS.map(f=>f.en.join(" ")).concat(KNOW.map(k=>k.en.join(" "))).join("; ")+".");
+  add("david","archive",1,INSIGHT.deep.zh,INSIGHT.deep.en);
+  add("david","inferred",0,INSIGHT.ct.zh,INSIGHT.ct.en);
+  [CHAT_SEED.a, {zh:CHAT_MORE.zh.a, en:CHAT_MORE.en.a}].forEach(a=>a.zh.forEach((p,i)=>add("david",p.k,p.s||0,p.t,a.en[i].t)));
+  d.forEach(x=>{ x.tz=new Set(toks(x.zh)); x.te=new Set(toks(x.en)); });
+  const df={}; d.forEach(x=>new Set([...x.tz,...x.te]).forEach(w=>df[w]=(df[w]||0)+1));
+  return {docs:d, idf:w=>Math.log(1+d.length/((df[w]||0)+0.5))};
+}
+// 策展人预置的问答：常见问题直接给出经过核对的回答
+const CURATED=[
+  {q:CHAT_SEED.q, a:CHAT_SEED.a, fu:CHAT_SEED.fu, visual:true, obj:"david"},
+  {q:{zh:CHAT_SEED.fu.zh[0], en:CHAT_SEED.fu.en[0]}, a:{zh:CHAT_MORE.zh.a,en:CHAT_MORE.en.a}, fu:{zh:CHAT_MORE.zh.fu,en:CHAT_MORE.en.fu}, obj:"david"},
+  {q:{zh:"大维德花瓶和良渚玉琮放在一起看，有什么不同？",en:"Put the David Vases next to the Liangzhu cong — what's the difference?"}, obj:"david",
+   a:{zh:[{k:"archive",s:1,t:"大维德花瓶是元代景德镇青花瓷，瓶颈有至正十一年（1351）的纪年铭文，年代可以精确到月份。"},
+          {k:"archive",s:3,t:"良渚玉琮是新石器时代的透闪石软玉礼器，约公元前 3300–2300 年，没有任何同时代的文字说明它的用途。"},
+          {k:"inferred",t:"一件因为有字，年代能落到某一年的四月；一件因为没字，只能靠地层和器形推到上千年的范围里。两件放在一起，正好是「能被核验」的两端。"}],
+      en:[{k:"archive",s:1,t:"The David Vases are Yuan-dynasty Jingdezhen blue-and-white, with an inscription on the neck dating them to the fourth month of 1351."},
+          {k:"archive",s:3,t:"The Liangzhu cong is a Neolithic ritual object in tremolite nephrite, c. 3300–2300 BC, and no writing from its time explains what it was for."},
+          {k:"inferred",t:"One can be dated to a single month because it carries words; the other can only be placed within a thousand years because it doesn't. Side by side they mark the two ends of what can be verified."}]},
+   fu:{zh:["玉琮到底是做什么用的？","花瓶上的铭文写了什么？","两件相差多少年？"],en:["What was the cong actually for?","What does the vase inscription say?","How many years apart are they?"]}},
+  {q:{zh:"用我熟悉的东西打个比方，大维德花瓶为什么这么重要？",en:"Give me an analogy from my own world: why do the David Vases matter so much?"}, obj:"david",
+   a:{zh:[{k:"archive",s:1,t:"瓶颈铭文写明了供奉人张文进、供奉地点和确切年份——至正十一年（1351）。"},
+          {k:"inferred",t:strip(INSIGHT.ct.zh)},
+          {k:"inferred",t:"如果你熟悉欧洲的中世纪手抄本，也可以把它想成一本写明了抄写日期的抄本：有了它，同类没有日期的抄本才能排出先后。"}],
+      en:[{k:"archive",s:1,t:"The inscription on the neck names the donor, Zhang Wenjin, the shrine, and an exact year — 1351."},
+          {k:"inferred",t:strip(INSIGHT.ct.en)},
+          {k:"inferred",t:"If you know medieval European manuscripts, think of it as the one copy with a dated colophon: once you have it, the undated copies around it can be put in order."}]},
+   fu:{zh:["铭文原文写了什么？","为什么之前会被认成明代？","钴料是怎么从波斯运来的？"],en:["What does the inscription actually say?","Why was it mistaken for Ming?","How did the cobalt get here from Persia?"]}},
+  {q:{zh:"1351 年前后，世界上还发生了什么？",en:"What else was happening in the world around 1351?"}, obj:"david",
+   a:{zh:[{k:"archive",s:1,t:"这对花瓶的纪年是元至正十一年，也就是 1351 年；烧造用的钴料从波斯经海路运到景德镇。"},
+          {k:"inferred",t:"在中国，元朝已近尾声：同一年红巾军起义爆发，十七年后（1368）明朝建立。"},
+          {k:"inferred",t:"在欧洲，黑死病刚刚过去（1347–1351），英国诗人乔叟还是个孩子。"}],
+      en:[{k:"archive",s:1,t:"The vases are dated to 1351, the eleventh year of Zhizheng; their cobalt came from Persia by sea to Jingdezhen."},
+          {k:"inferred",t:"In China the Yuan was nearing its end: the Red Turban uprising broke out that same year, and the Ming was founded seventeen years later, in 1368."},
+          {k:"inferred",t:"In Europe the Black Death had just passed (1347–51), and Geoffrey Chaucer was still a child."}]},
+   fu:{zh:["元代普通人也能订制青花吗？","跟同期波斯陶器比一比","这对瓶子是怎么到大英博物馆的？"],en:["Could ordinary people commission blue-and-white?","Compare it with Persian wares of the period","How did the pair reach the British Museum?"]}}
+];
+const ENTRY_Q={suggest:0, compare:2, translate:3, era:4};
+function dice(a,b){ const A=new Set(toks(a)), B=new Set(toks(b)); if(!A.size||!B.size) return 0; let n=0; A.forEach(x=>{if(B.has(x))n++}); return 2*n/(A.size+B.size); }
+function targetObj(q){ for(const [id,re] of Object.entries(OBJ_ALIAS)) if(re.test(q)) return id; return S.chatObj||S.obj||"david"; }
+const INTENTS=[
+  [/多高|高度|尺寸|多大|多长|多宽|tall|height|size|big|long/i, ["通高","尺寸","height","size"]],
+  [/材质|什么玉|什么做|用什么|材料|原料|made of|material|stone|glaze|cobalt/i, ["材质","玉质","钴料","material","stone","glaze"]],
+  [/展出|展期|多久|看得到|on view|display|show/i, ["展期","展出","on view","display"]],
+  [/什么时候|哪年|年代|多少年|多老|多久以前|how old|when|date|age/i, ["年代","纪年","age","dated","date"]],
+  [/在哪|哪个厅|几号厅|展厅|where|room|gallery/i, ["展厅","陈列","room","gallery","display"]],
+  [/怎么来|怎么到|来历|收藏|买|入藏|how did.*(reach|get)|acquire|provenance|bought/i, ["购藏","入藏","流传","bought","enter","provenance"]],
+  [/铭文|写了|字|inscription|writing|say/i, ["铭文","箴文","inscription"]],
+  [/从哪|哪里来|产地|来源|where.*from|origin|source/i, ["产地","来源","source","origin"]]
+];
+function retrieve(q,n){
+  if(!KB) KB=buildKB();
+  const extra=[]; INTENTS.forEach(([re,w])=>{ if(re.test(q)) w.forEach(x=>extra.push(...toks(x))); });
+  const core=new Set(toks(q)), qt=[...new Set([...core,...extra])], obj=targetObj(q);
+  const named=Object.entries(OBJ_ALIAS).some(([id,re])=>re.test(q)) || (!!S.chatObj && /它|这件|这对|那件|\bit\b|\bthey\b|\bthem\b|\bthis\b/i.test(q));
+  const scored=KB.docs.map(d=>{
+    let sc=0, content=0;
+    qt.forEach(w=>{ if(d.tz.has(w)||d.te.has(w)){ const v=KB.idf(w); sc+=v; if(core.has(w)) content+=v; } });
+    if(!named && content===0) sc=0;                 // 只命中「多高」这类意图词、却没提到任何馆藏内容 → 不算命中
+    if(sc>0 && d.obj===obj) sc*=1.4;
+    return {d,sc};
+  }).filter(x=>x.sc>0).sort((a,b)=>b.sc-a.sc);
+  const focus=named?obj:(scored[0]&&scored[0].d.obj);
+  return {obj:focus||obj, hits:scored.filter(x=>x.d.obj===focus).slice(0,n||4)};
+}
+function localAnswer(q){
+  const zh=LANG==="zh";
+  if(/^(你好|您好|嗨|哈喽|在吗|hi\b|hello|hey)/i.test(q.trim()))
+    return {paras:[{k:"inferred",t:zh?"你好，我是 Muse AI 导览。可以问我眼前展品的年代、铭文、工艺、来历，我会尽量只用馆方资料回答，并标出哪句来自档案、哪句是我的推断。":"Hello, I'm the Muse AI guide. Ask me about the date, inscription, making or history of the object in front of you. I answer from museum records where I can, and mark which lines are archive and which are my own inference."}], fu:L(CHAT_SEED.fu)};
+  const c=CURATED.map(x=>({x,s:dice(q,L(x.q))})).sort((a,b)=>b.s-a.s)[0];
+  if(c && c.s>=0.6){ S.chatObj=c.x.obj; return {paras:L(c.x.a), fu:L(c.x.fu), visual:c.x.visual}; }
+  if(NO_DATA.test(q) && !Object.values(OBJ_ALIAS).some(re=>re.test(q)))
+    return {none:true, paras:[{k:"inferred",t:zh?"这件展品的馆方资料还没有接入知识库。没有可核验的依据，我先不回答，免得讲错。":"The museum records for that object aren't in the knowledge base yet. Without a verifiable source I'd rather not answer than risk getting it wrong."}], fu:suggestFor(S.chatObj||"david")};
+  const {obj,hits}=retrieve(q,6);
+  const top=hits[0];
+  if(!top || top.sc<2)
+    return {none:true, paras:[{k:"inferred",t:zh?"馆方资料库里没有找到能回答这个问题的内容。为了不编造，我先不回答——可以换个问法，或者问问下面这些：":"I couldn't find anything in the museum records that answers that. Rather than make something up, I'll leave it — try rephrasing, or one of these:"}], fu:suggestFor(obj)};
+  S.chatObj=top.d.obj;
+  const seen=new Set(), paras=[];
+  for(const h of hits){
+    if(paras.length>=3 || h.sc<top.sc*0.45) break;
+    const t=zh?h.d.zh:h.d.en; if(seen.has(t)) continue; seen.add(t);
+    paras.push(h.d.k==="archive"?{k:"archive",s:h.d.s,t}:{k:"inferred",t});
+  }
+  return {paras, fu:suggestFor(top.d.obj)};
+}
+function suggestFor(obj){
+  const F={david:{zh:["铭文原文写了什么？","为什么之前会被认成明代？","这对瓶子是怎么到大英博物馆的？"],en:["What does the inscription actually say?","Why was it mistaken for Ming?","How did the pair reach the British Museum?"]},
+           cong:{zh:["玉琮是用什么玉做的？","上面刻的是什么纹样？","它有多少年历史？"],en:["What stone is the cong made of?","What is the carved motif?","How old is it?"]},
+           scroll:{zh:["女史箴图的原作还在吗？","这卷画一年展出多久？","画上写的箴文是什么意思？"],en:["Does the original still exist?","How long is it on view each year?","What does the admonition text say?"]}};
+  return L(F[obj]||F.david);
+}
+async function remoteAnswer(q){
+  const {obj,hits}=retrieve(q,8);
+  const rest=KB.docs.filter(d=>d.obj===obj && !hits.some(h=>h.d===d)).map(d=>({d}));
+  const ctx=hits.concat(rest).map(h=>`[${h.d.k==="archive"?"S"+h.d.s:"AI"}] ${LANG==="zh"?h.d.zh:h.d.en}`).join("\n");
+  const ctrl=new AbortController(), timer=setTimeout(()=>ctrl.abort(),25000);
+  try{
+    const r=await fetch(AI_ENDPOINT,{method:"POST",signal:ctrl.signal,headers:{"content-type":"application/json"},
+      body:JSON.stringify({tier:S.model, lang:LANG, visitor:S.visitor, object:OBJECTS[targetObj(q)]?L(OBJECTS[targetObj(q)]).name:"",
+        sources:Object.fromEntries(Object.entries(SOURCES).map(([k,v])=>[k,L(v)])), context:ctx, history:(S.hist||[]).slice(-6), question:q})});
+    if(!r.ok) throw new Error("http "+r.status);
+    const j=await r.json();
+    const paras=(j.paras||[]).filter(p=>p&&p.t).slice(0,4).map(p=>(p.k==="archive"&&SOURCES[p.s])?{k:"archive",s:p.s,t:strip(p.t)}:{k:"inferred",t:strip(p.t)});
+    if(!paras.length) throw new Error("empty");
+    return {paras, fu:(j.followups||[]).slice(0,3).map(strip), engine:"llm"};
+  } finally { clearTimeout(timer); }
+}
+async function ask(q){
+  q=String(q).trim(); if(!q) return;
+  S.chatStarted=true; renderAskHome(); S.metrics.asks++;
+  S.log.push({me:q}); S.busy=true; renderChat();
+  let ans;
+  const cur=CURATED.find(x=>dice(q,L(x.q))>=0.9);          // 预置问答优先，保证演示稳定
+  if(AI_ENDPOINT && !cur){
+    try{ ans=await remoteAnswer(q); }
+    catch(e){ ans=localAnswer(q); ans.fallback=true; }
+  } else { await new Promise(r=>setTimeout(r,650)); ans=localAnswer(q); }
+  ans.engine=ans.engine||"local";
+  S.hist=(S.hist||[]).concat([{role:"user",content:q},{role:"assistant",content:ans.paras.map(p=>p.t).join("\n")}]);
+  S.busy=false; S.log.push({ai:ans}); renderChat();
+}
 function startAsk(id){
   if(id==="translate" && !S.ct){ S.ct=true; $("#ctSw").setAttribute("aria-pressed","true"); $("#ctSw2").setAttribute("aria-pressed","true"); renderInsightTabs(); }
-  S.chatStarted=true;
-  renderAskHome(); renderChat();
-  setTimeout(()=>{ $("#s-chat").scrollTop=$("#s-chat").scrollHeight; },0);
+  ask(L(CURATED[ENTRY_Q[id]||0].q));
+}
+function engineTag(a){
+  const zh=LANG==="zh";
+  if(a.engine==="llm") return `${curModel().name} · ${zh?"依据馆方资料生成":"grounded in museum records"}`;
+  if(a.fallback) return zh?"大模型暂不可用 · 已改用离线资料检索":"Model unavailable · switched to offline records search";
+  return zh?"离线资料检索 · 未经 AI 改写":"Offline records search · not rewritten by AI";
 }
 function renderChat(){
-  if(!S.chatStarted){ $("#chatWrap").innerHTML=""; return; }
   const w=$("#chatWrap");
-  let html = bubbleMe(L(CHAT_SEED.q)) + bubbleAi(L(CHAT_SEED.a)) + provenanceKey();
-  html += `<div class="visualcard"><img src="src/projects/curator/liu-sheng-suit.jpg" alt="">
-    <div class="cap"><span class="eyebrow">${LANG==='zh'?'关联影像':'Contextual visual'}</span>
-    <b style="display:block;font-size:13.5px;margin-top:4px;color:var(--ink)">${LANG==='zh'?'瓶颈纪年铭文拓片（局部）':'Rubbing of the dated inscription (detail)'}</b></div></div>`;
-  if(S.chatStep>=1){
-    const m=CHAT_MORE[LANG];
-    html += bubbleMe(S.lastQ||L(CHAT_SEED.fu)[0]) + bubbleAi(m.a) + provenanceKey();
-    html += followups(m.fu);
-  } else {
-    html += followups(L(CHAT_SEED.fu));
-  }
+  if(!S.chatStarted){ w.innerHTML=""; return; }
+  const lastAi=S.log.map(x=>!!x.ai).lastIndexOf(true);
+  let html="";
+  S.log.forEach((m,i)=>{
+    if(m.me) html+=bubbleMe(escapeHtml(m.me));
+    else if(m.redline) html+=`<div class="bubble-ai"><span class="av">${icon("i-bot",19,"mark")}</span>
+        <div class="body-wrap redline"><div class="rl-t">${icon("i-shield",14)}<span>${t("redlineT")}</span></div><p>${t("redlineP")}</p></div></div>`;
+    else if(m.ai){
+      html+=bubbleAi(m.ai.paras, engineTag(m.ai), m.ai.none);
+      if(!m.ai.none) html+=provenanceKey();
+      if(m.ai.visual) html+=`<div class="visualcard"><img src="src/projects/curator/david-vases-neck.jpg" alt="">
+        <div class="cap"><span class="eyebrow">${LANG==='zh'?'关联影像':'Contextual visual'}</span>
+        <b style="display:block;font-size:13.5px;margin-top:4px;color:var(--ink)">${LANG==='zh'?'大维德花瓶 · 瓶颈（纪年铭文所在位置）':'The David Vases · the neck, where the dated inscription runs'}</b></div></div>`;
+      if(i===lastAi && !S.busy && m.ai.fu && m.ai.fu.length) html+=followups(m.ai.fu);
+    }
+  });
+  if(S.busy) html+=`<div class="bubble-ai"><span class="av">${icon("i-bot",19,"mark")}</span>
+     <div class="body-wrap"><span class="typing"><i></i><i></i><i></i></span></div></div>`;
   w.innerHTML=html;
+  setTimeout(()=>{ const sc=$("#s-chat"); sc.scrollTop=sc.scrollHeight; },0);
 }
-function askMore(btn,q){
-  S.chatStarted=true; renderAskHome();
-  S.metrics.asks++;
-  S.lastQ=decodeURIComponent(q);
-  const w=$("#chatWrap");
-  btn.closest(".followups").remove();
-  w.insertAdjacentHTML("beforeend", bubbleMe(S.lastQ));
-  w.insertAdjacentHTML("beforeend",
-    `<div class="bubble-ai" id="tmpTyping"><span class="av">${icon("i-blob",19,"mark")}</span>
-     <div class="body-wrap"><span class="typing"><i></i><i></i><i></i></span></div></div>`);
-  $("#s-chat").scrollTop=$("#s-chat").scrollHeight;
-  setTimeout(()=>{ S.chatStep=1; renderChat(); $("#s-chat").scrollTop=$("#s-chat").scrollHeight; },900);
-}
+const escapeHtml=x=>String(x).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function askMore(btn,q){ ask(decodeURIComponent(q)); }
 const REDLINE=/值多少|多少钱|估价|市价|拍卖|真假|真伪|鉴定|worth|price|valuation|authentic|fake|apprais/i;
 function sendTyped(){
   const inp=$("#chatInput");
   const v=inp.value.trim();
-  if(!v) return;
+  if(!v || S.busy) return;
   inp.value="";
   if(REDLINE.test(v)){
-    const w=$("#chatWrap");
-    w.insertAdjacentHTML("beforeend", bubbleMe(v));
-    w.insertAdjacentHTML("beforeend",
-      `<div class="bubble-ai"><span class="av">${icon("i-blob",19,"mark")}</span>
-        <div class="body-wrap redline">
-          <div class="rl-t">${icon("i-shield",14)}<span>${t("redlineT")}</span></div>
-          <p>${t("redlineP")}</p>
-        </div></div>`);
-    $("#s-chat").scrollTop=$("#s-chat").scrollHeight;
+    S.chatStarted=true; renderAskHome();
+    S.log.push({me:v},{redline:true}); renderChat();
     return;
   }
-  const fake=document.createElement("div");
-  fake.className="followups";
-  $("#chatWrap").appendChild(fake);
-  askMore(fake.appendChild(document.createElement("button")), encodeURIComponent(v));
+  ask(v);
 }
 function thank(btn){ btn.innerHTML=`${icon("i-check",12)}${t("thanks")}`; btn.disabled=true; }
 const FLAGS=["flagFact","flagSource","flagTone"];
@@ -2194,9 +2757,11 @@ function submitFlag(){
     <button class="btn" style="margin-top:12px" onclick="closeFlag()">${t("gotIt")}</button>`;
 }
 function closeFlag(){ const e=$("#flagSheet"); if(e) e.remove(); }
-function resetChat(){S.chatStep=0;S.lastQ=null;S.chatStarted=false;renderAskHome();renderChat();}
+function resetChat(){S.log=[];S.hist=[];S.busy=false;S.chatObj=null;S.chatStarted=false;renderAskHome();renderChat();}
 
 /* ---------- route ---------- */
+// 学生模式：把热门 / 必看展品排到路线前面，短预算也能优先打卡到它们
+function prioritizeHot(){ S.stops.sort((a,b)=>(b.hot?1:0)-(a.hot?1:0)); }
 // 预算决定排几件：每站按「参观 + 步行」的真实耗时累加，塞不下就不进计划
 const DWELL=1.5;                      // 观测：用户在感兴趣的展品前平均比计划多停留 50%
 function planSize(){
@@ -2235,13 +2800,19 @@ function renderRoute(){
   const stateL={done:t("stDone"),now:t("stNow"),next:t("stNext")};
   $("#routeList").innerHTML = plan.map(s=>{
     const d=L(s);
-    return `<button class="stop" data-state="${s.state}" onclick="${s.obj?`openObj('${s.obj}')`:`toggleStop(${s.id})`}">
+    const isNext = s.state==="next" && plan.findIndex(x=>x.state==="next")===plan.indexOf(s);
+    const sub2 = s.was
+      ? (LANG==='zh' ? `<s>约 ${s.was.view} 分 · 步行 ${s.was.walk} 分</s>参观约 ${s.view} 分 · 步行 ${s.walk} 分` : `<s>~${s.was.view} min · ${s.was.walk} min walk</s>~${s.view} min · ${s.walk} min walk`)
+      : d[2];
+    const bdgs = (s.moved ? [`<span class="bdg ai">${LANG==='zh'?'AI 改道 · 人流 −40%':'AI reroute · 40% quieter'}</span>`] : [])
+      .concat(d[3].map(b=>`<span class="bdg${b.includes("📸")?" photo":""}">${b}</span>`));
+    return `<button class="stop${s.moved?' moved':''}" data-state="${s.state}" onclick="${s.obj?`openObj('${s.obj}')`:`toggleStop(${s.id})`}">
       <span class="dot">${icon("i-check",11)}</span>
       <img src="${s.img}" alt="">
       <span class="meta">
-        <span class="state">${stateL[s.state]}</span>
-        <b>${d[0]}</b><span class="sub">${d[1]}</span><span class="sub">${d[2]}</span>
-        <span class="badges">${d[3].map(b=>`<span class="bdg">${b}</span>`).join("")}</span>
+        <span class="state">${isNext ? (LANG==='zh'?'下一站':'Next stop') : stateL[s.state]}</span>
+        <b>${d[0]}</b><span class="sub">${d[1]}</span><span class="sub">${sub2}</span>
+        <span class="badges">${bdgs.join("")}</span>
       </span></button>`;
   }).join("");
   const v=VISITORS.find(x=>x.id===S.visitor);
@@ -2346,9 +2917,10 @@ function routeTab(which){
 
 /* ---------- report ---------- */
 function renderStyles(){
+  const rec=STYLE_REC[S.visitor];
   $("#styleGrid").innerHTML = STYLES.map(s=>`
-    <button class="style" aria-pressed="${S.style===s.id}" onclick="S.style='${s.id}';renderStyles();if($('#posterSheet')){closePoster();openPoster();}">
-      ${s.rec?`<span class="rec">${LANG==='zh'?'推荐':'Suggested'}</span>`:''}
+    <button class="style" aria-pressed="${S.style===s.id}" onclick="S.style='${s.id}';renderStyles();closePoster();openPoster();">
+      ${s.id===rec?`<span class="rec">${LANG==='zh'?'推荐':'Suggested'}</span>`:''}
       <div class="emoji">${s.e}</div><b>${L(s)[0]}</b><span>${L(s)[1]}</span>
     </button>`).join("");
 }
@@ -2399,26 +2971,92 @@ const POSTER_SKIN={
   story:{bg:"linear-gradient(150deg,#132620,#0A1611)", accent:"#6BBF8E", key:"pstStory"},
   card: {bg:"linear-gradient(150deg,#0F1E18,#07120D)", accent:"#9FCBB4", key:"pstCard"}
 };
+/* 每站的海报素材：研究笔记取事实与疑问，文化之旅取同时代的世界，故事记录取一句孩子听得懂的话 */
+const POSTER_DATA={
+  1:{dyn:{zh:"约公元前 3300–2300",en:"c. 3300–2300 BC"},
+     fact:{zh:"透闪石软玉，外方内圆；器表可见管钻与线切割留下的工痕。",en:"Tremolite nephrite, square outside and round within; tube-drill and string-saw marks still visible."},
+     q:{zh:"没有文字的年代，我们凭什么判断它的用途？",en:"With no writing from the period, how do we know what it was for?"},
+     world:{zh:"同一时期的英国：巨石阵开始修建（约公元前 3000 年）",en:"Meanwhile in Britain: work begins on Stonehenge (c. 3000 BC)"},
+     story:{zh:"4500 年前的人还不会写字，却把神的脸刻在了玉上。",en:"4,500 years ago people had no writing — but they carved a god's face into jade."},
+     e:"🟢"},
+  2:{dyn:{zh:"清代 · 广州牙雕",en:"Qing · Canton ivory"},
+     fact:{zh:"扇面满雕人物、楼阁与花木，镂空处细如发丝。",en:"Every leaf carved with figures, pavilions and trees; the openwork is hair-fine."},
+     q:{zh:"这样费工的扇子，当时是做给谁的？",en:"Who was a fan this laborious made for?"},
+     world:{zh:"同一时期的英国：广州外销扇在维多利亚时代风靡一时",en:"Meanwhile in Britain: Canton export fans are a Victorian fashion"},
+     story:{zh:"扇子上刻满了小人和亭子，要凑得很近才看得清！",en:"The fan is covered in tiny people and pavilions — you have to look really close!"},
+     e:"🪭"},
+  3:{dyn:{zh:"元 · 至正十一年（1351）",en:"Yuan · dated 1351"},
+     fact:{zh:"瓶颈纪年铭文，元青花断代标尺；通高 63.8 cm，馆藏号 PDF B.613–614。",en:"Dated inscription on the neck — the benchmark for Yuan blue-and-white; 63.8 cm high, PDF B.613–614."},
+     q:{zh:"同一套供器里失散的香炉，如今在哪里？",en:"Where is the censer that once belonged with this pair?"},
+     world:{zh:"同一时期的欧洲：黑死病刚刚过去（1347–1351），乔叟还是个孩子",en:"Meanwhile in Europe: the Black Death has just passed (1347–51); Chaucer is still a child"},
+     story:{zh:"一个叫张文进的人，把这对花瓶送给家乡的庙，祈求全家平安。",en:"A man called Zhang Wenjin gave these vases to his local temple, praying his family would stay safe."},
+     e:"🏺"},
+  4:{dyn:{zh:"明代（1368–1644）",en:"Ming (1368–1644)"},
+     fact:{zh:"蓝地琉璃，龙纹与莲花逐块交替排列。",en:"Blue-ground glazed tiles; dragons and lotus alternate block by block."},
+     q:{zh:"这些砖原本砌在什么建筑上？",en:"What building were these tiles made for?"},
+     world:{zh:"同一时期的欧洲：文艺复兴",en:"Meanwhile in Europe: the Renaissance"},
+     story:{zh:"四条蓝色的龙在莲花中间游来游去，你找到了几条？",en:"Four blue dragons swim between the lotus flowers — how many can you find?"},
+     e:"🐉"},
+  5:{dyn:{zh:"唐摹本 · 7–8 世纪",en:"Tang copy · 7th–8th c."},
+     fact:{zh:"顾恺之原作已佚，此为唐人摹本；24.4 × 343.7 cm，每年仅展出约 6 周。",en:"Gu Kaizhi's original is lost; this is a Tang copy. 24.4 × 343.7 cm, on view about six weeks a year."},
+     q:{zh:"一件摹本，为什么会比原作更有名？",en:"How can a copy become more famous than the original?"},
+     world:{zh:"同一时期的英国：萨顿胡船葬（约 625 年），就在本馆 41 号厅",en:"Meanwhile in England: the Sutton Hoo ship burial (c. 625) — Room 41 of this museum"},
+     story:{zh:"一千多年前的画里，也有人对着镜子梳头。",en:"In a painting over a thousand years old, someone is combing their hair in a mirror."},
+     e:"📜"}
+};
 function openPoster(){
   if($("#posterSheet")) return;
-  const skin=POSTER_SKIN[S.style]||POSTER_SKIN.trip;
-  const done=planned().filter(x=>x.state==="done").length, mins=minsUsed();
-  const shots=["src/projects/curator/dragon-vessel.jpg","src/projects/curator/thumb-ding.jpg","src/projects/curator/jade-dragon-disc.jpg","src/projects/curator/mount-tai-scroll.jpg"];
+  const zh=LANG==='zh', plan=planned();
+  const seen=plan.filter(x=>x.state!=="next");            // 已参观 + 当前
+  const done=plan.filter(x=>x.state==="done").length, mins=minsUsed();
+  const date=new Date(), ds=`${date.getFullYear()}.${String(date.getMonth()+1).padStart(2,"0")}.${String(date.getDate()).padStart(2,"0")}`;
+  const nm=x=>L(x)[0], pd=x=>POSTER_DATA[x.id]||{}, P=(x,k)=>pd(x)[k]?L(pd(x)[k]):"";
+  const share=`<div class="row"><button class="gold">${icon("i-share",16)}<span>${t("posterShare")}</span></button>
+      <button class="icn" aria-label="save">${icon("i-download",16)}</button></div>`;
+  let body="";
+  if(S.style==="note"){
+    body=`<div class="poster p-note">
+      <div class="pn-head"><span>${zh?"研究笔记":"Research notes"} · No.${String(done+1).padStart(2,"0")}</span><span>${ds}</span></div>
+      <h4>${zh?"元青花与它之前的四千年":"Yuan blue-and-white, and the 4,000 years before it"}</h4>
+      <p class="pn-meta">${zh?`大英博物馆 · ${seen.length} 件展品 · ${mins} 分钟`:`The British Museum · ${seen.length} objects · ${mins} min`}</p>
+      ${seen.map((x,i)=>`<div class="pn-item"><img src="${x.img}" alt="">
+        <div><b>${i+1}. ${nm(x)}</b><span class="pn-dyn">${P(x,"dyn")}</span>
+        <p>${P(x,"fact")}<sup>[${x.obj==="david"?"1,2":"1"}]</sup></p>
+        <p class="pn-q">✎ ${zh?"我的疑问：":"Open question: "}${P(x,"q")}</p></div></div>`).join("")}
+      <div class="pn-refs">[1] ${L(SOURCES[1])}<br>[2] ${L(SOURCES[2])}</div>
+      ${share}</div>`;
+  } else if(S.style==="story"){
+    body=`<div class="poster p-story">
+      <div class="ps-top"><span>✨ ${zh?"亲子故事记录":"Family story log"}</span><span>${ds}</span></div>
+      <h4>${t("pstStory")}</h4>
+      ${seen.map((x,i)=>`<div class="ps-card" style="--tilt:${i%2?1.5:-1.5}deg;--c:${["#FF8A5B","#4DB6F0","#8BD46B","#B98CF2","#FFC53D"][i%5]}">
+        <img src="${x.img}" alt=""><div><b>${pd(x).e||""} ${nm(x)}</b><p>${P(x,"story")}</p></div></div>`).join("")}
+      <div class="ps-quiz"><b>🤔 ${zh?"考考你":"Quiz time"}</b>${zh?"张文进送花瓶时，许了一个什么愿望？":"What did Zhang Wenjin wish for when he gave the vases?"}
+        <span>${zh?"答案：全家平安":"Answer: that his family would stay safe"}</span></div>
+      ${share}</div>`;
+  } else if(S.style==="card"){
+    const hero=seen[seen.length-1]||plan[0];
+    body=`<div class="poster p-card">
+      <div class="pc-head"><span>${zh?"今日打卡图鉴":"Today's finds"}</span><b>${seen.length}<i>/${plan.length}</i></b></div>
+      <div class="pc-hero"><img src="${hero.img}" alt=""><span>${nm(hero)} · ${L(hero.hall)}</span></div>
+      <div class="pc-grid">${plan.map(x=>`<div class="pc-cell ${x.state==="next"?"lock":""}"><img src="${x.img}" alt="">
+        <span>${x.state==="next"?"🔒":"✓"} ${nm(x)}</span></div>`).join("")}
+        <div class="pc-cell more"><span>+ ${zh?"下次再来":"Next visit"}</span></div></div>
+      ${share}</div>`;
+  } else {
+    body=`<div class="poster p-trip">
+      <div class="brand">${icon("i-sparkle",14)}<span>${t("posterBrand")}</span></div>
+      <h4>${t("pstTrip")}</h4>
+      <p class="pt-sub">${zh?`${seen.length} 件展品，跨越约 4,500 年；每一站都放回同时代的世界里看。`:`${seen.length} objects across some 4,500 years, each set beside the world of its time.`}</p>
+      <div class="pt-cols"><span>${zh?"在中国":"In China"}</span><span>${zh?"同一时期的世界":"Elsewhere, same time"}</span></div>
+      ${seen.map(x=>`<div class="pt-row"><div class="pt-l"><img src="${x.img}" alt=""><b>${nm(x)}</b><span>${P(x,"dyn")}</span></div>
+        <div class="pt-r">${P(x,"world")}</div></div>`).join("")}
+      <p class="pt-foot">${zh?"文化转译已开启 · 讲解语言可在「我的」中切换":"Cultural translation on · change narration language under Profile"}</p>
+      ${share}</div>`;
+  }
   const el=document.createElement("div");
   el.className="sheet-bg"; el.id="posterSheet";
-  el.innerHTML=`<div class="postersheet">
-    <div class="poster" style="background:${skin.bg};border-color:${skin.accent}44">
-      <div class="brand" style="color:${skin.accent}">${icon("i-sparkle",14)}<span>${t("posterBrand")}</span></div>
-      <div class="mosaic">${shots.map(src=>`<img src="${src}" alt="">`).join("")}</div>
-      <h4>${t(skin.key)}</h4>
-      <p>${t("posterLine")(done,mins)}</p>
-      <div class="row">
-        <button class="gold" style="background:${skin.accent}">${icon("i-share",16)}<span>${t("posterShare")}</span></button>
-        <button class="icn" aria-label="save">${icon("i-download",16)}</button>
-      </div>
-    </div>
-    <button class="dismiss" onclick="closePoster()">${t("posterClose")}</button>
-  </div>`;
+  el.innerHTML=`<div class="postersheet">${body}<button class="dismiss" onclick="closePoster()">${t("posterClose")}</button></div>`;
   el.addEventListener("click",e=>{ if(e.target===el) closePoster(); });
   $("#viewport").appendChild(el);
 }
@@ -2494,11 +3132,11 @@ function openNfc(){
   el.className="sheet-bg"; el.id="nfcSheet";
   el.innerHTML=`<div class="sheet">
     <span class="pill">${icon("i-nfc",12)}${t("nfcPill")}</span>
-    <img src="src/projects/curator/jade-bi.jpg" alt="">
+    <img src="${OBJECTS.david.img}" alt="">
     <h3>${t("nfcName")}</h3>
     <div class="sub">${t("nfcMeta")}</div>
     <p>${t("nfcDesc")}</p>
-    <button class="btn" onclick="closeNfc();go('detail')">${icon("i-play",15,"solid")}${t("nfcCta")}</button>
+    <button class="btn" onclick="closeNfc();openObj('david')">${icon("i-play",15,"solid")}${t("nfcCta")}</button>
     <button class="dismiss" onclick="closeNfc()">${t("nfcDismiss")}</button>
   </div>`;
   el.addEventListener("click",e=>{if(e.target===el)closeNfc()});
@@ -2524,10 +3162,10 @@ function blobPath(ctx,cx,cy,r,lobes,wob,phase){
 }
 // 三片错开的外叶瓣 + 一个饱和内核；偏移要够大，叠压处才看得见边缘
 const BLOBS=[
-  {r:0.99, lobes:4, wob:0.030, dx:-0.11, dy:-0.05, sp: 0.000390, ph:0.0, c0:"#A9EFD4", c1:"#54C79F", a:0.60, blur:3},
-  {r:0.97, lobes:4, wob:0.028, dx: 0.11, dy:-0.03, sp:-0.000470, ph:1.7, c0:"#8BE6C6", c1:"#39B089", a:0.56, blur:3},
-  {r:0.96, lobes:4, wob:0.034, dx: 0.02, dy: 0.12, sp: 0.000560, ph:3.3, c0:"#7CDFAF", c1:"#2E9A6E", a:0.54, blur:3},
-  {r:0.60, lobes:4, wob:0.022, dx: 0.00, dy: 0.00, sp:-0.000300, ph:5.0, c0:"#5FD79A", c1:"#25704A", a:0.92, blur:0}
+  {r:0.99, lobes:4, wob:0.030, dx:-0.11, dy:-0.05, sp: 0.000390, ph:0.0, c0:"#F6E9C9", c1:"#D9BD82", a:0.60, blur:3},
+  {r:0.97, lobes:4, wob:0.028, dx: 0.11, dy:-0.03, sp:-0.000470, ph:1.7, c0:"#F1E0AE", c1:"#C9A968", a:0.56, blur:3},
+  {r:0.96, lobes:4, wob:0.034, dx: 0.02, dy: 0.12, sp: 0.000560, ph:3.3, c0:"#EAD6A0", c1:"#B4964F", a:0.54, blur:3},
+  {r:0.60, lobes:4, wob:0.022, dx: 0.00, dy: 0.00, sp:-0.000300, ph:5.0, c0:"#E2CC98", c1:"#8C6D3C", a:0.92, blur:0}
 ];
 function startOrb(){
   const cv=$("#orbCanvas"); if(!cv) return;
@@ -2560,8 +3198,8 @@ function startOrb(){
     ctx.clearRect(0,0,W,H);
 
     const halo=ctx.createRadialGradient(cx,cy,base*0.7, cx,cy,base*1.55);
-    halo.addColorStop(0,`rgba(127,224,168,${(0.12+a*0.10).toFixed(3)})`);
-    halo.addColorStop(1,"rgba(127,224,168,0)");
+    halo.addColorStop(0,`rgba(226,204,152,${(0.12+a*0.10).toFixed(3)})`);
+    halo.addColorStop(1,"rgba(226,204,152,0)");
     ctx.fillStyle=halo; ctx.fillRect(0,0,W,H);
 
     BLOBS.forEach((b,i)=>{
@@ -2627,9 +3265,7 @@ function openVoice(){
 function closeVoice(){ clearInterval(S.voiceTimer); clearInterval(S.ampTimer); stopOrb(); const e=$("#voiceSheet"); if(e) e.remove(); }
 function voiceDone(){
   closeVoice();
-  const holder=document.createElement("div"); holder.className="followups";
-  $("#chatWrap").appendChild(holder);
-  askMore(holder.appendChild(document.createElement("button")), encodeURIComponent(L(CHAT_SEED.q)));
+  ask(L(CHAT_SEED.q));
 }
 function closeNfc(){const e=$("#nfcSheet"); if(e)e.remove();}
 
@@ -2637,12 +3273,12 @@ function closeNfc(){const e=$("#nfcSheet"); if(e)e.remove();}
 function finishOnboard(){
   S.onboarded=true;
   renderRoute(); renderProfile(); renderChat(); renderNudge();
-  go("guide");
+  go("home");
 }
 function skipOnboard(){
   S.onboarded=false;
   renderRoute(); renderProfile(); renderChat(); renderNudge();
-  go("guide");
+  go("home");
 }
 // 定制的邀请放在识别成功之后 —— 那时它才有上下文
 function renderNudge(){
@@ -2659,22 +3295,25 @@ function renderNudge(){
 function renderDivert(){
   const box=$("#divertCard"); if(!box) return;
   if(!S.autoDivert || !can("data")){
-    box.innerHTML=`<div class="ttl">${icon("i-bulb",16)}<span>${t("divertTitle")}</span></div>
+    box.innerHTML=`<div class="ttl"><span class="ai-orb"></span><span>${t("divertTitle")}</span></div>
       <p>${S.autoDivert ? t("divertNoData") : t("divertOffP")}</p>`;
     return;
   }
   if(S.divertState==="done"){
     box.innerHTML=`<div class="ttl">${icon("i-check",16)}<span>${t("divertDoneT")}</span></div>
-      <p>${t("divertDone")}</p>
+      <p>${t("divertDone")(L(S.stops.find(x=>x.id===5))[0])}</p>
+      ${S.divertDelta?`<div class="delta">
+        <div><span>${LANG==='zh'?'剩余路线':'Route left'}</span><b>${S.divertDelta[0]} → ${S.divertDelta[1]} ${LANG==='zh'?'分钟':'min'}</b></div>
+        <div><span>${LANG==='zh'?'下一站':'Next stop'}</span><b>${L(S.stops.find(x=>x.id===5).hall)}</b></div></div>`:""}
       <div class="row"><button class="btn sm quiet" onclick="undoDivert()">${icon("i-refresh",14)}<span>${t("undo")}</span></button></div>`;
     return;
   }
   if(S.divertState==="dismissed"){
-    box.innerHTML=`<div class="ttl">${icon("i-bulb",16)}<span>${t("divertTitle")}</span></div>
+    box.innerHTML=`<div class="ttl"><span class="ai-orb"></span><span>${t("divertTitle")}</span></div>
       <p>${t("divertDismissed")}</p>`;
     return;
   }
-  box.innerHTML=`<div class="ttl">${icon("i-bulb",16)}<span>${t("divertTitle")}</span></div>
+  box.innerHTML=`<div class="ttl"><span class="ai-orb"></span><span>${t("divertTitle")}</span></div>
     <p>${t("divertText")}</p>
     <details class="why"><summary>${t("whyThis")}</summary>
       <ul><li>${t("why1")}</li><li>${t("why2")}</li><li>${t("why3")}</li></ul>
@@ -2685,19 +3324,26 @@ function renderDivert(){
     </div>`;
 }
 function acceptDivert(){
-  S.divertOrder = S.stops.slice();                 // 存下原顺序，撤销要用
+  S.divertOrder = S.stops.map(x=>({...x}));        // 深拷贝原顺序，撤销要用
+  const before=minsAhead();
   const moved=S.stops.find(x=>x.id===5);
   if(moved){
     const rest=S.stops.filter(x=>x.id!==5);
     const at=rest.findIndex(x=>x.state==="now");
     rest.splice(at<0?rest.length:at+1,0,moved);
+    // 人流下降 → 观看更从容；顺路走 → 步行变短；被挤后的那站要多走一段
+    moved.was={view:moved.view, walk:moved.walk}; moved.view=7; moved.walk=4; moved.moved=true;
+    const bumped=rest[rest.indexOf(moved)+1];
+    if(bumped){ bumped.was={view:bumped.view, walk:bumped.walk}; bumped.walk=bumped.walk+1; }
     S.stops=rest;
   }
+  S.divertDelta=[before, minsAhead()];
   S.divertState="done"; renderRoute();
+  setTimeout(()=>{ const el=$("#routeList .stop.moved"); if(el) el.scrollIntoView({behavior:"smooth",block:"center"}); },60);
 }
 function undoDivert(){
-  if(S.divertOrder) S.stops=S.divertOrder.slice();
-  S.divertState="open"; renderRoute();
+  if(S.divertOrder) S.stops=S.divertOrder.map(x=>({...x}));
+  S.divertDelta=null; S.divertState="open"; renderRoute();
 }
 function dismissDivert(){ S.divertState="dismissed"; renderDivert(); }
 
@@ -2730,6 +3376,8 @@ function setLang(l){
   if(spz){ spz.setAttribute("aria-current",String(l==="zh")); spe.setAttribute("aria-current",String(l==="en")); }
   $("#lang-zh").setAttribute("aria-pressed",String(l==="zh"));
   $("#lang-en").setAttribute("aria-pressed",String(l==="en"));
+  const lzh2=$("#lang-zh-home"), len2=$("#lang-en-home");
+  if(lzh2){ lzh2.setAttribute("aria-pressed",String(l==="zh")); len2.setAttribute("aria-pressed",String(l==="en")); }
   document.documentElement.lang = l==="zh" ? "zh-CN" : "en";
   $$("[data-t]").forEach(el=>{ const v=T[l][el.dataset.t]; if(typeof v==="string") el.textContent=v; });
   $$("[data-t-ph]").forEach(el=>{ const v=T[l][el.dataset.tPh]; if(typeof v==="string") el.placeholder=v; });
@@ -2738,13 +3386,14 @@ function setLang(l){
 }
 
 function renderAll(){
+  renderHome();
   renderTabbar(); renderVisitors(); renderDepthSeg(); renderModes();
   renderNarration(); paintBoot(); renderScan(); renderStats(); renderFontSeg(); renderOffline(); renderNearby();
   renderObjHead(); renderGenerated(); renderRelated(); renderWave(); renderGrounding(S.region);
   renderModel(); renderAskHome(); renderChat(); setRead(S.readMode); renderRoute(); renderStyles();
   renderGains(); renderRadar(); renderProfile();
   const r=[1,1.25,1.5][S.rate];
-  $("#rateBtn").textContent=t("rateVal")(r);
+  const rateBtn=$("#rateBtn"); if(rateBtn) rateBtn.textContent=t("rateVal")(r);
   $("#rowRateVal").textContent=t("rateRow")(t("rateL")[S.rate], r);
   routeTab($("#routeMapPane").hidden===false ? "map" : "list");
   const nfc=$("#nfcSheet"); if(nfc){closeNfc();openNfc();}
