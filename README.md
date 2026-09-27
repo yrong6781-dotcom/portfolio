@@ -7,7 +7,7 @@ Rong Yan 的个人作品集网站，展示 UI / 视觉 / 动效设计项目。
 - **首页** `index.html`：Hero、About Me、Skills、横向滑动的 Projects、页脚动效头像
 - **项目详情**
   - `project-bodycode.html` — Bodycode
-  - `project-bodycode-admin.html` — Bodycode 后台管理系统
+  - `project-tongcheng.html` — 同程旅行 机票预订流程体验优化
   - `project-grow.html` — Grow
   - `project-sugo.html` — SUGO（含界面 / 弹窗 / 头像框动效视频）
   - `project-muse.html` — Muse AI
