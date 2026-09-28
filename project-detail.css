@@ -452,7 +452,11 @@ body {
   }
 }
 
-/* Driveletics page: slides sit under the full-height video reel */
-.detail-pages--after-reel {
-  padding-bottom: clamp(48px, 6vw, 96px);
+.detail-pages > video {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #000;
+  border-radius: clamp(8px, 1.2vw, 18px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
 }

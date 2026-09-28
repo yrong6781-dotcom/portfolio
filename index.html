@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   <!-- stylesheet -->
   <link rel="stylesheet" href="style.css?v=47" />
-  <link rel="prefetch" href="src/projects/bodycode/01.jpg?v=3" as="image" />
+  <link rel="prefetch" href="src/projects/driveletics/pages/01.jpg?v=2" as="image" />
   <link rel="prefetch" href="src/projects/tongcheng/01.jpg?v=1" as="image" />
   <link rel="prefetch" href="src/projects/sugo/01.jpg?v=2" as="image" />
   <link rel="prefetch" href="src/projects/muse/01.jpg?v=3" as="image" />
@@ -225,6 +225,7 @@
         </div>
       </div>
       <ul class="projects-grid">
+        <!-- Bodycode App: hidden for now (page project-bodycode.html kept)
         <li class="project-card" data-aos="fade-up" data-aos-delay="0">
           <div class="project-card-media">
             <img src="src/jpg/bodycode-cover.jpg?v=7" alt="Bodycode App 封面" loading="lazy" style="view-transition-name: bodycode-cover" />
@@ -236,6 +237,21 @@
                 <p class="project-card-meta">UI/UX设计 · C端</p>
               </div>
               <a href="project-bodycode.html" class="project-card-link" aria-label="查看 Bodycode App">View project</a>
+            </div>
+          </div>
+        </li>
+        -->
+        <li class="project-card" id="driveletics-card" data-aos="fade-up" data-aos-delay="0">
+          <div class="project-card-media">
+            <img src="src/jpg/driveletics-cover.jpg?v=1" alt="Driveletics 封面" loading="lazy" style="view-transition-name: driveletics-cover" />
+          </div>
+          <div class="project-card-body">
+            <div class="project-card-head">
+              <div>
+                <h3 class="project-card-title">Driveletics 疲劳驾驶干预系统</h3>
+                <p class="project-card-meta">UX设计 · 车载 HUD + 司机端 App</p>
+              </div>
+              <a href="project-driveletics.html" class="project-card-link" aria-label="查看 Driveletics 疲劳驾驶干预系统">View project</a>
             </div>
           </div>
         </li>
@@ -283,39 +299,8 @@
         </li>
       </ul>
 
-      <!-- Driveletics: video project on its own screen, paused on the first frame until played (reel.js).
-           Shown by default. The link without the car project adds ?k=<key>: then the template stays inert (nothing
-           rendered, video not loaded), and it stays hidden in that browser tab when coming back from a project page (sessionStorage). -->
-      <template id="driveletics-reel">
-      <div class="reel" id="driveletics">
-        <div class="reel-head" data-aos="fade-up">
-          <span class="reel-pill">VIDEO PROJECT</span>
-          <h3 class="reel-title">Driveletics<span>疲劳驾驶干预系统</span></h3>
-          <p class="reel-lead">Driveletics 是一套面向网约车司机的疲劳监测与分级干预系统，由车载 HUD 与司机端 App 组成。点击画面播放完整项目视频。</p>
-          <a class="reel-cta" href="driveletics-prototype.html" target="_blank" rel="noopener" data-aos="fade-up" data-aos-delay="200">
-            查看可交互原型
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h12.2l-4.6-4.6L14 6l7 7-7 7-1.4-1.4 4.6-4.6H5z" /></svg>
-          </a>
-        </div>
-        <figure class="reel-player" data-aos="fade-up" data-aos-delay="100">
-          <video class="reel-video" src="src/projects/driveletics/driveletics.mp4" poster="src/projects/driveletics/poster.jpg" width="1280" height="720" preload="metadata" playsinline aria-label="Driveletics 项目视频"></video>
-          <span class="reel-badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l10.6-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14z" /></svg>项目视频 · 车载 HUD + 司机端 App</span>
-          <button class="reel-big-play" type="button" aria-label="播放视频"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l10.6-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14z" /></svg></span></button>
-          <div class="reel-controls">
-            <button class="reel-btn reel-toggle" type="button" aria-label="播放">
-              <svg class="reel-icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l10.6-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14z" /></svg>
-              <svg class="reel-icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h3.5v16H7zM13.5 4H17v16h-3.5z" /></svg>
-            </button>
-            <div class="reel-progress" role="slider" tabindex="0" aria-label="播放进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="reel-progress-fill"></span></div>
-            <span class="reel-time">00:00 / 01:39</span>
-            <button class="reel-btn reel-mute" type="button" aria-label="静音">
-              <svg class="reel-icon-sound" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.06A4.5 4.5 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z" /></svg>
-              <svg class="reel-icon-muted" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3zm18.4.0-1.4-1.4-2.5 2.5-2.5-2.5-1.4 1.4 2.5 2.5-2.5 2.5 1.4 1.4 2.5-2.5 2.5 2.5 1.4-1.4-2.5-2.5z" /></svg>
-            </button>
-          </div>
-        </figure>
-      </div>
-      </template>
+      <!-- Driveletics card is shown by default. The link without the car project adds ?k=<key>: then the card is removed,
+           and it stays hidden in that browser tab when coming back from a project page (sessionStorage). -->
       <script>
         (function () {
           var KEY = "xvs2uz3wx6";
@@ -325,9 +310,7 @@
             if (fromLink) sessionStorage.setItem("ry-portfolio-no-car", "1");
             hidden = hidden || sessionStorage.getItem("ry-portfolio-no-car") === "1";
           } catch (e) {}
-          if (hidden) return;
-          var tpl = document.getElementById("driveletics-reel");
-          tpl.parentNode.insertBefore(tpl.content.cloneNode(true), tpl);
+          if (hidden) document.getElementById("driveletics-card").remove();
         })();
       </script>
     </section>
@@ -486,7 +469,6 @@
 
   <script src="main.js"></script>
   <script src="experience.js?v=4"></script>
-  <script src="reel.js?v=2"></script>
 
   <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
   <script>
