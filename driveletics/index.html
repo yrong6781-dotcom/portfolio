@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<meta name="robots" content="noindex, nofollow" />
+<meta name="theme-color" content="#0b0f0d" />
+<title>Driveletics · Driver Coach</title>
+<link rel="stylesheet" href="app.css?v=5" />
+</head>
+<body>
+
+<div class="stage">
+  <!-- Demo controls (outside the phone; bottom sheet on mobile) -->
+  <aside class="demo" id="demo">
+    <button class="demo-toggle" id="demoToggle" aria-expanded="false">演示控制</button>
+    <div class="demo-body">
+      <a class="demo-back" href="../project-driveletics.html">&#8592; 返回作品集</a>
+      <p class="demo-kicker">DRIVELETICS · 交互原型</p>
+      <h1 class="demo-title">网约车司机端内嵌疲劳教练</h1>
+      <p class="demo-lead">从 Uber 司机端的 Coach 入口进入。行驶中手机不弹窗，分级提醒交给 HUD 和语音；手机只被动显示状态。切到「已停车」后，首页才出现恢复入口。</p>
+      <div class="demo-meter">
+        <span>认知耐力值</span>
+        <strong id="demoScore">84</strong>
+        <em id="demoZone" class="z-opt">Optimal</em>
+      </div>
+      <div class="demo-drive" role="group" aria-label="车辆状态">
+        <button data-moving="1" class="on">行驶中</button>
+        <button data-moving="0">已停车</button>
+      </div>
+      <div class="demo-btns">
+        <button id="simPlay" class="primary">▶ 模拟连续驾驶</button>
+        <button data-jump="58">跳到黄区 · 58</button>
+        <button data-jump="32">跳到红区 · 32</button>
+        <button id="simReset">重置</button>
+      </div>
+      <ul class="demo-legend">
+        <li><i class="z-opt"></i>&gt; 65 最佳区 · 按计划驾驶</li>
+        <li><i class="z-sus"></i>46–65 可持续区 · 建议 15 分钟恢复</li>
+        <li><i class="z-risk"></i>≤ 45 疲劳风险区 · 暂停派单，建议 20 分钟小睡</li>
+      </ul>
+      <p class="demo-note">概念原型，与 Uber 无关联；数据为模拟数据。</p>
+    </div>
+  </aside>
+
+  <div class="phone-wrap" id="phoneWrap">
+    <div class="phone" id="phone">
+      <div class="statusbar" aria-hidden="true">
+        <span class="sb-time">9:41</span>
+        <span class="sb-island"></span>
+        <span class="sb-icons">
+          <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+          <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 2.2c2.4 0 4.6.9 6.2 2.5l1.2-1.2A10.4 10.4 0 0 0 8 .5 10.4 10.4 0 0 0 .6 3.5l1.2 1.2A8.7 8.7 0 0 1 8 2.2Zm0 3.4c1.5 0 2.8.6 3.8 1.5L13 5.9A7.1 7.1 0 0 0 8 3.9a7.1 7.1 0 0 0-5 2l1.2 1.2c1-.9 2.3-1.5 3.8-1.5Zm0 3.4c.6 0 1.1.2 1.5.6L8 11.1 6.5 9.6c.4-.4.9-.6 1.5-.6Z"/></svg>
+          <svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="20" height="9" rx="2"/><path d="M25 4.5v4c.8-.3 1.3-1.1 1.3-2s-.5-1.7-1.3-2Z" opacity=".5"/></svg>
+        </span>
+      </div>
+
+      <!-- ============ 000 · Uber driver home ============ -->
+      <section class="screen scr-uber is-active" data-screen="uber">
+        <div class="uber-map"><img src="assets/uber-map.jpg" alt="" /></div>
+        <button class="go-btn" id="goBtn" aria-label="Go online">
+          <img class="go-outer" src="assets/go-outer.svg" alt="" />
+          <img class="go-inner" src="assets/go-inner.svg" alt="" />
+          <span>GO</span>
+        </button>
+        <p class="uber-state" id="uberState">You’re offline</p>
+        <div class="uber-actions">
+          <img class="uber-warn" src="assets/warn.svg" alt="" />
+          <div>
+            <p class="ua-title">Required actions（1）</p>
+            <p class="ua-sub">Go online when resolved</p>
+            <p class="ua-item">Select a vehicle to get on the road</p>
+          </div>
+        </div>
+        <button class="coach-entry" id="coachEntry" aria-label="Open Driveletics coach">
+          <span class="coach-orb">
+            <img class="coach-glow" src="assets/coach-glow.svg" alt="" />
+            <img class="coach-face" src="assets/mascot.png" alt="" />
+          </span>
+          <span class="coach-pill"><img src="assets/coach-shine.svg" alt="" /><b>Coach</b></span>
+        </button>
+        <nav class="uber-tabs">
+          <a class="on"><img src="assets/u-home.svg" alt="" /><span>Home</span></a>
+          <a><img src="assets/u-earn.svg" alt="" /><span>Earnings</span></a>
+          <a><img src="assets/u-inbox.svg" alt="" /><span>Inbox</span></a>
+          <a><img src="assets/u-menu.svg" alt="" /><span>Menu</span></a>
+        </nav>
+      </section>
+
+      <!-- ============ Splash ============ -->
+      <section class="screen scr-splash" data-screen="splash">
+        <img class="sp-glow-green" src="assets/sp-glow-green.svg" alt="" />
+        <img class="sp-glow-cyan" src="assets/sp-glow-cyan.svg" alt="" />
+        <div class="sp-ring">
+          <img class="sp-track" src="assets/sp-ring-track.svg" alt="" />
+          <img class="sp-progress" src="assets/sp-ring-progress.svg" alt="" />
+          <img class="sp-halo" src="assets/sp-orb-halo.svg" alt="" />
+          <img class="sp-rim" src="assets/sp-orb-rim.svg" alt="" />
+          <img class="sp-face" src="assets/sp-orb-face.svg" alt="" />
+          <img class="sp-hl" src="assets/sp-orb-hl.svg" alt="" />
+          <img class="sp-eye l" src="assets/sp-eye.svg" alt="" />
+          <img class="sp-eye r" src="assets/sp-eye.svg" alt="" />
+          <img class="sp-smile" src="assets/sp-smile.svg" alt="" />
+        </div>
+        <p class="sp-name">DRIVELETICS</p>
+        <p class="sp-tag">Drive in rhythm. Rest in time.</p>
+        <p class="sp-chip"><img src="assets/sp-dot.svg" alt="" /><span id="spChip">Calibrating fatigue monitor…</span></p>
+        <div class="sp-loader"><i id="spBar"></i></div>
+        <p class="sp-foot">AI-POWERED DRIVER WELLBEING</p>
+      </section>
+
+      <!-- ============ Coach app shell ============ -->
+      <section class="screen scr-app" data-screen="app">
+        <div class="app-scroll" id="appScroll">
+          <button class="back" data-action="back-uber">
+            <svg width="24" height="24" viewBox="0 0 24 24"><path d="M14.5 6 8.5 12l6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Back to Uber</span>
+          </button>
+
+          <!-- 001 Home -->
+          <div class="tab-page is-active" data-page="home">
+            <header class="hello">
+              <img class="hello-avatar" src="assets/mascot.png" alt="" />
+              <div><h2>Hi, Jack</h2><p>Saturday, March 14, 2026</p></div>
+            </header>
+
+            <article class="park-card" id="parkCard" hidden>
+              <span class="pc-dot"></span>
+              <div>
+                <p class="pc-kicker" id="pcKicker">PARKED · FATIGUE RISK</p>
+                <p class="pc-title" id="pcTitle">Good time for a 20-min rest</p>
+                <p class="pc-sub" id="pcSub">Requests stay paused until you’ve rested.</p>
+              </div>
+              <button class="pc-go" id="pcGo">Start</button>
+            </article>
+
+            <article class="stamina" id="staminaCard">
+              <p class="st-label">COGNITIVE STAMINA</p>
+              <p class="st-score" id="stScore">84</p>
+              <p class="st-state" id="stState">Optimal Performance</p>
+              <div class="st-ring">
+                <svg viewBox="0 0 120 120">
+                  <circle cx="60" cy="60" r="50" class="ring-track" />
+                  <circle cx="60" cy="60" r="50" class="ring-val" id="stRing" />
+                </svg>
+                <span id="stBadge">HIGH</span>
+              </div>
+              <div class="st-msg" id="stMsg">
+                <img src="assets/check-circle.svg" alt="" />
+                <span id="stMsgText">Your status is good, continue accepting rides</span>
+              </div>
+              <p class="st-dispatch"><span>Ride requests</span><b id="stDispatch">Active</b></p>
+              <button class="st-why" id="stWhy" aria-expanded="false">AI 判断依据 <b>›</b></button>
+              <div class="st-basis" id="stBasis" hidden>
+                <p><i></i>PERCLOS（闭眼时间占比）<b id="bPerclos">6%</b></p>
+                <p><i></i>本段连续驾驶<b id="bDrive">32 min</b></p>
+                <p><i></i>今日累计在线<b>5h 42m</b></p>
+                <p><i></i>急刹 / 车道偏离（CAN）<b id="bCan">0 次</b></p>
+                <small>DMS 摄像头 + 车辆 CAN 数据 · 只用于安全支持，不作为平台处罚依据</small>
+              </div>
+            </article>
+
+            <h3 class="sec">Today's Driving Status</h3>
+            <div class="duo">
+              <div class="mini"><p>Active Hours</p><strong id="activeHours">5h 42m</strong></div>
+              <div class="mini"><p>Safety Score</p><strong>9.8<img class="safety-dot" src="assets/safety-dot.svg" alt="" /></strong></div>
+            </div>
+
+            <div class="next-win" id="nextWin">
+              <span class="nw-icon"><img src="assets/clock-bg.svg" alt="" /><img src="assets/clock.svg" alt="" /></span>
+              <div><p>NEXT RECOVERY WINDOW</p><strong id="nwText">Scheduled in 15m</strong></div>
+              <button class="snooze" id="snoozeBtn">Snooze</button>
+            </div>
+
+            <h3 class="sec">Daily points progress</h3>
+            <div class="bar"><i id="dailyBar" style="width:65%"></i></div>
+            <p class="bar-cap" id="dailyCap">65 / 100 points</p>
+          </div>
+
+          <!-- 002 Plan -->
+          <div class="tab-page" data-page="plan">
+            <h2 class="title">Driving Plan</h2>
+            <p class="subtitle">Today's rhythmic training schedule</p>
+            <article class="overview">
+              <p class="ov-label">PLAN OVERVIEW</p>
+              <div class="ov-cols">
+                <div><p>Total Drive</p><strong>195</strong><span>minutes</span></div>
+                <div><p>Total Rest</p><strong>45</strong><span>minutes</span></div>
+                <div><p>Sessions</p><strong>4</strong><span>total</span></div>
+              </div>
+              <img class="ov-orb" src="assets/mascot.png" alt="" />
+            </article>
+
+            <button class="sec sec-link" data-action="open-schedule">Session Schedule
+              <svg width="20" height="20" viewBox="0 0 24 24"><path d="M9.5 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <article class="current" data-action="open-schedule">
+              <img class="cur-play" src="assets/play-green.svg" alt="" />
+              <div class="cur-head"><strong>Drive Session 2</strong><span>9:04 AM-9:52 AM</span></div>
+              <div class="cur-min"><b>48</b><span>min</span></div>
+              <div class="bar teal"><i id="curBar" style="width:66.7%"></i></div>
+              <p class="cur-prog" id="curProg">In progress 32/48 min</p>
+            </article>
+
+            <div class="duo">
+              <div class="mini tall"><p>DRIVE SESSION 1</p><strong>52 mins</strong><span>8:00 AM-8:52 AM</span><em>Completed</em></div>
+              <div class="mini tall"><p>RECOVERY 1</p><strong>12 mins</strong><span>8:52 AM-9:04 AM</span><em>Completed</em></div>
+            </div>
+
+            <article class="strategy">
+              <h3>Ride Acceptance Strategy</h3>
+              <ol id="strategyList">
+                <li class="on"><b>9:04 AM-9:30 AM</b><span>Peak period · Prioritize short trips</span></li>
+                <li><b>9:30 AM-9:52 AM</b><span>Wind down · Decline trips over 20 min</span></li>
+                <li><b>9:52 AM-10:07 AM</b><span>Recovery 2 · Auto-pause new requests</span></li>
+              </ol>
+            </article>
+          </div>
+
+          <!-- 003 Schedule (sub page of Plan) -->
+          <div class="tab-page" data-page="schedule">
+            <h2 class="title">Schedule</h2>
+            <div class="sched" id="schedList"></div>
+          </div>
+
+          <!-- 004 Recovery -->
+          <div class="tab-page" data-page="recovery">
+            <article class="rec-win" id="recWin">
+              <p class="rw-label">RECOVERY WINDOW</p>
+              <p class="rw-zone" id="rwZone">Sustainable<br />Zone</p>
+              <p class="rw-time"><b id="rwTime">12:48</b><span>MIN REMAINING</span></p>
+              <p class="rw-active" id="rwActive">ACTIVE</p>
+              <img class="rw-orb" src="assets/mascot.png" alt="" />
+              <div class="bar dark"><i id="rwBar" style="width:15%"></i></div>
+              <p class="rw-hint">Maintain low intensity for maximum recovery benefit</p>
+              <div class="rw-actions">
+                <button id="rwToggle">Pause</button>
+                <button id="rwEnd" class="ghost">End early</button>
+              </div>
+            </article>
+
+            <article class="card strategies">
+              <h3>Recovery Strategies</h3>
+              <button class="strat is-on" data-strat="breath"><img src="assets/ic-lungs.svg" alt="" /><b>Deep Breathing</b><span>3-5 min breathing to reduce stress hormones</span><em>Best</em></button>
+              <button class="strat" data-strat="coffee"><img src="assets/ic-coffee.svg" alt="" /><b>Caffeine Boost</b><span>Small coffee or tea to enhance alertness</span></button>
+              <button class="strat" data-strat="walk"><img src="assets/ic-walk.svg" alt="" /><b>Light Movement</b><span>Walk or stretch to improve circulation</span></button>
+              <button class="strat" data-strat="snack"><img src="assets/ic-apple.svg" alt="" /><b>Healthy Snack</b><span>Fruit or nuts for energy replenishment</span></button>
+            </article>
+
+            <h3 class="sec">Nearby Rest Stop</h3>
+            <div class="rest-map"><img src="assets/rest-map.jpg" alt="" /></div>
+
+            <article class="card stops">
+              <h3><img src="assets/ic-pin.svg" alt="" />Nearby Rest Stops</h3>
+              <button class="stop" data-stop="Starbucks - Downtown"><b>Starbucks - Downtown</b><em>0.3 Km</em><span>Coffee Shop</span><i>Wifi</i><i>Restroom</i><i>Charging</i></button>
+              <button class="stop" data-stop="Central Park"><b>Central Park</b><em>0.5 Km</em><span>Park</span><i>Green Space</i><i>Restroom</i><i>Charging</i></button>
+              <button class="stop" data-stop="7-Eleven - Main St"><b>7-Eleven - Main St</b><em>0.2 Km</em><span>Convenience</span><i>Food</i><i>Restroom</i></button>
+            </article>
+          </div>
+
+          <!-- 005 Rewards -->
+          <div class="tab-page" data-page="rewards">
+            <h2 class="title">Rewards &amp; Rules</h2>
+            <p class="subtitle strong">Follow the rhythm, earn rewards</p>
+            <div class="duo">
+              <div class="pts today">
+                <p>TODAY'S POINTS</p>
+                <div class="pts-ring">
+                  <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="50" class="pr-track"/><circle cx="60" cy="60" r="50" class="pr-val" id="ptsRing"/></svg>
+                  <strong id="ptsToday">73</strong><em>Good</em>
+                </div>
+              </div>
+              <div class="pts total">
+                <p>REWARD POINTS</p>
+                <strong id="ptsTotal">888</strong><em>pts</em>
+                <button id="redeemBtn">Redeem <svg width="16" height="16" viewBox="0 0 24 24"><path d="M9.5 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              </div>
+            </div>
+
+            <article class="card trend">
+              <h3>Weekly Endurance Trends</h3>
+              <p class="muted">Last 7 Days</p>
+              <svg class="chart" id="chart" viewBox="0 0 322 170"></svg>
+              <p class="legend"><i class="z-opt"></i>HIGH <i class="z-sus"></i>SUSTAINABLE <i class="z-risk"></i>FATIGUE</p>
+            </article>
+
+            <h3 class="sec">Recent Rewards</h3>
+            <ul class="card rewards" id="rewardList">
+              <li><b>Smooth Braking Streak</b><span>Today 2:20 PM</span><em>+25 pts</em></li>
+              <li><b>Recovery 1 Completed</b><span>Today 9:04 AM</span><em>+15 pts</em></li>
+              <li><b>Plan Adherence 3 days</b><span>Today 8:00 AM</span><em>+25 pts</em></li>
+            </ul>
+          </div>
+        </div>
+
+        <nav class="tabbar" id="tabbar">
+          <button data-tab="home" class="on"><img class="i-off" src="assets/tab-home-gray.png" alt="" /><img class="i-on" src="assets/mascot.png" alt="" /><span>Home</span></button>
+          <button data-tab="plan"><img class="i-off" src="assets/tab-plan.png" alt="" /><img class="i-on" src="assets/mascot.png" alt="" /><span>Plan</span></button>
+          <button data-tab="recovery"><img class="i-off" src="assets/tab-recovery.png" alt="" /><img class="i-on" src="assets/mascot.png" alt="" /><span>Recovery</span></button>
+          <button data-tab="rewards"><img class="i-off" src="assets/tab-rewards.png" alt="" /><img class="i-on" src="assets/mascot.png" alt="" /><span>Rewards</span></button>
+        </nav>
+
+      </section>
+
+      <div class="toast" id="toast" role="status"></div>
+      <div class="home-ind"></div>
+    </div>
+  </div>
+</div>
+
+<script src="app.js?v=5"></script>
+</body>
+</html>
