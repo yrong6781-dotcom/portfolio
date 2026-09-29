@@ -771,7 +771,7 @@
     if (location.protocol === 'file:') { toast('摄像头需要通过 http(s) 打开页面（本地预览或线上地址）'); return; }
     btn.textContent = '📷 加载模型中…';
     try {
-      cam.mod = cam.mod || (await import('./monitor.js?v=21'));
+      cam.mod = cam.mod || (await import('./monitor.js?v=22'));
       await cam.mod.start($('#camVideo'), onDms);
     } catch (e) {
       btn.textContent = '📷 摄像头监测 关';
@@ -925,25 +925,28 @@
     rec.start(100);
     voiceLine(`<span class="mic"></span>${L() ? '正在听' : 'Listening'} ${BARS} ${L() ? '直接和小奇说话' : 'just talk to Xiao Qi'}`);
     const t0 = performance.now();
-    let floor = 0.01, speaking = false, lastVoice = 0, n = 0;
+    let floor = 0, speaking = false, lastVoice = 0, n = 0;
     await new Promise((done) => {
       const iv = setInterval(() => {
         const now = performance.now(), lv = mic.level;
-        if (now - t0 < 400) { floor = Math.max(floor, lv); n++; return; } // ambient noise
-        const thr = Math.max(0.02, floor * 2.5);
-        if (lv > thr) { speaking = true; lastVoice = now; }
+        if (now - t0 < 500) return;                                   // let Xiao Qi's voice die out
+        if (now - t0 < 900) { floor += lv; n++; return; }              // ambient noise
+        const thr = Math.min(0.045, Math.max(0.012, (floor / Math.max(1, n)) * 1.8));
+        if (lv > thr) { if (!speaking) voiceNote('听到声音…'); speaking = true; lastVoice = now; }
         const stop = voice.prompt !== p || (speaking && now - lastVoice > 750) || (speaking && now - t0 > 9000) || (!speaking && now - t0 > 10000);
         if (stop) { clearInterval(iv); rec.onstop = done; rec.stop(); }
       }, 50);
     });
     if (voice.prompt !== p) return;
-    if (!speaking) { listenOpenAI(p); return; }
+    if (!speaking) { voiceNote('没听到说话，继续听…（说话时音量条应该会动）'); listenOpenAI(p); return; }
     voiceLine('<span class="mic" style="background:#88e6cf"></span>' + (L() ? '正在理解…' : 'Understanding…'));
+    voiceNote('上传识别中…');
     try {
       const text = await openaiTranscribe(new Blob(chunks, { type: rec.mimeType || 'audio/webm' }));
       voiceLine(`<q>${text}</q>`);
       let intent = intentOf(text);
       if (!intent && text) intent = await openaiIntent(text, p);
+      voiceNote(`识别结果：「${text || '（空）'}」→ ${{ ok: '确认', later: '稍后', why: '问原因' }[intent] || '没听懂'}`);
       handleIntent(p, intent, text);
     } catch (e) {
       voiceNote('OpenAI 识别失败：' + (e.message || e));
