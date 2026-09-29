@@ -122,11 +122,8 @@
     $('#stBadge').textContent = Z.badge;
     $('#stMsgText').textContent = Z.msg;
     $('#stRing').style.strokeDashoffset = RING * (1 - s / 100);
-    $('#bPerclos').textContent = `${Math.round(6 + (84 - s) * 0.35)}%`;
     const seg = state.schedule.find((x) => x.t === 'drive' && x.st === 'now');
-    $('#bDrive').textContent = seg ? `${seg.prog || 0} min` : '0 min';
     $('#stDispatch').textContent = state.rec.active ? 'Paused · resting' : z === 'risk' ? 'Paused by Coach' : z === 'sus' ? 'Short trips only' : 'Active';
-    $('#bCan').textContent = `${z === 'risk' ? 3 : z === 'sus' ? 1 : 0} 次`;
 
     const nw = $('#nextWin');
     nw.dataset.zone = state.rec.active ? 'opt' : z;
@@ -280,11 +277,6 @@
   }
   $$('[data-moving]').forEach((b) => b.addEventListener('click', () => setMoving(b.dataset.moving === '1')));
 
-  $('#stWhy').addEventListener('click', (e) => {
-    const b = $('#stBasis');
-    b.hidden = !b.hidden;
-    e.currentTarget.setAttribute('aria-expanded', String(!b.hidden));
-  });
 
   $('#snoozeBtn').addEventListener('click', () => {
     const z = zoneOf(state.score);
@@ -771,7 +763,7 @@
     if (location.protocol === 'file:') { toast('摄像头需要通过 http(s) 打开页面（本地预览或线上地址）'); return; }
     btn.textContent = '📷 加载模型中…';
     try {
-      cam.mod = cam.mod || (await import('./monitor.js?v=22'));
+      cam.mod = cam.mod || (await import('./monitor.js?v=23'));
       await cam.mod.start($('#camVideo'), onDms);
     } catch (e) {
       btn.textContent = '📷 摄像头监测 关';

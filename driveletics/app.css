@@ -466,7 +466,7 @@ img { display: block; }
 .hello h2 { font-size: 24px; font-weight: 600; }
 .hello p { font-size: 14px; font-weight: 500; color: var(--muted); margin-top: 2px; }
 
-.stamina { position: relative; background: #111; color: #fff; padding: 19px 15px 16px 15px; min-height: 209px; transition: box-shadow .4s; }
+.stamina { position: relative; background: #111; color: #fff; border-radius: 12px; padding: 19px 15px 16px 15px; min-height: 209px; transition: box-shadow .4s; }
 .st-label { font-size: 14px; font-weight: 500; }
 .st-score { font-size: 64px; font-weight: 500; color: var(--zone); margin: 6px 0 0 10px; line-height: 1.1; font-variant-numeric: tabular-nums; transition: color .4s; }
 .st-state { font-size: 16px; color: var(--muted); margin-left: 10px; }
@@ -594,7 +594,7 @@ img { display: block; }
 .strat.is-on { border-color: var(--teal); background: #eefaf6; }
 .strat.is-on::after { content: "✓"; position: absolute; right: 14px; bottom: 12px; width: 20px; height: 20px; border-radius: 50%; background: var(--teal); color: #fff; font-size: 12px; display: grid; place-items: center; }
 
-.rest-map { height: 199px; border-radius: 16px; overflow: hidden; position: relative; }
+.rest-map { height: 199px; border-radius: 12px; overflow: hidden; position: relative; }
 .rest-map img { position: absolute; left: -1.48%; top: -2.57%; width: 103.21%; height: 105.02%; object-fit: cover; }
 .stops { margin-top: 24px; padding: 10px 25px 12px; display: grid; gap: 9px; }
 .stops h3 { display: flex; align-items: center; gap: 7px; margin: 0 0 4px -1px; }
@@ -648,7 +648,7 @@ img { display: block; }
 .tabbar button.on .i-off { display: none; }
 
 /* Parked recovery card (in-page, not a popup) */
-.park-card { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; padding: 14px 14px 14px 16px; border-radius: 14px; background: #fff; border: 1.5px solid var(--zone); animation: rise .35s ease; }
+.park-card { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; padding: 14px 14px 14px 16px; border-radius: 12px; background: #fff; border: 1.5px solid var(--zone); animation: rise .35s ease; }
 .pc-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--zone); flex: none; box-shadow: 0 0 8px var(--zone); }
 .pc-kicker { font-size: 11px; font-weight: 700; letter-spacing: .06em; color: var(--zone); }
 .pc-title { font-size: 16px; font-weight: 600; margin-top: 2px; }
