@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow" />
 <meta name="theme-color" content="#0b0f0d" />
 <title>Driveletics · Driver Coach</title>
-<link rel="stylesheet" href="app.css?v=9" />
+<link rel="stylesheet" href="app.css?v=21" />
 </head>
 <body>
 
@@ -14,53 +14,110 @@
   <div class="cockpit">
     <!-- ============ In-car AR-HUD (drawn in code over a real road photo) ============ -->
     <section class="hud-wrap" id="hudWrap" aria-label="In-car AR-HUD">
-      <div class="hud" id="hud" data-zone="opt">
+      <div class="hud" id="hud" data-zone="opt" data-view="coach">
         <img class="hud-road" src="assets/road.jpg" alt="" />
-        <div class="hud-shade"></div>
-        <div class="hud-band"><i></i></div>
+        <div class="hud-dash"></div>
 
-        <div class="hud-turn">
-          <svg viewBox="0 0 40 40" width="34" height="34"><path d="M10 34V18a6 6 0 0 1 6-6h12" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/><path d="M24 5l8 7-8 7" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <p><b id="hudTurn">0.8</b> mi<small>Pennsylvania Ave</small></p>
+        <!-- lane light band (+ chevrons in the red zone) -->
+        <svg class="hud-band" viewBox="0 0 960 540" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="bandGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="var(--hz)" stop-opacity="0" />
+              <stop offset=".35" stop-color="var(--hz)" stop-opacity=".55" />
+              <stop offset=".8" stop-color="var(--hz)" stop-opacity=".4" />
+              <stop offset="1" stop-color="var(--hz)" stop-opacity="0" />
+            </linearGradient>
+            <filter id="bandBlur" x="-20%" y="-5%" width="140%" height="110%"><feGaussianBlur stdDeviation="3" /></filter>
+          </defs>
+          <polygon points="449,118 466,118 562,292 370,292" fill="url(#bandGrad)" filter="url(#bandBlur)" />
+          <g class="chevrons" fill="none" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M447 166 l12 -6 l12 6" /><path d="M441 201 l20 -8 l20 8" /><path d="M434 238 l29 -10 l29 10" /><path d="M425 280 l40 -12 l40 12" />
+          </g>
+        </svg>
+        <div class="hud-marker"><svg viewBox="0 0 24 24"><path d="M12 7l8 10H4z" fill="#fff" /></svg></div>
+
+        <div class="hud-turn" id="hudTurn">
+          <svg class="t-right" viewBox="0 0 26 26"><path d="M5 23V13a4 4 0 0 1 4-4h12M16 4l5 5-5 5" fill="none" stroke="var(--hz)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          <p><b id="hudDist">0.8</b><i>mi</i><small id="hudStreet">Right onto Pennsylvania Ave</small></p>
         </div>
 
-        <div class="hud-chips" id="hudChips"></div>
+        <!-- pills (status added by the prototype, styled like the P 300m pills) -->
+        <div class="hud-pills" id="hudPills"></div>
 
-        <div class="hud-pins" id="hudPins" hidden>
-          <div class="pin pin-l"><b>P</b>300 m</div>
-          <div class="pin pin-r"><b>7-Eleven</b>200 m</div>
+        <!-- coach (orb + short line) -->
+        <div class="hud-coach" id="hudCoach">
+          <div class="coach-text" id="coachText"></div>
+          <div class="hud-orb" id="hudOrb"><img id="orbImg" src="assets/mascot.png" alt="Xiao Qi" /></div>
+        </div>
+        <p class="hud-prompt" id="hudPrompt" hidden></p>
+        <p class="hud-voice" id="hudVoice"></p>
+
+        <!-- red: "Optimal break in" -->
+        <div class="hud-break" id="hudBreak">
+          <span>Optimal break in</span>
+          <div class="mini-dial"><b id="breakTime">10:00</b></div>
         </div>
 
-        <div class="hud-coach">
-          <div class="orb" id="hudOrb">
-            <svg viewBox="0 0 40 40"><path class="eye" d="M12 17q3-3 6 0M22 17q3-3 6 0"/><path class="mouth" id="hudMouth" d="M14 25q6 5 12 0"/></svg>
+        <!-- red: nearby rest spots -->
+        <div class="hud-spots" id="hudSpots">
+          <svg class="spot-lines" viewBox="0 0 960 540" preserveAspectRatio="none"><path d="M50 220 L72 240 H182" /><path d="M919 312 L898 294 H806" /></svg>
+          <div class="spot spot-l">
+            <svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 1-8.5 6" fill="none" stroke="#ff8a1f" stroke-width="2.6" stroke-linecap="round" /><path d="M12 7v5h4" fill="none" stroke="#ff8a1f" stroke-width="2.6" stroke-linecap="round" /></svg>
+            <span>P 300m</span>
           </div>
-          <p id="hudMsg"><b>Fatigue 16 · Optimal</b>Keep your rhythm</p>
+          <div class="spot spot-r">
+            <span>Store 150m</span>
+            <svg viewBox="0 0 28 20"><path d="M3 11c0-5 5-8 11-8s11 3 11 8z" fill="#ff8a1f" /><rect x="3" y="12" width="22" height="5" rx="2" fill="#ff8a1f" /><circle cx="10" cy="8" r="1.4" fill="#5b2a00" /><circle cx="18" cy="8" r="1.4" fill="#5b2a00" /></svg>
+          </div>
+          <p class="xiaoqi">Hi, I am your coach <b>Xiao Qi</b> ~</p>
         </div>
 
-        <div class="hud-dial">
-          <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" class="d-track"/><circle cx="50" cy="50" r="42" class="d-val" id="hudRing"/></svg>
-          <b id="hudScore">84</b>
-          <small id="hudDialSub">STAMINA</small>
-        </div>
-
-        <div class="hud-bar hud-bar-l"><b id="hudPct">84</b>%<span id="hudState">Optimal state</span><i class="limit">35</i></div>
-        <div class="hud-bar hud-bar-r"><b>28</b>min<span>ETA</span><b>15:36</b></div>
-
-        <div class="hud-prompt" id="hudPrompt" hidden>
-          <p id="hpText">Rest 15 min at the next stop?</p>
-          <div class="hp-keys"><span><kbd>▲</kbd>OK</span><span><kbd>▼</kbd>Later</span></div>
-        </div>
-        <div class="hud-vibe" id="hudVibe" hidden>
-          <svg viewBox="0 0 24 24" width="16" height="16"><path d="M7 4h10v16H7zM3 8v8M21 8v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          Seat vibration
-        </div>
-
-        <div class="hud-rec" id="hudRec" hidden>
+        <!-- recovery mode (parked) -->
+        <div class="hud-rec" id="hudRec">
           <p class="hr-title">Recovery Mode</p>
           <p class="hr-time"><b id="hrTime">20:00</b> remaining</p>
           <p class="hr-sub">Recovery Session Active</p>
           <ul><li>Light Therapy<b>ON</b></li><li>White Noise<b>ON</b></li><li>Seat Micro Massage<b>ON</b></li></ul>
+        </div>
+
+        <!-- boot: annotations, DMS signals card, status card -->
+        <svg class="hud-anno" id="annoDash" viewBox="0 0 960 540" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M150 386 h24 l30 28" /><text x="96" y="390">Stamina Zone</text>
+          <path d="M392 372 v-12" /><path d="M381 418 l11 -40" /><text x="376" y="368">Speed</text>
+          <path d="M660 384 h36 l10 26" /><text x="662" y="378">Trip Time / ETA</text>
+        </svg>
+        <svg class="hud-anno" id="annoRoute" viewBox="0 0 960 540" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M388 196 h30 l24 26" /><text x="340" y="200">AR Route</text>
+          <path d="M792 206 h-40 l-40 34" /><text x="760" y="200">Navigation Arrow</text>
+        </svg>
+        <p class="hud-hello" id="hudHello">Hi, I am your coach <b>Xiao Qi</b> ~</p>
+        <div class="dms-card" id="dmsCard">
+          <ul id="dmsList"><li>Blink Rate</li><li>Blink Duration</li><li>Yawning</li><li>Head Pose</li><li>Steering Entropy (SWE)</li><li>Lane Deviation (LDI)</li></ul>
+          <svg class="dms-arrow" viewBox="0 0 60 36"><path d="M0 12h34V2l24 16-24 16V24H0z" /></svg>
+          <div class="dms-ring"><b id="dmsScore">0</b></div>
+        </div>
+        <div class="ok-card" id="okCard">
+          <p><span id="okLine">Your status is <em>good</em> !</span><br />Uber has accepted your order.</p>
+          <img src="assets/mascot.png" alt="" />
+        </div>
+        <div class="hud-caption-box" id="capBox"><p id="capText"></p></div>
+
+        <!-- dashboard arc + dial + info -->
+        <svg class="hud-arc" viewBox="0 0 960 540" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M85 441 C 150 420, 300 400, 420 396" /><path d="M526 396 C 646 400, 796 420, 861 441" />
+        </svg>
+        <p class="hud-timer" id="hudTimer"><svg viewBox="0 0 16 16"><circle cx="8" cy="9" r="5.5" fill="none" stroke="var(--hz)" stroke-width="1.6" /><path d="M8 6v3.2l2 1.3M6.5 1.8h3" fill="none" stroke="var(--hz)" stroke-width="1.6" stroke-linecap="round" /></svg><span id="hudTimerText">240:00 Left</span></p>
+        <div class="hud-dial">
+          <b id="hudScore">84</b>
+          <svg class="dial-rest" id="dialRest" viewBox="0 0 24 24" hidden><rect x="4" y="4" width="16" height="16" rx="3" fill="#fff" /><path d="M8 16l8-8" stroke="#e8590c" stroke-width="2.6" stroke-linecap="round" /></svg>
+        </div>
+        <div class="hud-info hud-info-l">
+          <p><b id="hudPct">84</b><i>%</i><span id="hudState">Optimal state</span><em class="limit" id="hudLimit">65</em></p>
+          <div class="u"><i id="hudPctBar"></i></div>
+        </div>
+        <div class="hud-info hud-info-r">
+          <p><b id="hudMin">28</b><i>min</i><span class="eta">ETA</span><b id="hudEta">15:36</b></p>
+          <div class="u gray"><i></i></div>
         </div>
 
         <button class="hud-close" id="hudClose" aria-label="Close HUD view">✕</button>
@@ -105,9 +162,24 @@
               <button data-wheel="later" id="wheelLater">▼ 稍后</button>
             </div>
             <div class="demo-row">
+              <button id="explainBtn" class="demo-sound" aria-pressed="false">讲解字幕 关</button>
               <button id="soundBtn" class="demo-sound" aria-pressed="false">🔇 语音 关</button>
               <button id="simReset">重置</button>
             </div>
+          </div>
+        </div>
+        <div class="demo-live">
+          <div class="cam"><video id="camVideo" playsinline muted></video><span id="camState">摄像头未开启</span></div>
+          <div class="live-ctl">
+            <div class="live-btns">
+              <button id="camBtn" aria-pressed="false">📷 摄像头监测 关</button>
+              <button id="voiceBtn" aria-pressed="false">🎙 语音对话 关</button>
+              <button id="langBtn" title="小奇说话和识别的语言">语言 EN</button>
+            </div>
+            <div class="live-key"><input id="keyInput" type="password" autocomplete="off" placeholder="OpenAI API Key（可选）" /><button id="keySave">保存</button></div>
+            <p class="live-voice"><span class="meter"><i></i></span><span id="voiceNote">语音未开启</span></p>
+            <p class="live-stats" id="camStats">闭眼 – · 张嘴 – · PERCLOS – · 长闭眼 0 · 哈欠 0</p>
+            <p class="live-note">MediaPipe 在本机浏览器里运行，摄像头画面不会上传。闭眼超过 0.8 秒、打哈欠会扣耐力值。</p>
           </div>
         </div>
         <p class="demo-note">行驶中所有提醒都在 HUD 上，司机用方向盘按键或语音回应；手机只被动显示状态，停车后才可操作。概念原型，与 Uber 无关联，数据为模拟。</p>
@@ -384,6 +456,6 @@
   </div>
 </div>
 
-<script src="app.js?v=9"></script>
+<script src="app.js?v=21"></script>
 </body>
 </html>
