@@ -156,6 +156,7 @@
 
     renderPark();
     renderUber();
+    renderHud();
     const coach = $('#coachEntry');
     coach.style.filter = z === 'opt' ? '' : z === 'sus' ? 'drop-shadow(0 0 10px #f5a524)' : 'drop-shadow(0 0 12px #e5484d)';
   }
@@ -265,10 +266,17 @@
   });
 
   function setMoving(m) {
+    if (m && state.rec.active) { toast('Finish the recovery before driving on'); return; }
     state.moving = m;
+    if (m) hud.parkLater = false;
     $$('[data-moving]').forEach((b) => b.classList.toggle('on', b.dataset.moving === (m ? '1' : '0')));
     if (!m) stopSim();
     renderScore();
+    // Driver already accepted a rest stop on the HUD: parking there starts recovery mode automatically.
+    if (!m && hud.nav && !state.rec.active && zoneOf(state.score) !== 'opt') {
+      const z = zoneOf(state.score);
+      startRecovery(z === 'risk' ? 20 : 15, z);
+    }
   }
   $$('[data-moving]').forEach((b) => b.addEventListener('click', () => setMoving(b.dataset.moving === '1')));
 
@@ -319,6 +327,7 @@
   function startRecovery(min, zone) {
     const r = state.rec;
     if (r.active) return openPage('recovery');
+    if (state.screen !== 'app') go('app');
     const next = state.schedule.find((s) => s.t === 'rec' && s.st === 'todo');
     r.name = next ? next.name : 'Recovery';
     Object.assign(r, { active: true, paused: false, total: min * 60, left: min * 60, zone });
@@ -420,6 +429,7 @@
       if (state.rec.active) finishRecovery();
       stopSim();
       state.score = Number(b.dataset.jump);
+      Object.assign(hud, { susAck: false, susLaterAt: null, level: 0, nav: null, recheckAt: 0, parkLater: false, lastPrompt: null });
       if (state.screen !== 'app') go('app');
       openPage('home');
       renderScore();
@@ -438,6 +448,160 @@
     $('#demoToggle').setAttribute('aria-expanded', String(open));
   });
 
+
+  /* ---------- In-car AR-HUD: tiered intervention while driving ---------- */
+  const hud = { prompt: null, lastPrompt: null, susAck: false, susLaterAt: null, recheckAt: 0, level: 0, nav: null, parkLater: false, sound: false };
+  const hudEl = $('#hud');
+  const MOUTH = { opt: 'M14 25q6 5 12 0', sus: 'M14 26h12', risk: 'M14 28q6-5 12 0' };
+
+  function fitHud() {
+    const wrap = $('#hudWrap');
+    const W = wrap.clientWidth, H = wrap.clientHeight;
+    if (!W || !H) return;
+    const rot = W < H; // phone overlay in portrait: turn the HUD sideways
+    const s = rot ? Math.min(H / 960, W / 540) : Math.min(W / 960, H / 540);
+    hudEl.style.setProperty('--hs', s);
+    hudEl.style.setProperty('--hr', rot ? '90deg' : '0deg');
+  }
+  window.addEventListener('resize', fitHud);
+
+  function hudPrompt() {
+    const z = zoneOf(state.score);
+    if (state.rec.active) return null;
+    if (!state.moving) return z !== 'opt' && !hud.parkLater ? 'park' : null;
+    if (z === 'sus' && !hud.susAck && (hud.susLaterAt == null || state.score <= hud.susLaterAt - 6)) return 'sus';
+    if (z === 'risk' && !hud.nav && Date.now() >= hud.recheckAt) return 'risk';
+    return null;
+  }
+
+  const PROMPT = {
+    sus: 'Rest 15 min at the next stop?',
+    risk: 'Navigate to 7-Eleven · 0.2 km for a 20-min rest?',
+    park: 'Parked · Start recovery mode now?',
+  };
+  const VOICE = {
+    sus: 'Your stamina is dropping. Keep a steady pace. Shall we rest fifteen minutes at the next stop?',
+    risk: 'Fatigue risk is high. New ride requests are paused. The nearest rest stop is 7-Eleven, two hundred meters ahead.',
+    risk2: 'Please pull over soon. Fatigue risk is still high.',
+    park: 'You are parked. Shall I start recovery mode?',
+  };
+
+  let audioCtx;
+  function chime(strong) {
+    if (!hud.sound) return;
+    try {
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      const notes = strong ? [880, 660, 880] : [660, 880];
+      notes.forEach((f, i) => {
+        const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+        o.frequency.value = f; o.type = 'sine';
+        const t = audioCtx.currentTime + i * 0.18;
+        g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.25, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
+        o.connect(g).connect(audioCtx.destination); o.start(t); o.stop(t + 0.18);
+      });
+    } catch (e) { /* audio unavailable */ }
+  }
+  function say(text) {
+    if (!hud.sound || !('speechSynthesis' in window)) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US'; u.rate = 1;
+    setTimeout(() => speechSynthesis.speak(u), 380);
+  }
+
+  function renderHud() {
+    const s = Math.round(state.score);
+    const z = zoneOf(s);
+    const moving = state.moving && !state.rec.active;
+    hudEl.dataset.zone = z;
+    hudEl.classList.toggle('moving', moving);
+    hudEl.classList.toggle('parked', !moving);
+
+    $('#hudScore').textContent = state.rec.active ? 'P' : s;
+    $('#hudDialSub').textContent = state.rec.active ? 'RESTING' : 'STAMINA';
+    $('#hudRing').style.strokeDashoffset = 263.9 * (1 - s / 100);
+    $('#hudPct').textContent = s;
+    $('#hudState').textContent = z === 'opt' ? 'Optimal state' : z === 'sus' ? 'Moderate state' : 'Severe state';
+    $('#hudMouth').setAttribute('d', MOUTH[z]);
+    const fatigue = 100 - s;
+    $('#hudMsg').innerHTML =
+      state.rec.active ? `<b>Resting · recovering</b>Stamina ${s} and rising`
+      : z === 'opt' ? `<b>Fatigue ${fatigue} · Optimal</b>Keep your rhythm`
+      : z === 'sus' ? `<b>Fatigue ${fatigue} · Moderate</b>Keep steady pace!`
+      : `<b>Fatigue ${fatigue} · Load exceeded</b>Back to safe zone!`;
+
+    // chips: status only, never a wall of text
+    const chips = [];
+    if (state.rec.active) chips.push(['z', 'Requests paused · resting']);
+    else if (z === 'opt') chips.push(['', state.snoozed ? 'Next break · 25 min' : 'Next break · 15 min']);
+    else if (z === 'sus') {
+      chips.push(['z', 'Short trips only']);
+      if (hud.susAck) chips.push(['', 'Rest stop planned · 1.2 km']);
+    } else {
+      chips.push(['warn', 'Requests paused']);
+      if (hud.nav) chips.push(['z', `Navigating · ${hud.nav}`]);
+      if (hud.level > 0 && !hud.nav) chips.push(['warn', 'Seat vibration']);
+    }
+    $('#hudChips').innerHTML = chips.map(([c, t]) => `<span class="chip ${c}">${t}</span>`).join('');
+    $('#hudPins').hidden = !(z === 'risk' && state.moving && !state.rec.active);
+
+    // recovery mode panel (after parking)
+    $('#hudRec').hidden = !state.rec.active;
+    if (state.rec.active) $('#hrTime').textContent = mmss(state.rec.left);
+
+    // prompt + announcements on change
+    const p = hudPrompt();
+    hud.prompt = p;
+    $('#hudPrompt').hidden = !p;
+    if (p) $('#hpText').textContent = p === 'risk' && hud.level > 0 ? 'Fatigue risk persists · Pull over at 7-Eleven (0.2 km)?' : PROMPT[p];
+    if (p && p !== hud.lastPrompt) {
+      const strong = p === 'risk';
+      chime(strong || hud.level > 0);
+      say(p === 'risk' && hud.level > 0 ? VOICE.risk2 : VOICE[p]);
+      if (p === 'risk' && hud.level > 0) {
+        hudEl.classList.remove('shake'); void hudEl.offsetWidth; hudEl.classList.add('shake');
+      }
+    }
+    hud.lastPrompt = p;
+    $$('[data-wheel]').forEach((b) => { b.disabled = !p; b.classList.toggle('ready', !!p); });
+
+    if (z === 'opt') { hud.susAck = false; hud.susLaterAt = null; hud.level = 0; hud.nav = null; hud.recheckAt = 0; }
+  }
+
+  function wheel(action) {
+    const p = hud.prompt;
+    if (!p) return;
+    if (action === 'ok') {
+      if (p === 'sus') { hud.susAck = true; toast('HUD · Rest stop planned at the next stop'); }
+      if (p === 'risk') { hud.nav = '7-Eleven 0.2 km'; toast('HUD · Navigating to 7-Eleven — park there to start resting'); }
+      if (p === 'park') { const z = zoneOf(state.score); startRecovery(z === 'risk' ? 20 : 15, z); }
+    } else {
+      if (p === 'sus') hud.susLaterAt = state.score;
+      if (p === 'risk') { hud.level += 1; hud.recheckAt = Date.now() + 8000; toast('HUD · Requests stay paused · re-check in 5 min'); } // demo: 8 s stands in for 5 min
+      if (p === 'park') hud.parkLater = true;
+    }
+    renderScore();
+  }
+  $$('[data-wheel]').forEach((b) => b.addEventListener('click', () => wheel(b.dataset.wheel)));
+  document.addEventListener('keydown', (e) => {
+    if (e.target.closest('input, textarea')) return;
+    if (e.code === 'Space' || e.key === 'ArrowUp') { e.preventDefault(); wheel('ok'); }
+    if (e.key === 'l' || e.key === 'L' || e.key === 'ArrowDown') { e.preventDefault(); wheel('later'); }
+  });
+  setInterval(() => { if (hud.recheckAt && Date.now() >= hud.recheckAt && hud.prompt == null) renderScore(); }, 1000);
+
+  $('#soundBtn').addEventListener('click', (e) => {
+    hud.sound = !hud.sound;
+    e.currentTarget.setAttribute('aria-pressed', String(hud.sound));
+    e.currentTarget.textContent = hud.sound ? '🔊 语音 开' : '🔇 语音 关';
+    if (hud.sound) { chime(false); if (hud.prompt) say(VOICE[hud.prompt]); }
+    else if ('speechSynthesis' in window) speechSynthesis.cancel();
+  });
+
+  // phone: open the HUD full-screen from Home
+  $('#hudEntry').addEventListener('click', () => { $('#hudWrap').classList.add('open'); fitHud(); });
+  $('#hudClose').addEventListener('click', () => $('#hudWrap').classList.remove('open'));
+
   function renderAll() {
     renderScore();
     renderSchedule();
@@ -446,4 +610,5 @@
   }
   renderChart();
   renderAll();
+  fitHud();
 })();

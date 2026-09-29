@@ -6,42 +6,114 @@
 <meta name="robots" content="noindex, nofollow" />
 <meta name="theme-color" content="#0b0f0d" />
 <title>Driveletics · Driver Coach</title>
-<link rel="stylesheet" href="app.css?v=5" />
+<link rel="stylesheet" href="app.css?v=9" />
 </head>
 <body>
 
 <div class="stage">
-  <!-- Demo controls (outside the phone; bottom sheet on mobile) -->
-  <aside class="demo" id="demo">
-    <button class="demo-toggle" id="demoToggle" aria-expanded="false">演示控制</button>
-    <div class="demo-body">
-      <a class="demo-back" href="../project-driveletics.html">&#8592; 返回作品集</a>
-      <p class="demo-kicker">DRIVELETICS · 交互原型</p>
-      <h1 class="demo-title">网约车司机端内嵌疲劳教练</h1>
-      <p class="demo-lead">从 Uber 司机端的 Coach 入口进入。行驶中手机不弹窗，分级提醒交给 HUD 和语音；手机只被动显示状态。切到「已停车」后，首页才出现恢复入口。</p>
-      <div class="demo-meter">
-        <span>认知耐力值</span>
-        <strong id="demoScore">84</strong>
-        <em id="demoZone" class="z-opt">Optimal</em>
+  <div class="cockpit">
+    <!-- ============ In-car AR-HUD (drawn in code over a real road photo) ============ -->
+    <section class="hud-wrap" id="hudWrap" aria-label="In-car AR-HUD">
+      <div class="hud" id="hud" data-zone="opt">
+        <img class="hud-road" src="assets/road.jpg" alt="" />
+        <div class="hud-shade"></div>
+        <div class="hud-band"><i></i></div>
+
+        <div class="hud-turn">
+          <svg viewBox="0 0 40 40" width="34" height="34"><path d="M10 34V18a6 6 0 0 1 6-6h12" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/><path d="M24 5l8 7-8 7" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <p><b id="hudTurn">0.8</b> mi<small>Pennsylvania Ave</small></p>
+        </div>
+
+        <div class="hud-chips" id="hudChips"></div>
+
+        <div class="hud-pins" id="hudPins" hidden>
+          <div class="pin pin-l"><b>P</b>300 m</div>
+          <div class="pin pin-r"><b>7-Eleven</b>200 m</div>
+        </div>
+
+        <div class="hud-coach">
+          <div class="orb" id="hudOrb">
+            <svg viewBox="0 0 40 40"><path class="eye" d="M12 17q3-3 6 0M22 17q3-3 6 0"/><path class="mouth" id="hudMouth" d="M14 25q6 5 12 0"/></svg>
+          </div>
+          <p id="hudMsg"><b>Fatigue 16 · Optimal</b>Keep your rhythm</p>
+        </div>
+
+        <div class="hud-dial">
+          <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" class="d-track"/><circle cx="50" cy="50" r="42" class="d-val" id="hudRing"/></svg>
+          <b id="hudScore">84</b>
+          <small id="hudDialSub">STAMINA</small>
+        </div>
+
+        <div class="hud-bar hud-bar-l"><b id="hudPct">84</b>%<span id="hudState">Optimal state</span><i class="limit">35</i></div>
+        <div class="hud-bar hud-bar-r"><b>28</b>min<span>ETA</span><b>15:36</b></div>
+
+        <div class="hud-prompt" id="hudPrompt" hidden>
+          <p id="hpText">Rest 15 min at the next stop?</p>
+          <div class="hp-keys"><span><kbd>▲</kbd>OK</span><span><kbd>▼</kbd>Later</span></div>
+        </div>
+        <div class="hud-vibe" id="hudVibe" hidden>
+          <svg viewBox="0 0 24 24" width="16" height="16"><path d="M7 4h10v16H7zM3 8v8M21 8v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Seat vibration
+        </div>
+
+        <div class="hud-rec" id="hudRec" hidden>
+          <p class="hr-title">Recovery Mode</p>
+          <p class="hr-time"><b id="hrTime">20:00</b> remaining</p>
+          <p class="hr-sub">Recovery Session Active</p>
+          <ul><li>Light Therapy<b>ON</b></li><li>White Noise<b>ON</b></li><li>Seat Micro Massage<b>ON</b></li></ul>
+        </div>
+
+        <button class="hud-close" id="hudClose" aria-label="Close HUD view">✕</button>
+        <div class="hud-touch">
+          <button data-wheel="ok">▲ OK</button>
+          <button data-wheel="later">▼ Later</button>
+        </div>
       </div>
-      <div class="demo-drive" role="group" aria-label="车辆状态">
-        <button data-moving="1" class="on">行驶中</button>
-        <button data-moving="0">已停车</button>
+      <p class="hud-caption">车内 AR-HUD · 驾驶中只看一眼</p>
+    </section>
+
+    <!-- Demo controls (bottom sheet on mobile) -->
+    <aside class="demo" id="demo">
+      <button class="demo-toggle" id="demoToggle" aria-expanded="false">演示控制</button>
+      <div class="demo-body">
+        <div class="demo-head">
+          <a class="demo-back" href="../project-driveletics.html">&#8592; 返回作品集</a>
+          <p class="demo-kicker">DRIVELETICS · 交互原型</p>
+          <h1 class="demo-title">网约车司机端内嵌疲劳教练</h1>
+        </div>
+        <div class="demo-grid">
+          <div class="demo-meter">
+            <span>认知耐力值</span>
+            <strong id="demoScore">84</strong>
+            <em id="demoZone" class="z-opt">Optimal</em>
+          </div>
+          <div class="demo-col">
+            <div class="demo-drive" role="group" aria-label="车辆状态">
+              <button data-moving="1" class="on">行驶中</button>
+              <button data-moving="0">已停车</button>
+            </div>
+            <div class="demo-btns">
+              <button id="simPlay" class="primary">▶ 模拟连续驾驶</button>
+              <button data-jump="58">跳到黄区 · 58</button>
+              <button data-jump="32">跳到红区 · 32</button>
+            </div>
+          </div>
+          <div class="demo-col">
+            <p class="demo-label">方向盘按键 <small>空格 = 确认 · L = 稍后</small></p>
+            <div class="demo-wheel">
+              <button data-wheel="ok" id="wheelOk">▲ 确认</button>
+              <button data-wheel="later" id="wheelLater">▼ 稍后</button>
+            </div>
+            <div class="demo-row">
+              <button id="soundBtn" class="demo-sound" aria-pressed="false">🔇 语音 关</button>
+              <button id="simReset">重置</button>
+            </div>
+          </div>
+        </div>
+        <p class="demo-note">行驶中所有提醒都在 HUD 上，司机用方向盘按键或语音回应；手机只被动显示状态，停车后才可操作。概念原型，与 Uber 无关联，数据为模拟。</p>
       </div>
-      <div class="demo-btns">
-        <button id="simPlay" class="primary">▶ 模拟连续驾驶</button>
-        <button data-jump="58">跳到黄区 · 58</button>
-        <button data-jump="32">跳到红区 · 32</button>
-        <button id="simReset">重置</button>
-      </div>
-      <ul class="demo-legend">
-        <li><i class="z-opt"></i>&gt; 65 最佳区 · 按计划驾驶</li>
-        <li><i class="z-sus"></i>46–65 可持续区 · 建议 15 分钟恢复</li>
-        <li><i class="z-risk"></i>≤ 45 疲劳风险区 · 暂停派单，建议 20 分钟小睡</li>
-      </ul>
-      <p class="demo-note">概念原型，与 Uber 无关联；数据为模拟数据。</p>
-    </div>
-  </aside>
+    </aside>
+  </div>
 
   <div class="phone-wrap" id="phoneWrap">
     <div class="phone" id="phone">
@@ -159,6 +231,10 @@
                 <small>DMS 摄像头 + 车辆 CAN 数据 · 只用于安全支持，不作为平台处罚依据</small>
               </div>
             </article>
+
+            <button class="hud-entry" id="hudEntry">
+              <span>🚗</span><b>In-car HUD view</b><em>车内视图 ›</em>
+            </button>
 
             <h3 class="sec">Today's Driving Status</h3>
             <div class="duo">
@@ -308,6 +384,6 @@
   </div>
 </div>
 
-<script src="app.js?v=5"></script>
+<script src="app.js?v=9"></script>
 </body>
 </html>
