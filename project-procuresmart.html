@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- keep the portfolio out of search results: only people with the link should find it -->
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#11111b" />
+  <title>ProcureSmart NHS 医疗采购决策平台 | Rong Yan</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="src/png/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="src/png/favicon-192.png" />
+  <link rel="apple-touch-icon" href="src/png/apple-touch-icon.png" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" />
+  <link rel="stylesheet" href="project-detail.css?v=14" />
+  <script>
+    // zoom the first page in when the browser did not morph it from the project card
+    (function () {
+      var root = document.documentElement;
+      if ("onpagereveal" in window) {
+        window.addEventListener("pagereveal", function (e) {
+          if (!e.viewTransition) {
+            root.classList.add("enter-zoom");
+            return;
+          }
+          // a skipped transition rejects these promises, which is expected
+          e.viewTransition.ready.catch(function () {});
+          e.viewTransition.finished.catch(function () {});
+        }, { once: true });
+      } else {
+        root.classList.add("enter-zoom");
+      }
+    })();
+  </script>
+  <script src="project-detail.js?v=6" defer></script>
+  <script src="site-extras.js?v=4" defer></script>
+</head>
+
+<body>
+  <header class="detail-bar">
+    <a class="detail-back" href="index.html#projects" aria-label="Back to projects">&#8592; &#60;/Projects&#62;</a>
+    <div class="detail-bar-right">
+      <div class="detail-bar-info">
+        <span class="detail-bar-title">ProcureSmart NHS 医疗采购决策平台</span>
+        <span class="detail-bar-meta">AI 产品 · UX设计 · 黑客松</span>
+      </div>
+      <button class="detail-sound" type="button" aria-pressed="false" aria-label="打开背景音乐"></button>
+    </div>
+  </header>
+
+  <main class="detail-main">
+    <!-- Detail page images, stacked top to bottom (exported from Figma 「NHS」 Page 3) -->
+    <div class="detail-pages">
+      <img src="src/projects/procuresmart/01.jpg?v=1" alt="封面 · 基于 AI 的 NHS 医疗采购决策与同行证据平台" width="1920" height="1080" style="view-transition-name: procuresmart-cover" />
+      <img src="src/projects/procuresmart/02.jpg?v=1" alt="01 项目背景" width="1920" height="1080" decoding="async" />
+      <img src="src/projects/procuresmart/03.jpg?v=1" alt="02 采购流程与利益相关者" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/procuresmart/04.jpg?v=1" alt="03 用户痛点与需求" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/procuresmart/05.jpg?v=1" alt="04 优化点 · 现有系统的缺口" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/procuresmart/06.jpg?v=1" alt="05 机会点 · 产品边界 · MVP" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/procuresmart/07.jpg?v=1" alt="06 数据与技术可行性" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/procuresmart/08.jpg?v=1" alt="界面设计 · 需求定义" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/procuresmart/09.jpg?v=1" alt="界面设计 · 两轮漏斗筛选" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/procuresmart/10.jpg?v=1" alt="界面设计 · 报价对比与同行证据" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/procuresmart/11.jpg?v=1" alt="AI 逻辑 · Function Calling" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/procuresmart/12.jpg?v=1" alt="Human + AI · 最终决定由医生保留" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/procuresmart/13.jpg?v=1" alt="审批包设计" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/procuresmart/14.jpg?v=1" alt="总结与反思" width="1920" height="1080" loading="lazy" decoding="async" />
+    </div>
+
+    <div class="detail-end">
+      <!-- the interactive prototype is a separate GitHub Pages site (repo procuresmart-nhs) -->
+      <a class="detail-cta" href="https://yrong6781-dotcom.github.io/procuresmart-nhs/" target="_blank" rel="noopener">
+        查看可交互原型
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h12.2l-4.6-4.6L14 6l7 7-7 7-1.4-1.4 4.6-4.6H5z" /></svg>
+      </a>
+      <a class="detail-next" href="project-tongcheng.html" aria-label="Next project: 同程旅行 机票预订流程体验优化">
+        <span class="detail-next-label">Next project &#8594;</span>
+        <span class="detail-next-title">同程旅行 机票预订流程体验优化</span>
+      </a>
+    </div>
+  </main>
+</body>
+
+</html>

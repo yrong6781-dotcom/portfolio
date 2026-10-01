@@ -2355,6 +2355,15 @@ body.has-announcement {
     list-style: none
 }
 
+/* an odd number of projects: the last card spans both columns with a wider crop */
+.projects-grid > .project-card:last-child:nth-child(odd) {
+    grid-column: 1 / -1
+}
+
+.projects-grid > .project-card:last-child:nth-child(odd) .project-card-media {
+    aspect-ratio: 32 / 9
+}
+
 .project-card {
     position: relative;
     display: flex;
