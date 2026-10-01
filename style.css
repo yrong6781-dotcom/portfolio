@@ -2347,21 +2347,25 @@ body.has-announcement {
 .projects-grid {
     --projects-gap: clamp(1.6rem, 2vw, 3.2rem);
     display: grid;
-    /* four projects, two up two down: every card the same size */
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    /* five projects: two large cards on top, three smaller ones below */
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: var(--projects-gap);
     margin-top: 3.6rem;
     padding: 0;
     list-style: none
 }
 
-/* an odd number of projects: the last card spans both columns with a wider crop */
-.projects-grid > .project-card:last-child:nth-child(odd) {
-    grid-column: 1 / -1
+.projects-grid > .project-card {
+    grid-column: span 2
 }
 
-.projects-grid > .project-card:last-child:nth-child(odd) .project-card-media {
-    aspect-ratio: 32 / 9
+.projects-grid > .project-card:nth-child(-n+2) {
+    grid-column: span 3
+}
+
+/* the link without the car project leaves four cards: back to two by two */
+.projects-grid:not(:has(#driveletics-card)) > .project-card {
+    grid-column: span 3
 }
 
 .project-card {
@@ -2768,6 +2772,11 @@ html .projects-grid .project-card[data-aos].aos-animate:focus-within {
 @media screen and (max-width:768px) {
     .projects-grid {
         grid-template-columns: minmax(0, 1fr)
+    }
+
+    /* single column on phones: undo the 3/2-column spans from the desktop layout */
+    .projects-grid > .project-card {
+        grid-column: auto !important
     }
 
     .reel {
