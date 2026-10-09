@@ -1,5 +1,5 @@
 // Hero, right side: a vertical 3D cylinder of project cards (after a "bank card carousel" brief).
-// Cards flow upward continuously with a short dwell at the centre; smoothstep pushes them up/down
+// Autoplay: each card holds at the centre, then the cylinder rolls up to the next; smoothstep pushes them up/down
 // and flips them so their backs show; they leave past the top/bottom edge in perspective.
 // The centre card tilts toward the cursor with inertia. Every card has real thickness
 // (5 stacked slices). Data is read from the projects grid, so hidden projects stay hidden.
@@ -23,7 +23,8 @@
   if (count < 3) return;
 
   var D = 1350; // perspective distance (matches the CSS)
-  var SPEED = 0.0016; // progress per frame
+  var HOLD = 2200; // ms a card rests at the centre
+  var MOVE = 900; // ms to roll to the next card
   var SLICES = [-1.47, -0.73, 0, 0.73, 1.47]; // card thickness, back → front
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -79,7 +80,7 @@
   function measure() {
     var w = stage.clientWidth;
     var h = stage.clientHeight;
-    cardW = Math.round(Math.min(420, Math.max(220, w * 0.62), h * 0.62 * 1.5925));
+    cardW = Math.round(Math.min(330, Math.max(200, w * 0.48), h * 0.5 * 1.5925));
     cardH = Math.round(cardW / 1.5925);
     space.style.width = cardW + "px";
     space.style.height = cardH + "px";
@@ -89,18 +90,12 @@
     return t * t * (3 - 2 * t);
   }
 
-  var front = 0;
   function render() {
     var h = stage.clientHeight;
     mouse.x += (mouse.tx - mouse.x) * 0.08;
     mouse.y += (mouse.ty - mouse.y) * 0.08;
 
-    var rounded = Math.round(progress);
-    var diff = progress - rounded; // -0.5 … 0.5
-    // magnetic step: a short dwell at the centre, then it speeds to the next card
-    var eased = (Math.sign(diff) * Math.pow(Math.abs(diff) * 2, 4.2)) / 2;
-    var active = rounded + eased;
-    front = ((rounded % count) + count) % count;
+    var active = progress;
 
     var gap = 36;
     var peek = -55; // the second card's edge sits just past the stage edge
@@ -153,19 +148,45 @@
   }
 
   // only animate while the hero is on screen
+  // timeline: hold, then ease to the next whole step; hovering the centre card pauses the hold
   var visible = true;
   var raf = 0;
-  function loop() {
+  var step = 0; // index of the card at (or heading to) the centre
+  var phaseStart = 0;
+  var moving = false;
+  var hovering = false;
+  function ease(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+  function loop(now) {
     raf = 0;
     if (!visible) return;
-    progress += SPEED;
+    if (!phaseStart) phaseStart = now;
+    var t = now - phaseStart;
+    if (moving) {
+      var k = Math.min(1, t / MOVE);
+      progress = step - 1 + ease(k);
+      if (k >= 1) {
+        moving = false;
+        phaseStart = now;
+      }
+    } else if (hovering) {
+      phaseStart = now; // keep resting while the pointer is on the card
+    } else if (t >= HOLD) {
+      step += 1;
+      moving = true;
+      phaseStart = now;
+    }
     render();
     raf = requestAnimationFrame(loop);
   }
   if ("IntersectionObserver" in window) {
     new IntersectionObserver(function (entries) {
       visible = entries[0].isIntersecting;
-      if (visible && !raf && !reduce) raf = requestAnimationFrame(loop);
+      if (visible && !raf && !reduce) {
+        phaseStart = 0;
+        raf = requestAnimationFrame(loop);
+      }
     }).observe(stage);
   }
 
@@ -175,6 +196,14 @@
   });
   document.addEventListener("mouseleave", function () {
     mouse.tx = mouse.ty = 0;
+  });
+
+  space.addEventListener("mouseover", function (e) {
+    var card = e.target.closest(".hc-card");
+    hovering = !!(card && card.classList.contains("is-front"));
+  });
+  space.addEventListener("mouseleave", function () {
+    hovering = false;
   });
 
   // only the centre card opens its project; the others are just passing by
