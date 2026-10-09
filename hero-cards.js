@@ -1,8 +1,8 @@
 // Hero, right side: a vertical 3D cylinder of project cards that flips cards downward.
 // Each card is a dark framed card (YR mark + number, inset cover, type + title + arrow) with a
 // designed back (collection label, big faded mark, title, number) and real thickness (5 slices).
-// Autoplay holds each card at the centre, then rolls on; ← / → step, the pause button toggles
-// autoplay, hovering the front card pauses and tilts it toward the pointer. Cards are staggered
+// Autoplay starts on its own: each card holds at the centre, then rolls on; ← / → step,
+// hovering the front card pauses it and tilts the card toward the pointer. Cards are staggered
 // left/right with a slight twist. Data comes from the projects grid, so hidden projects stay
 // hidden. Clicking the centre card opens its project.
 (function () {
@@ -10,7 +10,6 @@
   if (!stage) return;
   var space = stage.querySelector(".hero-cards-space");
   var counter = stage.querySelector(".hc-count");
-  var pauseBtn = stage.querySelector(".hc-pause");
 
   var projects = Array.prototype.map.call(document.querySelectorAll(".projects-grid .project-card"), function (card) {
     return {
@@ -176,7 +175,6 @@
   var to = 0;
   var phaseStart = 0;
   var moving = false;
-  var paused = false;
   function ease(t) {
     return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   }
@@ -199,7 +197,7 @@
         moving = false;
         phaseStart = now;
       }
-    } else if (paused || hover.on || reduce) {
+    } else if (hover.on || reduce) {
       phaseStart = now; // keep resting
     } else if (t >= HOLD) {
       go(1);
@@ -244,13 +242,6 @@
       go(parseInt(btn.dataset.dir, 10));
     });
   });
-  if (pauseBtn) {
-    pauseBtn.addEventListener("click", function () {
-      paused = !paused;
-      pauseBtn.textContent = paused ? "播放 ▶" : "暂停 Ⅱ";
-      pauseBtn.setAttribute("aria-pressed", paused ? "true" : "false");
-    });
-  }
 
   // only the centre card opens its project; the others are just passing by
   space.addEventListener("click", function (e) {
