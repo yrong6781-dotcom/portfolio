@@ -1,6 +1,7 @@
 // Hero avatar: the video is a head turn (left profile -> front -> right profile).
-// Horizontal mouse movement scrubs it forward/backward, so she turns as the cursor moves.
-// Seeks are queued through "seeked" so fast mouse moves don't flood the decoder.
+// Horizontal pointer movement scrubs it forward/backward, so she turns as the cursor
+// (or a finger dragging sideways) moves. Seeks are queued through "seeked" so fast
+// moves don't flood the decoder.
 (function () {
   var video = document.querySelector(".hero-turn-video");
   if (!video) return;
@@ -23,25 +24,33 @@
     seek(); // the target may have moved while the last seek ran
   });
 
-  video.addEventListener("loadedmetadata", function () {
-    targetTime = video.duration * FRONT;
-    seek();
-  });
-  if (video.readyState >= 1) {
+  function toFront() {
     targetTime = video.duration * FRONT;
     seek();
   }
+  video.addEventListener("loadedmetadata", toFront);
+  if (video.readyState >= 1) toFront();
 
-  window.addEventListener("mousemove", function (e) {
+  function move(x) {
     if (prevX === null) {
-      prevX = e.clientX;
+      prevX = x;
       return;
     }
-    var delta = e.clientX - prevX;
-    prevX = e.clientX;
+    var delta = x - prevX;
+    prevX = x;
     if (!video.duration || !delta) return;
     targetTime += (delta / window.innerWidth) * SENSITIVITY * video.duration;
     targetTime = Math.max(0, Math.min(video.duration, targetTime));
     if (!seeking) seek();
+  }
+
+  window.addEventListener("mousemove", function (e) {
+    move(e.clientX);
   });
+  window.addEventListener("touchstart", function (e) {
+    prevX = e.touches[0].clientX;
+  }, { passive: true });
+  window.addEventListener("touchmove", function (e) {
+    move(e.touches[0].clientX);
+  }, { passive: true });
 })();

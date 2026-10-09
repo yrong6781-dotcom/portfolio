@@ -3547,25 +3547,108 @@ html:not(.no-js) .about-v2-deco[data-aos].aos-animate { transform: translate3d(0
     .about-v2-group { gap: 64px }
 }
 
-/* ===== Hero, turning cartoon avatar (2026-10-09) =====
-   hero-turn.js scrubs the clip with horizontal mouse movement. The clip's background
-   was colour-matched to the page (#11111b); the radial mask fades its square edges out. */
-.landing-page-container {
-    position: relative
+/* ===== Hero v3: short copy + keyword pills + big turning avatar (2026-10-09) =====
+   Modeled on the "Mainframe" hero: a large character on the right whose head follows
+   horizontal mouse movement (hero-turn.js scrubs the clip), short text on the left and
+   pill buttons. The clip's background was colour-matched to the page (#11111b) and is
+   blended with "lighten", so only the character shows over the purple .blob glow. */
+#home.landing-page-container {
+    position: relative;
+    justify-content: flex-start
+}
+
+.text-content.hero-v3 {
+    position: relative;
+    z-index: 2;
+    width: min(60rem, 44vw);
+    margin-left: 8vw;
+    align-items: flex-start;
+    justify-content: center
+}
+
+.hero-label {
+    margin: 0 0 2.2rem;
+    font-size: clamp(15px, 1.35vw, 20px);
+    line-height: 1.55;
+    color: rgba(255, 255, 255, .5);
+    letter-spacing: .02em
+}
+
+.hero-line {
+    margin: 0 0 2.6rem;
+    font-size: clamp(24px, 2.7vw, 42px);
+    font-weight: 600;
+    line-height: 1.45;
+    color: var(--color-white)
+}
+
+.hero-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 6px
+}
+
+.hero-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: .45em 1.2em;
+    border: 1px solid rgba(0, 0, 0, .1);
+    border-radius: 999px;
+    background: #fff;
+    color: #111;
+    font-size: clamp(14px, 1.15vw, 17px);
+    line-height: 1.5;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: background-color .2s, color .2s, border-color .2s
+}
+
+.hero-pill:hover {
+    background: #000;
+    color: #fff
+}
+
+.hero-pill--tag {
+    cursor: default
+}
+
+.hero-pill--outline {
+    background: transparent;
+    border-color: rgba(255, 255, 255, .85);
+    color: #fff
+}
+
+.hero-pill--outline:hover {
+    background: #fff;
+    color: #111
+}
+
+.hero-pill--outline u {
+    text-underline-offset: 2px
+}
+
+.hero-label-br {
+    display: none
+}
+
+.hero-settings .setting-container {
+    margin-left: 0
 }
 
 .hero-turn {
     position: absolute;
-    right: 1.5vw;
-    top: 50%;
-    width: min(32vw, 82vh, 62rem);
+    right: 1vw;
+    bottom: 0;
+    height: 100%;
+    max-width: 60vw;
     aspect-ratio: 1;
-    transform: translateY(-50%);
     pointer-events: none;
-    /* lighten: the clip's dark backdrop gives way to the purple .blob glow behind it */
     mix-blend-mode: lighten;
-    -webkit-mask-image: radial-gradient(closest-side, #000 72%, transparent 100%);
-    mask-image: radial-gradient(closest-side, #000 72%, transparent 100%);
+    /* the clip stops at the hero's bottom edge: fade the hoodie out instead of cutting it */
+    -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent);
+    mask-image: linear-gradient(to bottom, #000 78%, transparent);
     transition: opacity .4s
 }
 
@@ -3581,9 +3664,41 @@ body.light-mode .hero-turn {
     opacity: 0
 }
 
-/* no mouse to steer it, and no room beside the text */
+/* narrow screens: avatar on top, text below; on touch, dragging sideways turns her head */
 @media screen and (max-width:1100px) {
+    #home.landing-page-container {
+        flex-direction: column;
+        justify-content: flex-start;
+        height: auto;
+        margin-top: 0;
+        padding-bottom: 6rem
+    }
+
     .hero-turn {
+        position: relative;
+        order: -1;
+        right: auto;
+        width: min(86vw, 52rem);
+        height: auto;
+        max-width: none
+    }
+
+    .text-content.hero-v3 {
+        width: 86%;
+        margin: 0 auto
+    }
+
+    .hero-label-sep {
         display: none
+    }
+
+    .hero-label-br {
+        display: inline
+    }
+
+    /* no purple glow behind it here: fade all edges so the clip's frame never shows */
+    .hero-turn {
+        -webkit-mask-image: radial-gradient(closest-side, #000 70%, transparent);
+        mask-image: radial-gradient(closest-side, #000 70%, transparent)
     }
 }

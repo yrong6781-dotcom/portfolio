@@ -17,7 +17,7 @@
   <!-- aos cdn -->
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   <!-- stylesheet -->
-  <link rel="stylesheet" href="style.css?v=54" />
+  <link rel="stylesheet" href="style.css?v=55" />
   <link rel="prefetch" href="src/projects/driveletics/pages/01.jpg?v=4" as="image" />
   <link rel="prefetch" href="src/projects/tongcheng/01.jpg?v=1" as="image" />
   <link rel="prefetch" href="src/projects/sugo/01.jpg?v=2" as="image" />
@@ -133,31 +133,26 @@
     <section class="landing-page-container" id="home">
       <div class="blob"></div>
 
-      <div class="text-content">
-        <img class="hero-avatar" src="src/jpg/rongyan-hero.jpg" alt="颜榕的照片" width="100" height="100"
-          data-aos="fade-up" data-aos-delay="0" />
-        <p class="hero-kicker" data-aos="fade-up" data-aos-delay="100">UX 设计<span aria-hidden="true">×</span>产品体验</p>
-        <article id="name" class="hero-name" data-aos="fade-up" data-aos-delay="200" aria-label="Yan Rong">
-          <p class="jello">Y</p><p class="jello">a</p><p class="jello">n</p>&nbsp;<p class="jello">R</p><p class="jello">o</p><p class="jello">n</p><p class="jello">g</p>
-        </article>
-        <p class="hero-role" data-aos="fade-up" data-aos-delay="300">颜榕</p>
-        <article id="work" class="hero-headline" data-aos="fade-up" data-aos-delay="400" aria-label="让想法，成为更好的体验。">
-          <div><p class="jello">让</p><p class="jello">想</p><p class="jello">法</p><p class="jello">，</p></div>
-          <div><p class="jello">成</p><p class="jello">为</p></div>
-          <div class="hero-grad"><p class="jello">更</p><p class="jello">好</p><p class="jello">的</p><p class="jello">体</p><p class="jello">验</p><p class="jello">。</p></div>
-        </article>
-        <div id="info-para" class="hero-intro" data-aos="fade-up" data-aos-delay="600">
-          <p>伦敦大学金史密斯学院用户体验工程硕士在读，预计 2027 年 1 月毕业。</p>
-          <p>拥有 2 年 UI 设计与 1 年 UX 经验，结合视觉审美、用户研究与交互设计。</p>
-          <p>以 AI 辅助设计，用 Vibe Coding 将想法做成交互原型与 MVP。</p>
+      <div class="text-content hero-v3">
+        <p class="hero-label" data-aos="fade-up" data-aos-delay="0">
+          Hi，我是颜榕 Yan Rong<br />UI / UX 设计师<span class="hero-label-sep"> · </span><br class="hero-label-br" />伦敦金史密斯 UX 工程硕士在读
+        </p>
+        <h1 class="hero-line" data-aos="fade-up" data-aos-delay="100">
+          让想法，成为<span class="hero-grad">更好的体验</span>。<br />作品都在下面，一起看看？
+        </h1>
+        <div class="hero-pills" data-aos="fade-up" data-aos-delay="200">
+          <a class="hero-pill" href="#projects">看看作品</a>
+          <a class="hero-pill" href="#about">认识我</a>
+          <span class="hero-pill hero-pill--tag">UX 研究</span>
+          <span class="hero-pill hero-pill--tag">交互原型</span>
+          <span class="hero-pill hero-pill--tag">AI 辅助设计</span>
+          <span class="hero-pill hero-pill--tag">Vibe Coding</span>
+          <a class="hero-pill hero-pill--outline" href="mailto:1289815855@qq.com" title="点击复制邮箱">
+            邮箱：<u>1289815855@qq.com</u>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.2" stroke="currentColor"/><path d="M8.5 2.5V2a.5.5 0 0 0-.5-.5H2A.5.5 0 0 0 1.5 2v6a.5.5 0 0 0 .5.5h.5" stroke="currentColor"/></svg>
+          </a>
         </div>
-        <div class="contact-btn-div" data-aos="fade-up" data-aos-delay="800">
-          <a href="#projects" tabindex="-1">
-            <button class="letsTalkBtn hero-primary">
-              <p class="letsTalkBtn-text">探索我的作品<span class="hero-arrow" aria-hidden="true">↗</span></p>
-              <span class="letsTalkBtn-BG"></span>
-            </button></a>
-          <a class="hero-link" href="#about">认识我<span class="hero-arrow" aria-hidden="true">↗</span></a>
+        <div class="hero-settings">
           <div class="setting-container" id="setting-container">
             <input type="checkbox" id="switchforsetting" onclick="settingtoggle()" />
 
@@ -178,7 +173,6 @@
           </div>
           <!-- setting div ends -->
         </div>
-        <!-- contact-btn-div -->
       </div>
 
       <!-- cartoon avatar that turns her head as the mouse moves left/right (hero-turn.js scrubs the video) -->
@@ -441,7 +435,7 @@
 
   <script src="site-extras.js?v=4"></script>
   <script src="footer-avatar.js?v=2"></script>
-  <script src="hero-turn.js?v=1"></script>
+  <script src="hero-turn.js?v=2"></script>
   <script src="about-reveal.js?v=1"></script>
 </body>
 
