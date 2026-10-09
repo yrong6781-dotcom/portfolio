@@ -98,6 +98,11 @@
     stage.style.setProperty("--hc-w", cardW + "px");
   }
 
+  // where the second card out sits: close behind the first, never past the stage edge
+  function second(h) {
+    return Math.min((cardH + 6) * 1.55, (h / 2 + 40) / (D / (D + 60)) - cardH / 2);
+  }
+
   function smooth(t) {
     return t * t * (3 - 2 * t);
   }
@@ -110,8 +115,7 @@
     hover.y += (hover.ty - hover.y) * 0.1;
 
     var active = progress;
-    var gap = 30;
-    var peek = -40;
+    var gap = 6; // tight stack
     var current = ((Math.round(active) % count) + count) % count;
     if (counter) counter.textContent = pad(current + 1) + " / " + pad(count);
 
@@ -137,13 +141,13 @@
         rot = t * 128;
       } else if (a <= 2) {
         t = smooth(a - 1);
-        var yEnd = (h / 2 - peek) / (D / (D + 60)) - cardH / 2;
+        var yEnd = second(h);
         y = -s * (cardH + gap + t * (yEnd - (cardH + gap)));
         z = 200 + t * (-60 - 200);
         rot = 128 + t * (175 - 128);
       } else {
         t = smooth(Math.min(a - 2, 1));
-        var y2 = (h / 2 - peek) / (D / (D + 60)) - cardH / 2;
+        var y2 = second(h);
         var y3 = (h / 2 + 100) / (D / (D + 250)) + cardH / 2;
         y = -s * (y2 + t * (y3 - y2));
         z = -60 + t * (-250 + 60);
@@ -152,11 +156,11 @@
 
       // staggered: cards above drift left, below drift right, each with its own small twist
       var x = -offset * cardW * 0.07;
-      var twist = -3 + offset * 2.2;
+      var twist = -6 + offset * 3;
 
       var centre = Math.max(0, 1 - a);
       var rx = -s * rot + (-mouse.y * 5 - hover.y * 10) * centre;
-      var ry = (mouse.x * 6 + hover.x * 12) * centre;
+      var ry = -8 + (mouse.x * 6 + hover.x * 12) * centre; // a constant 3D slant, like a card held at an angle
       var lift = 1 + (hover.on ? 0.03 : 0) * centre;
 
       card.style.zIndex = Math.round(z + 300);
