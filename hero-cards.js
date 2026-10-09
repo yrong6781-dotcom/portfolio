@@ -1,44 +1,55 @@
-// Hero, right side: a vertical 3D cylinder of project cards (after a "bank card carousel" brief).
-// Autoplay: each card holds at the centre, then the cylinder rolls up to the next; smoothstep pushes them up/down
-// and flips them so their backs show; they leave past the top/bottom edge in perspective.
-// The centre card tilts toward the cursor with inertia. Every card has real thickness
-// (5 stacked slices). Data is read from the projects grid, so hidden projects stay hidden.
-// Clicking the centre card opens its project.
+// Hero, right side: a vertical 3D cylinder of project cards that flips cards downward.
+// Each card is a dark framed card (YR mark + number, inset cover, type + title + arrow) with a
+// designed back (collection label, big faded mark, title, number) and real thickness (5 slices).
+// Autoplay holds each card at the centre, then rolls on; ← / → step, the pause button toggles
+// autoplay, hovering the front card pauses and tilts it toward the pointer. Cards are staggered
+// left/right with a slight twist. Data comes from the projects grid, so hidden projects stay
+// hidden. Clicking the centre card opens its project.
 (function () {
   var stage = document.querySelector(".hero-cards");
   if (!stage) return;
   var space = stage.querySelector(".hero-cards-space");
+  var counter = stage.querySelector(".hc-count");
+  var pauseBtn = stage.querySelector(".hc-pause");
 
   var projects = Array.prototype.map.call(document.querySelectorAll(".projects-grid .project-card"), function (card) {
-    var img = card.querySelector("img");
-    var link = card.querySelector(".project-card-link");
     return {
-      cover: img.getAttribute("src"),
+      cover: card.querySelector("img").getAttribute("src"),
       title: card.querySelector(".project-card-title").textContent.trim(),
       meta: card.querySelector(".project-card-meta").textContent.trim(),
-      href: link.getAttribute("href")
+      href: card.querySelector(".project-card-link").getAttribute("href")
     };
   });
   var count = projects.length;
   if (count < 3) return;
 
   var D = 1350; // perspective distance (matches the CSS)
-  var HOLD = 2200; // ms a card rests at the centre
-  var MOVE = 900; // ms to roll to the next card
-  var SLICES = [-1.47, -0.73, 0, 0.73, 1.47]; // card thickness, back → front
+  var HOLD = 2600; // ms a card rests at the centre
+  var MOVE = 950; // ms to roll to the next card
+  var SLICES = [-1.6, -0.8, 0, 0.8, 1.6]; // card thickness, back → front
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   var cardW = 0;
   var cardH = 0;
   var progress = 0;
-  var mouse = { x: 0, y: 0, tx: 0, ty: 0 };
+  var mouse = { x: 0, y: 0, tx: 0, ty: 0 }; // whole-window tilt
+  var hover = { x: 0, y: 0, tx: 0, ty: 0, on: false }; // tilt toward the pointer on the front card
   var cards = [];
 
-  function el(tag, cls, parent) {
+  function el(tag, cls, parent, text) {
     var n = document.createElement(tag);
     if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
     if (parent) parent.appendChild(n);
     return n;
+  }
+  function pad(n) {
+    return (n < 10 ? "0" : "") + n;
+  }
+  function mark(parent) {
+    var m = el("span", "hc-mark", parent, "YR");
+    el("i", "", m, "✳");
+    return m;
   }
 
   projects.forEach(function (p, i) {
@@ -50,23 +61,24 @@
       var slice;
       if (k === SLICES.length - 1) {
         slice = el("div", "hc-face hc-front", card);
-        var img = el("img", "hc-cover", slice);
+        var top = el("div", "hc-top", slice);
+        mark(top);
+        el("span", "hc-num", top, "/ " + pad(i + 1));
+        var media = el("div", "hc-media", slice);
+        var img = el("img", "", media);
         img.src = p.cover;
         img.alt = "";
-        el("span", "hc-sheen", slice);
-        var dots = el("span", "hc-dots", slice);
-        el("i", "", dots);
-        el("i", "", dots);
+        var foot = el("div", "hc-foot", slice);
+        var text = el("div", "hc-text", foot);
+        el("span", "hc-meta", text, p.meta);
+        el("strong", "hc-title", text, p.title);
+        el("span", "hc-arrow", foot, "↗");
       } else if (k === 0) {
         slice = el("div", "hc-face hc-back", card);
-        var blur = el("img", "hc-cover hc-blur", slice);
-        blur.src = p.cover;
-        blur.alt = "";
-        el("span", "hc-stripe", slice);
-        var info = el("div", "hc-info", slice);
-        el("strong", "", info).textContent = p.title;
-        el("span", "", info).textContent = p.meta;
-        el("span", "hc-go", info).textContent = "VIEW PROJECT →";
+        el("span", "hc-back-label", slice, "YAN RONG / COLLECTION");
+        mark(el("div", "hc-back-mark", slice));
+        el("span", "hc-back-title", slice, p.title);
+        el("span", "hc-back-num", slice, pad(i + 1) + " / " + pad(count));
         slice.style.transform = "translateZ(" + z + "px) rotateX(180deg)";
         return;
       } else {
@@ -80,10 +92,11 @@
   function measure() {
     var w = stage.clientWidth;
     var h = stage.clientHeight;
-    cardW = Math.round(Math.min(330, Math.max(200, w * 0.48), h * 0.5 * 1.5925));
-    cardH = Math.round(cardW / 1.5925);
+    cardW = Math.round(Math.min(280, Math.max(200, w * 0.4), h * 0.36 * 1.3));
+    cardH = Math.round(cardW / 1.3);
     space.style.width = cardW + "px";
     space.style.height = cardH + "px";
+    stage.style.setProperty("--hc-w", cardW + "px");
   }
 
   function smooth(t) {
@@ -94,11 +107,14 @@
     var h = stage.clientHeight;
     mouse.x += (mouse.tx - mouse.x) * 0.08;
     mouse.y += (mouse.ty - mouse.y) * 0.08;
+    hover.x += (hover.tx - hover.x) * 0.1;
+    hover.y += (hover.ty - hover.y) * 0.1;
 
     var active = progress;
-
-    var gap = 36;
-    var peek = -55; // the second card's edge sits just past the stage edge
+    var gap = 30;
+    var peek = -40;
+    var current = ((Math.round(active) % count) + count) % count;
+    if (counter) counter.textContent = pad(current + 1) + " / " + pad(count);
 
     for (var i = 0; i < count; i++) {
       var card = cards[i];
@@ -118,14 +134,14 @@
       if (a <= 1) {
         t = smooth(a);
         y = -s * t * (cardH + gap);
-        z = 400 + t * (220 - 400);
-        rot = t * 132;
+        z = 400 + t * (200 - 400);
+        rot = t * 128;
       } else if (a <= 2) {
         t = smooth(a - 1);
         var yEnd = (h / 2 - peek) / (D / (D + 60)) - cardH / 2;
         y = -s * (cardH + gap + t * (yEnd - (cardH + gap)));
-        z = 220 + t * (-60 - 220);
-        rot = 132 + t * (175 - 132);
+        z = 200 + t * (-60 - 200);
+        rot = 128 + t * (175 - 128);
       } else {
         t = smooth(Math.min(a - 2, 1));
         var y2 = (h / 2 - peek) / (D / (D + 60)) - cardH / 2;
@@ -135,28 +151,41 @@
         rot = 175 + t * (195 - 175);
       }
 
+      // staggered: cards above drift left, below drift right, each with its own small twist
+      var x = -offset * cardW * 0.07;
+      var twist = -3 + offset * 2.2;
+
       var centre = Math.max(0, 1 - a);
-      var rx = -s * rot + -mouse.y * 12 * centre;
-      var ry = mouse.x * 15 * centre;
+      var rx = -s * rot + (-mouse.y * 5 - hover.y * 10) * centre;
+      var ry = (mouse.x * 6 + hover.x * 12) * centre;
+      var lift = 1 + (hover.on ? 0.03 : 0) * centre;
 
       card.style.zIndex = Math.round(z + 300);
       card.classList.toggle("is-front", a < 0.25);
       card.style.transform =
-        "translateY(" + y.toFixed(2) + "px) translateZ(" + z.toFixed(2) + "px) rotateX(" + rx.toFixed(2) +
-        "deg) rotateY(" + ry.toFixed(2) + "deg) rotateZ(-3deg)";
+        "translateX(" + x.toFixed(2) + "px) translateY(" + y.toFixed(2) + "px) translateZ(" + z.toFixed(2) +
+        "px) rotateX(" + rx.toFixed(2) + "deg) rotateY(" + ry.toFixed(2) + "deg) rotateZ(" + twist.toFixed(2) +
+        "deg) scale(" + lift.toFixed(3) + ")";
     }
   }
 
-  // only animate while the hero is on screen
-  // timeline: hold, then ease to the next whole step; hovering the centre card pauses the hold
+  // timeline: rest at a whole step, then ease to the next (or previous) one
   var visible = true;
   var raf = 0;
-  var step = 0; // index of the card at (or heading to) the centre
+  var from = 0;
+  var to = 0;
   var phaseStart = 0;
   var moving = false;
-  var hovering = false;
+  var paused = false;
   function ease(t) {
     return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+  function go(dir) {
+    from = progress;
+    to = Math.round(moving ? to : progress) + dir;
+    moving = true;
+    phaseStart = performance.now();
+    kick();
   }
   function loop(now) {
     raf = 0;
@@ -165,27 +194,29 @@
     var t = now - phaseStart;
     if (moving) {
       var k = Math.min(1, t / MOVE);
-      progress = step - 1 + ease(k);
+      progress = from + (to - from) * ease(k);
       if (k >= 1) {
         moving = false;
         phaseStart = now;
       }
-    } else if (hovering) {
-      phaseStart = now; // keep resting while the pointer is on the card
+    } else if (paused || hover.on || reduce) {
+      phaseStart = now; // keep resting
     } else if (t >= HOLD) {
-      step += 1;
-      moving = true;
-      phaseStart = now;
+      go(1);
     }
     render();
-    raf = requestAnimationFrame(loop);
+    kick();
   }
+  function kick() {
+    if (!raf && visible) raf = requestAnimationFrame(loop);
+  }
+
   if ("IntersectionObserver" in window) {
     new IntersectionObserver(function (entries) {
       visible = entries[0].isIntersecting;
-      if (visible && !raf && !reduce) {
+      if (visible) {
         phaseStart = 0;
-        raf = requestAnimationFrame(loop);
+        kick();
       }
     }).observe(stage);
   }
@@ -193,18 +224,33 @@
   window.addEventListener("mousemove", function (e) {
     mouse.tx = Math.max(-1, Math.min(1, (e.clientX - innerWidth / 2) / (innerWidth / 2)));
     mouse.ty = Math.max(-1, Math.min(1, (e.clientY - innerHeight / 2) / (innerHeight / 2)));
+    var card = e.target.closest && e.target.closest(".hc-card.is-front");
+    hover.on = !!card;
+    if (card) {
+      var r = card.getBoundingClientRect();
+      hover.tx = Math.max(-1, Math.min(1, ((e.clientX - r.left) / r.width) * 2 - 1));
+      hover.ty = Math.max(-1, Math.min(1, ((e.clientY - r.top) / r.height) * 2 - 1));
+    } else {
+      hover.tx = hover.ty = 0;
+    }
   });
   document.addEventListener("mouseleave", function () {
-    mouse.tx = mouse.ty = 0;
+    mouse.tx = mouse.ty = hover.tx = hover.ty = 0;
+    hover.on = false;
   });
 
-  space.addEventListener("mouseover", function (e) {
-    var card = e.target.closest(".hc-card");
-    hovering = !!(card && card.classList.contains("is-front"));
+  stage.querySelectorAll(".hc-step").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      go(parseInt(btn.dataset.dir, 10));
+    });
   });
-  space.addEventListener("mouseleave", function () {
-    hovering = false;
-  });
+  if (pauseBtn) {
+    pauseBtn.addEventListener("click", function () {
+      paused = !paused;
+      pauseBtn.textContent = paused ? "播放 ▶" : "暂停 Ⅱ";
+      pauseBtn.setAttribute("aria-pressed", paused ? "true" : "false");
+    });
+  }
 
   // only the centre card opens its project; the others are just passing by
   space.addEventListener("click", function (e) {
@@ -218,5 +264,5 @@
     measure();
     render();
   });
-  if (!reduce) raf = requestAnimationFrame(loop);
+  kick();
 })();

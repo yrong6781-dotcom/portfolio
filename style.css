@@ -3758,7 +3758,8 @@ html:not(.no-js) .about-v2-deco[data-aos].aos-animate { transform: translate3d(0
 }
 
 /* ===== Hero, right side: project card cylinder (hero-cards.js) =====
-   The script positions each .hc-card (translateY / translateZ / rotateX) every frame. */
+   The script positions each .hc-card (translate / rotate) every frame. Cards are dark framed
+   cards: YR mark + number, inset cover, type + title + arrow; the back is a designed face. */
 .hero-cards {
     position: absolute;
     top: 0;
@@ -3769,7 +3770,8 @@ html:not(.no-js) .about-v2-deco[data-aos].aos-animate { transform: translate3d(0
     perspective: 1350px;
     display: flex;
     align-items: center;
-    justify-content: center
+    justify-content: center;
+    font-family: 'Fira Code', ui-monospace, Menlo, monospace
 }
 
 .hero-cards-space {
@@ -3777,10 +3779,72 @@ html:not(.no-js) .about-v2-deco[data-aos].aos-animate { transform: translate3d(0
     transform-style: preserve-3d
 }
 
+.hc-label {
+    position: absolute;
+    top: 3.2rem;
+    z-index: 2;
+    font-size: 11px;
+    letter-spacing: .22em;
+    color: rgba(255, 255, 255, .45)
+}
+
+.hc-label--l {
+    left: 10%
+}
+
+.hc-label--r {
+    right: 6%
+}
+
+.hc-bar {
+    position: absolute;
+    left: 10%;
+    right: 6%;
+    bottom: 2.4rem;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between
+}
+
+.hc-count {
+    font-size: 13px;
+    letter-spacing: .18em;
+    color: rgba(255, 255, 255, .6);
+    font-variant-numeric: tabular-nums
+}
+
+.hc-controls {
+    display: flex;
+    gap: 10px
+}
+
+.hc-btn {
+    height: 44px;
+    min-width: 44px;
+    padding: 0 16px;
+    border: 1px solid rgba(255, 255, 255, .16);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .04);
+    color: #fff;
+    font: inherit;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color .2s, color .2s, border-color .2s
+}
+
+.hc-btn:hover {
+    background: #fff;
+    border-color: #fff;
+    color: #111
+}
+
 .hc-card {
     position: absolute;
     inset: 0;
     display: block;
+    color: #fff;
+    text-decoration: none;
     transform-style: preserve-3d;
     will-change: transform;
     pointer-events: none
@@ -3801,22 +3865,60 @@ html:not(.no-js) .about-v2-deco[data-aos].aos-animate { transform: translate3d(0
 
 /* the middle slices are the card's edge, seen as it turns */
 .hc-edge {
-    background: #808080;
-    border: 1px solid #808080
+    background: #2a2a31;
+    border: 1px solid #3a3a42
 }
 
 .hc-front,
 .hc-back {
-    background: #0f0f0f;
-    border: 1px solid rgba(255, 255, 255, .15);
-    box-shadow: inset 0 1px 1px rgba(255, 255, 255, .15);
+    box-sizing: border-box;
+    background: linear-gradient(160deg, #1c1c22, #0e0e12);
+    border: 1px solid rgba(255, 255, 255, .1);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, .12), 0 30px 60px rgba(0, 0, 0, .45);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden
 }
 
-.hc-cover {
-    position: absolute;
-    inset: 0;
+.hc-front {
+    display: flex;
+    flex-direction: column;
+    padding: calc(var(--hc-w) * .045)
+}
+
+.hc-top {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    letter-spacing: .1em;
+    color: rgba(255, 255, 255, .6);
+    margin-bottom: calc(var(--hc-w) * .03)
+}
+
+.hc-mark {
+    font-family: 'Kanit', sans-serif;
+    font-weight: 800;
+    letter-spacing: -.02em;
+    color: #fff
+}
+
+.hc-mark i {
+    margin-left: 2px;
+    font-style: normal;
+    font-weight: 400;
+    color: var(--color-light-purple)
+}
+
+.hc-media {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #000
+}
+
+.hc-media img {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -3824,77 +3926,92 @@ html:not(.no-js) .about-v2-deco[data-aos].aos-animate { transform: translate3d(0
     user-select: none
 }
 
-/* a soft metallic light across the front */
-.hc-sheen {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(115deg, rgba(255, 255, 255, .16) 0%, rgba(255, 255, 255, 0) 32%, rgba(255, 255, 255, 0) 68%, rgba(255, 255, 255, .08) 100%)
+.hc-foot {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: calc(var(--hc-w) * .035)
 }
 
-.hc-dots {
-    position: absolute;
-    right: 18px;
-    bottom: 16px;
-    display: flex
-}
-
-.hc-dots i {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, .12);
-    background: rgba(255, 255, 255, .22);
-    -webkit-backdrop-filter: blur(1px);
-    backdrop-filter: blur(1px)
-}
-
-.hc-dots i + i {
-    margin-left: -10px;
-    background: rgba(255, 255, 255, .38)
-}
-
-/* back: blurred cover, magnetic stripe, project details in a monospace face */
-.hc-blur {
-    filter: blur(16px) brightness(.7);
-    transform: scale(1.15)
-}
-
-.hc-stripe {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 18px;
-    height: 34px;
-    background: rgba(0, 0, 0, .85)
-}
-
-.hc-info {
-    position: absolute;
-    left: 20px;
-    right: 20px;
-    bottom: 16px;
+.hc-text {
+    min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    font-family: 'Fira Code', ui-monospace, Menlo, monospace;
-    color: #fff
+    gap: 3px
 }
 
-.hc-info strong {
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: .06em
+.hc-meta {
+    font-size: 9px;
+    letter-spacing: .12em;
+    color: rgba(255, 255, 255, .5);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
 }
 
-.hc-info span {
-    font-size: 10px;
-    letter-spacing: .04em;
-    color: rgba(255, 255, 255, .7)
+.hc-title {
+    font-family: Whitney, -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+    font-size: calc(var(--hc-w) * .05);
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
 }
 
-.hc-info .hc-go {
-    margin-top: 4px;
+.hc-arrow {
+    flex-shrink: 0;
+    font-size: 16px;
+    color: rgba(255, 255, 255, .8);
+    transition: transform .3s, color .3s
+}
+
+.hc-card.is-front:hover .hc-arrow {
+    transform: translate(2px, -2px);
     color: var(--color-light-purple)
+}
+
+/* back: collection label, a big faded mark, the title and the number */
+.hc-back-label,
+.hc-back-title,
+.hc-back-num {
+    position: absolute;
+    font-size: 9px;
+    letter-spacing: .14em;
+    color: rgba(255, 255, 255, .45)
+}
+
+.hc-back-label {
+    top: 16px;
+    left: 18px
+}
+
+.hc-back-title {
+    left: 18px;
+    bottom: 16px;
+    max-width: 65%;
+    font-family: Whitney, -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+    font-size: 11px;
+    letter-spacing: .04em;
+    color: rgba(255, 255, 255, .7);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.hc-back-num {
+    right: 18px;
+    bottom: 16px
+}
+
+.hc-back-mark {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(var(--hc-w) * .2);
+    opacity: .28
 }
 
 /* no room beside the text on narrow screens */

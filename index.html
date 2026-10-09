@@ -17,7 +17,7 @@
   <!-- aos cdn -->
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   <!-- stylesheet -->
-  <link rel="stylesheet" href="style.css?v=63" />
+  <link rel="stylesheet" href="style.css?v=64" />
   <link rel="prefetch" href="src/projects/driveletics/pages/01.jpg?v=4" as="image" />
   <link rel="prefetch" href="src/projects/tongcheng/01.jpg?v=1" as="image" />
   <link rel="prefetch" href="src/projects/sugo/01.jpg?v=2" as="image" />
@@ -182,8 +182,18 @@
 
 
       <!-- right side: vertical 3D cylinder of project cards, built from the projects grid by hero-cards.js -->
-      <div class="hero-cards" aria-hidden="true">
-        <div class="hero-cards-space"></div>
+      <div class="hero-cards">
+        <span class="hc-label hc-label--l" aria-hidden="true">SELECTED PROJECTS</span>
+        <span class="hc-label hc-label--r" aria-hidden="true">DESIGN &amp; BEYOND</span>
+        <div class="hero-cards-space" aria-hidden="true"></div>
+        <div class="hc-bar">
+          <span class="hc-count" aria-hidden="true"></span>
+          <div class="hc-controls">
+            <button type="button" class="hc-btn hc-step" data-dir="-1" aria-label="上一个项目">←</button>
+            <button type="button" class="hc-btn hc-step" data-dir="1" aria-label="下一个项目">→</button>
+            <button type="button" class="hc-btn hc-pause" aria-pressed="false">暂停 Ⅱ</button>
+          </div>
+        </div>
       </div>
     </section>
     <!-- landing page ends here -->
@@ -441,7 +451,7 @@
   <script src="site-extras.js?v=4"></script>
   <script src="footer-avatar.js?v=2"></script>
   <script src="hero-intro.js?v=1"></script>
-  <script src="hero-cards.js?v=2"></script>
+  <script src="hero-cards.js?v=5"></script>
   <script src="about-reveal.js?v=1"></script>
 </body>
 
