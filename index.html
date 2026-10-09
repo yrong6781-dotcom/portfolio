@@ -17,7 +17,7 @@
   <!-- aos cdn -->
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   <!-- stylesheet -->
-  <link rel="stylesheet" href="style.css?v=55" />
+  <link rel="stylesheet" href="style.css?v=56" />
   <link rel="prefetch" href="src/projects/driveletics/pages/01.jpg?v=4" as="image" />
   <link rel="prefetch" href="src/projects/tongcheng/01.jpg?v=1" as="image" />
   <link rel="prefetch" href="src/projects/sugo/01.jpg?v=2" as="image" />
@@ -140,16 +140,21 @@
         <h1 class="hero-line" data-aos="fade-up" data-aos-delay="100">
           让想法，成为<span class="hero-grad">更好的体验</span>。<br />作品都在下面，一起看看？
         </h1>
-        <div class="hero-pills" data-aos="fade-up" data-aos-delay="200">
-          <a class="hero-pill" href="#projects">看看作品</a>
-          <a class="hero-pill" href="#about">认识我</a>
-          <span class="hero-pill hero-pill--tag">UX 研究</span>
-          <span class="hero-pill hero-pill--tag">交互原型</span>
-          <span class="hero-pill hero-pill--tag">AI 辅助设计</span>
-          <span class="hero-pill hero-pill--tag">Vibe Coding</span>
-          <a class="hero-pill hero-pill--outline" href="mailto:1289815855@qq.com" title="点击复制邮箱">
-            邮箱：<u>1289815855@qq.com</u>
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.2" stroke="currentColor"/><path d="M8.5 2.5V2a.5.5 0 0 0-.5-.5H2A.5.5 0 0 0 1.5 2v6a.5.5 0 0 0 .5.5h.5" stroke="currentColor"/></svg>
+        <!-- keywords: quiet tags, not clickable -->
+        <ul class="hero-tags" data-aos="fade-up" data-aos-delay="200" aria-label="关键词">
+          <li>UI 设计</li>
+          <li>UX 研究</li>
+          <li>交互原型</li>
+          <li>AI 辅助设计</li>
+          <li>Vibe Coding</li>
+        </ul>
+        <!-- actions: solid / outline buttons, then the email link -->
+        <div class="hero-actions" data-aos="fade-up" data-aos-delay="300">
+          <a class="hero-btn hero-btn--solid" href="#projects">看看作品<span class="hero-arrow" aria-hidden="true">↗</span></a>
+          <a class="hero-btn hero-btn--ghost" href="#about">认识我<span class="hero-arrow" aria-hidden="true">↗</span></a>
+          <a class="hero-mail" href="mailto:1289815855@qq.com" title="点击复制邮箱">
+            1289815855@qq.com
+            <svg width="13" height="13" viewBox="0 0 12 12" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.2" stroke="currentColor"/><path d="M8.5 2.5V2a.5.5 0 0 0-.5-.5H2A.5.5 0 0 0 1.5 2v6a.5.5 0 0 0 .5.5h.5" stroke="currentColor"/></svg>
           </a>
         </div>
         <div class="hero-settings">
@@ -175,10 +180,9 @@
         </div>
       </div>
 
-      <!-- cartoon avatar that turns her head as the mouse moves left/right (hero-turn.js scrubs the video) -->
-      <div class="hero-turn" aria-hidden="true">
-        <video class="hero-turn-video" src="src/projects/hero/avatar-turn.mp4?v=1" poster="src/projects/hero/avatar-turn-poster.jpg?v=1"
-          muted playsinline preload="auto" disablepictureinpicture></video>
+      <!-- cartoon avatar that turns her head as the mouse moves left/right (hero-turn.js draws transparent frames) -->
+      <div class="hero-turn" aria-hidden="true" data-src="src/projects/hero/turn/" data-frames="49" data-front="0.375" data-v="1">
+        <canvas width="720" height="720"></canvas>
       </div>
     </section>
     <!-- landing page ends here -->
@@ -435,7 +439,7 @@
 
   <script src="site-extras.js?v=4"></script>
   <script src="footer-avatar.js?v=2"></script>
-  <script src="hero-turn.js?v=2"></script>
+  <script src="hero-turn.js?v=3"></script>
   <script src="about-reveal.js?v=1"></script>
 </body>
 
