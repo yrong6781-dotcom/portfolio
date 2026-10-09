@@ -23,8 +23,8 @@
   if (count < 3) return;
 
   var D = 1350; // perspective distance (matches the CSS)
-  var HOLD = 2600; // ms a card rests at the centre
-  var MOVE = 950; // ms to roll to the next card
+  var HOLD = 2000; // ms a card rests at the centre
+  var MOVE = 800; // ms to roll to the next card
   var SLICES = [-1.6, -0.8, 0, 0.8, 1.6]; // card thickness, back → front
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
