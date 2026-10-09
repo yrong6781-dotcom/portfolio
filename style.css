@@ -3682,10 +3682,10 @@ html:not(.no-js) .about-v2-deco[data-aos].aos-animate { transform: translate3d(0
 
 .hero-turn {
     position: absolute;
-    right: 1vw;
+    right: 3vw;
     bottom: 0;
-    height: 100%;
-    max-width: 60vw;
+    height: 86%;
+    max-width: 52vw;
     aspect-ratio: 1;
     pointer-events: none;
     transition: opacity .4s
@@ -3712,7 +3712,7 @@ html:not(.no-js) .about-v2-deco[data-aos].aos-animate { transform: translate3d(0
         position: relative;
         order: -1;
         right: auto;
-        width: min(86vw, 52rem);
+        width: min(76vw, 46rem);
         height: auto;
         max-width: none;
         /* the hoodie is cut at the frame's bottom: soften that edge above the text */
@@ -3739,8 +3739,8 @@ html:not(.no-js) .about-v2-deco[data-aos].aos-animate { transform: translate3d(0
    is full size, flat and bright with its info panel open; side cards shrink, turn toward
    the centre and darken. Mouse onto a side card / click / arrows / swipe brings it forward. */
 .projects-flow {
-    --flow-w: min(38vw, 58rem);
-    --flow-panel: min(22vw, 32rem);
+    --flow-w: min(17vw, 27rem);
+    --flow-panel: min(17vw, 27rem);
     position: relative;
     width: 100%;
     margin-top: 4rem;
@@ -3750,7 +3750,7 @@ html:not(.no-js) .about-v2-deco[data-aos].aos-animate { transform: translate3d(0
 
 .flow-track {
     position: relative;
-    height: calc(var(--flow-w) * 9 / 16 + 6rem);
+    height: calc(var(--flow-w) * 4 / 3 + 6rem);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -3771,9 +3771,9 @@ html:not(.no-js) .about-v2-deco[data-aos].aos-animate { transform: translate3d(0
 
 .flow-media {
     display: block;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 3 / 4;
     overflow: hidden;
-    border-radius: 16px;
+    border-radius: 14px;
     border: 1px solid rgba(255, 255, 255, .1);
     background: #1a1a26;
     box-shadow: 0 30px 60px rgba(0, 0, 0, .45)
@@ -3796,19 +3796,20 @@ html:not(.no-js) .about-v2-deco[data-aos].aos-animate { transform: translate3d(0
 .flow-panel {
     position: absolute;
     top: 0;
-    left: calc(100% + 1.4rem);
+    left: calc(100% + 8px);
     width: var(--flow-panel);
-    min-height: 100%;
+    height: 100%;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    padding: 2.6rem 2.4rem;
-    border-radius: 16px;
+    padding: 2.4rem 2rem;
+    border-radius: 14px;
     border: 1px solid rgba(255, 255, 255, .08);
     background: linear-gradient(160deg, #1d1b2b, #121019);
     box-shadow: 0 30px 60px rgba(0, 0, 0, .45);
     opacity: 0;
-    transform: translateX(-2.4rem);
+    transform: translateX(-30%) scaleX(.6);
+    transform-origin: left center;
     pointer-events: none;
     transition: opacity .45s, transform .55s cubic-bezier(.2, .8, .2, 1)
 }
@@ -3828,17 +3829,17 @@ html:not(.no-js) .about-v2-deco[data-aos].aos-animate { transform: translate3d(0
 }
 
 .flow-title {
-    margin: 0 0 1.4rem;
-    font-size: clamp(18px, 1.6vw, 24px);
+    margin: 0 0 1.2rem;
+    font-size: clamp(16px, 1.35vw, 21px);
     font-weight: 700;
     line-height: 1.35;
     color: #fff
 }
 
 .flow-desc {
-    margin: 0 0 2rem;
-    font-size: clamp(13px, 1vw, 15px);
-    line-height: 1.75;
+    margin: 0 0 1.6rem;
+    font-size: clamp(12px, .9vw, 14px);
+    line-height: 1.7;
     color: rgba(255, 255, 255, .62)
 }
 
@@ -3909,21 +3910,95 @@ html:not(.no-js) .about-v2-deco[data-aos].aos-animate { transform: translate3d(0
 /* phones: one card across, the info panel sits under the cover, neighbours peek at the sides */
 @media screen and (max-width:768px) {
     .projects-flow {
-        --flow-w: 78vw;
-        --flow-panel: 78vw
+        --flow-w: 40vw;
+        --flow-panel: 44vw
     }
 
     .flow-track {
-        height: calc(var(--flow-w) * 9 / 16 + 300px)
+        height: calc(var(--flow-w) * 4 / 3 + 40px)
     }
 
     .flow-panel {
-        top: calc(100% + 1.2rem);
-        left: 0;
-        width: 100%;
-        height: auto;
-        min-height: 0;
-        padding: 20px;
-        transform: translateY(-1.2rem)
+        padding: 14px 12px
     }
+
+    .flow-meta {
+        font-size: 10px;
+        margin-bottom: 6px
+    }
+
+    .flow-title {
+        font-size: 14px;
+        margin-bottom: 6px
+    }
+
+    .flow-desc {
+        font-size: 11px;
+        line-height: 1.55;
+        margin-bottom: 8px
+    }
+
+    .flow-cta {
+        font-size: 12px;
+        padding: .5em 1em
+    }
+}
+
+/* ===== Hero entrance (hero-intro.js) =====
+   label fades in, the headline types out with a caret, tags / buttons rise in. Without JS
+   (or with reduced motion) none of these classes apply and everything is simply visible. */
+/* visibility, not opacity: the gradient words are painted by their parent through the
+   glyphs (background-clip: text), which ignores a child's opacity */
+.hero-intro-run .tw-char {
+    visibility: hidden
+}
+
+.hero-intro-run .tw-char.is-in {
+    visibility: visible
+}
+
+.tw-caret {
+    display: inline-block;
+    width: 3px;
+    height: 1.05em;
+    margin: 0 -3px 0 2px;
+    vertical-align: -.12em;
+    border-radius: 2px;
+    background: var(--color-light-purple);
+    -webkit-text-fill-color: initial;
+    animation: tw-blink 1s step-end infinite
+}
+
+.tw-caret.is-done {
+    opacity: 0;
+    animation: none;
+    transition: opacity .4s
+}
+
+@keyframes tw-blink {
+    0%,
+    100% {
+        opacity: 1
+    }
+
+    50% {
+        opacity: 0
+    }
+}
+
+.hero-intro-run .hero-label,
+.hero-intro-run .hero-tags li,
+.hero-intro-run .hero-actions {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(4px);
+    transition: opacity .6s ease, transform .6s ease, filter .6s ease
+}
+
+.hero-intro-run .hero-label.is-in,
+.hero-intro-run .hero-tags li.is-in,
+.hero-intro-run .hero-actions.is-in {
+    opacity: 1;
+    transform: none;
+    filter: none
 }

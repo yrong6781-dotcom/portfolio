@@ -10,22 +10,18 @@
   var count = flow.querySelector(".flow-count");
   if (!cards.length) return;
 
-  var SCALE = [1, 0.74, 0.58, 0.48];
-  var BRIGHT = [1, 0.5, 0.32, 0.22];
-  var ANGLE = 28; // degrees side cards turn toward the centre
-  var GAP = 20;
+  var SCALE = [1, 0.86, 0.74, 0.64];
+  var BRIGHT = [1, 0.72, 0.5, 0.36];
+  var ANGLE = 38; // degrees side cards turn toward the centre
+  var GAP = 10;
 
   // start on the second card (ProcureSmart) so there is a card on each side
   var front = Math.min(1, cards.length - 1);
   var lockedUntil = 0;
 
-  function phone() {
-    return window.matchMedia("(max-width: 768px)").matches;
-  }
-
   function layout() {
     var w = cards[0].offsetWidth;
-    var panel = phone() ? 0 : cards[front].querySelector(".flow-panel").offsetWidth + 14;
+    var panel = cards[front].querySelector(".flow-panel").offsetWidth + 8;
     // centre the front cover + its panel; x is each cover's centre relative to the track centre
     var frontX = -panel / 2;
     var xs = [];
@@ -35,7 +31,7 @@
       for (var i = front + dir, d = 1; i >= 0 && i < cards.length; i += dir, d++) {
         var s = SCALE[Math.min(d, SCALE.length - 1)];
         var seen = w * s * Math.cos((ANGLE * Math.PI) / 180); // width after scaling and turning
-        var overlap = d === 1 ? 0 : seen * 0.45;
+        var overlap = d === 1 ? 0 : seen * 0.5;
         xs[i] = edge + dir * (seen / 2 - overlap);
         edge = edge + dir * (seen - overlap);
       }
@@ -47,7 +43,8 @@
       var turn = i === front ? 0 : i < front ? ANGLE : -ANGLE;
       card.style.transform =
         "translateX(" + xs[i].toFixed(1) + "px) rotateY(" + turn + "deg) scale(" + SCALE[k] + ")";
-      card.style.filter = d ? "brightness(" + BRIGHT[k] + ") saturate(.7)" : "none";
+      // side cards go black-and-white like the reference; only the front one is in colour
+      card.style.filter = d ? "grayscale(1) brightness(" + BRIGHT[k] + ")" : "none";
       card.style.opacity = d > 3 ? 0 : 1;
       card.style.zIndex = 50 - d;
       card.classList.toggle("is-front", i === front);

@@ -1,7 +1,7 @@
 // Hero avatar: a head turn (left profile -> front -> right profile) as transparent WebP
 // frames drawn on a canvas, so the purple glow behind shows around her without tinting her.
 // Horizontal pointer movement scrubs through the frames, so she turns as the cursor
-// (or a finger dragging sideways) moves.
+// (or a finger dragging sideways) moves; when the pointer rests she turns back to the front.
 (function () {
   var root = document.querySelector(".hero-turn");
   var canvas = root && root.querySelector("canvas");
@@ -13,12 +13,15 @@
   var VERSION = root.dataset.v || "1";
   var FRONT = parseFloat(root.dataset.front) || 0.5; // looking straight ahead, as a fraction
   var SENSITIVITY = 0.8; // one full screen-width swipe moves 80% of the turn
+  var IDLE = 1200; // ms without movement before she turns back to face the front
 
   var frames = new Array(COUNT);
   var target = FRONT; // 0..1
   var shown = FRONT;
   var drawn = -1;
   var prevX = null;
+  var returning = false;
+  var idleTimer = 0;
 
   function pad(n) {
     return ("00" + n).slice(-3);
@@ -63,7 +66,8 @@
   var raf = 0;
   function tick() {
     raf = 0;
-    shown += (target - shown) * 0.35; // a little easing so slow moves don't step
+    // follow the pointer briskly; drift back to the front slowly when it goes still
+    shown += (target - shown) * (returning ? 0.07 : 0.35);
     if (Math.abs(target - shown) < 0.001) shown = target;
     draw();
     if (shown !== target || drawn === -1) kick();
@@ -89,6 +93,13 @@
     prevX = x;
     if (!delta) return;
     target = Math.max(0, Math.min(1, target + (delta / window.innerWidth) * SENSITIVITY));
+    returning = false;
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(function () {
+      returning = true;
+      target = FRONT;
+      kick();
+    }, IDLE);
     kick();
   }
 
