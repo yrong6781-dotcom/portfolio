@@ -23,8 +23,7 @@
   if (count < 3) return;
 
   var D = 1350; // perspective distance (matches the CSS)
-  var HOLD = 2000; // ms a card rests at the centre
-  var MOVE = 800; // ms to roll to the next card
+  var HOLD = 2000; // ms a card rests at the centre before rolling on
   var SLICES = [-1.6, -0.8, 0, 0.8, 1.6]; // card thickness, back → front
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -34,6 +33,7 @@
   var mouse = { x: 0, y: 0, tx: 0, ty: 0 }; // whole-window tilt
   var hover = { x: 0, y: 0, tx: 0, ty: 0, on: false }; // tilt toward the pointer on the front card
   var cards = [];
+  var floatT = 0; // seconds, drives the idle float
 
   function el(tag, cls, parent, text) {
     var n = document.createElement(tag);
@@ -138,25 +138,28 @@
         t = smooth(a);
         y = -s * t * (cardH + gap);
         z = 400 + t * (200 - 400);
-        rot = t * 128;
+        rot = t * 110;
       } else if (a <= 2) {
         t = smooth(a - 1);
         var yEnd = second(h);
         y = -s * (cardH + gap + t * (yEnd - (cardH + gap)));
         z = 200 + t * (-60 - 200);
-        rot = 128 + t * (175 - 128);
+        rot = 110 + t * (165 - 110);
       } else {
         t = smooth(Math.min(a - 2, 1));
         var y2 = second(h);
         var y3 = (h / 2 + 100) / (D / (D + 250)) + cardH / 2;
         y = -s * (y2 + t * (y3 - y2));
         z = -60 + t * (-250 + 60);
-        rot = 175 + t * (195 - 175);
+        rot = 165 + t * (190 - 165);
       }
 
-      // staggered: cards above drift left, below drift right, each with its own small twist
+      // staggered: cards above drift left, below drift right, each with its own small twist;
+      // every card also floats a little on its own phase so the stack never freezes
+      var phase = floatT * 1.1 + i * 1.7;
       var x = -offset * cardW * 0.07;
-      var twist = -6 + offset * 3;
+      y += Math.sin(phase) * 4;
+      var twist = -6 + offset * 3 + Math.sin(phase * 0.8) * 0.8;
 
       var centre = Math.max(0, 1 - a);
       var rx = -s * rot + (-mouse.y * 5 - hover.y * 10) * centre;
@@ -172,40 +175,38 @@
     }
   }
 
-  // timeline: rest at a whole step, then ease to the next (or previous) one
+  // motion: the cylinder is a damped spring chasing a whole-number target, so it rolls in with
+  // a little weight and settles softly instead of following a fixed curve. While it rests the
+  // cards keep floating slightly; after HOLD ms of rest the target steps on to the next card.
   var visible = true;
   var raf = 0;
-  var from = 0;
-  var to = 0;
-  var phaseStart = 0;
-  var moving = false;
-  function ease(t) {
-    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-  }
+  var target = 0;
+  var velocity = 0;
+  var last = 0;
+  var restFor = 0;
+  var K = 52; // spring stiffness
+  var C = 2 * 0.8 * Math.sqrt(K); // damping (just under critical: a soft settle)
   function go(dir) {
-    from = progress;
-    to = Math.round(moving ? to : progress) + dir;
-    moving = true;
-    phaseStart = performance.now();
+    target = Math.round(target) + dir;
+    restFor = 0;
     kick();
   }
   function loop(now) {
     raf = 0;
     if (!visible) return;
-    if (!phaseStart) phaseStart = now;
-    var t = now - phaseStart;
-    if (moving) {
-      var k = Math.min(1, t / MOVE);
-      progress = from + (to - from) * ease(k);
-      if (k >= 1) {
-        moving = false;
-        phaseStart = now;
-      }
-    } else if (hover.on || reduce) {
-      phaseStart = now; // keep resting
-    } else if (t >= HOLD) {
-      go(1);
+    var dt = last ? Math.min((now - last) / 1000, 1 / 30) : 1 / 60;
+    last = now;
+    var acc = K * (target - progress) - C * velocity;
+    velocity += acc * dt;
+    progress += velocity * dt;
+    var resting = Math.abs(target - progress) < 0.004 && Math.abs(velocity) < 0.01;
+    if (resting && !hover.on && !reduce) {
+      restFor += dt * 1000;
+      if (restFor >= HOLD) go(1);
+    } else if (!resting) {
+      restFor = 0;
     }
+    floatT = now / 1000;
     render();
     kick();
   }
@@ -217,7 +218,7 @@
     new IntersectionObserver(function (entries) {
       visible = entries[0].isIntersecting;
       if (visible) {
-        phaseStart = 0;
+        last = 0;
         kick();
       }
     }).observe(stage);
