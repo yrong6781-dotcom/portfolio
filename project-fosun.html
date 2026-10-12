@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- keep the portfolio out of search results: only people with the link should find it -->
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#11111b" />
+  <title>复星禅城-智慧医疗系统 | Rong Yan</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="src/png/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="src/png/favicon-192.png" />
+  <link rel="apple-touch-icon" href="src/png/apple-touch-icon.png" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" />
+  <link rel="stylesheet" href="project-detail.css?v=11" />
+  <script>
+    // zoom the first page in when the browser did not morph it from the project card
+    (function () {
+      var root = document.documentElement;
+      if ("onpagereveal" in window) {
+        window.addEventListener("pagereveal", function (e) {
+          if (!e.viewTransition) {
+            root.classList.add("enter-zoom");
+            return;
+          }
+          // a skipped transition rejects these promises, which is expected
+          e.viewTransition.ready.catch(function () {});
+          e.viewTransition.finished.catch(function () {});
+        }, { once: true });
+      } else {
+        root.classList.add("enter-zoom");
+      }
+    })();
+  </script>
+  <script src="project-detail.js?v=6" defer></script>
+  <script src="site-extras.js?v=4" defer></script>
+</head>
+
+<body>
+  <header class="detail-bar">
+    <a class="detail-back" href="index.html#projects" aria-label="Back to projects">&#8592; &#60;/Projects&#62;</a>
+    <div class="detail-bar-right">
+      <div class="detail-bar-info">
+        <span class="detail-bar-title">复星禅城-智慧医疗系统</span>
+        <span class="detail-bar-meta">B端设计 · 多人协同管理平台</span>
+      </div>
+      <button class="detail-sound" type="button" aria-pressed="false" aria-label="打开背景音乐"></button>
+    </div>
+  </header>
+
+  <main class="detail-main">
+    <!-- Detail page images, stacked top to bottom -->
+    <div class="detail-pages">
+      <img src="src/projects/fosun/01.jpg?v=1" alt="封面 · 复星禅城-智慧医疗系统" width="1920" height="1080" style="view-transition-name: fosun-cover" />
+      <img src="src/projects/fosun/02.jpg?v=1" alt="项目目标" width="1920" height="1080" decoding="async" />
+      <img src="src/projects/fosun/03.jpg?v=1" alt="PEST 宏观环境分析" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/fosun/04.jpg?v=1" alt="旧系统的三大核心制约" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/fosun/05.jpg?v=1" alt="用户画像构建 · 全链路实施流程" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/fosun/06.jpg?v=1" alt="用户特征亲和图" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/fosun/07.jpg?v=1" alt="用户画像" width="1920" height="2057" loading="lazy" decoding="async" />
+      <img src="src/projects/fosun/08.jpg?v=1" alt="设计决策" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/fosun/09.jpg?v=1" alt="设计规范 · 颜色" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/fosun/10.jpg?v=1" alt="设计规范 · 字体与图标" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/fosun/11.jpg?v=1" alt="栅格规范" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/fosun/12.jpg?v=1" alt="组件库整理" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/fosun/13.jpg?v=1" alt="页面展示 · 首页工作台" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/fosun/14.jpg?v=1" alt="页面展示 · 首页工作台" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/fosun/15.jpg?v=1" alt="提升信息管理效率 · 挂号列表" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/fosun/16.jpg?v=1" alt="登录页 · AIGC 辅助" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/fosun/17.jpg?v=1" alt="登录页流程" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/fosun/18.jpg?v=1" alt="新人挂号 · 数据处理提效" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/fosun/19.jpg?v=1" alt="新人挂号 · IC 刷卡" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/fosun/20.jpg?v=1" alt="日夜模式切换" width="1920" height="1080" loading="lazy" decoding="async" />
+      <img src="src/projects/fosun/21.jpg?v=1" alt="设计验证" width="1920" height="1080" loading="lazy" decoding="async" />
+    </div>
+
+    <div class="detail-end"></div>
+  </main>
+</body>
+
+</html>
