@@ -265,6 +265,25 @@ body {
   transform: translateX(3px);
 }
 
+/* login hint under a prototype link */
+.detail-cred {
+  margin: -14px 0 0;
+  font-family: "Fira Code", monospace;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.detail-cred b {
+  font-weight: 500;
+  color: var(--detail-text);
+}
+
+.detail-cred span {
+  margin: 0 10px;
+  opacity: 0.5;
+}
+
 .detail-end {
   display: flex;
   flex-direction: column;
